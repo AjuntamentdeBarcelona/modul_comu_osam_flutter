@@ -1,11 +1,15 @@
 import 'package:common_module_flutter/osam/src/VersionControlResponse.dart';
 
 class Message {
-  String ca;
-  String en;
-  String es;
+  final String ca;
+  final String en;
+  final String es;
 
-  Message({this.ca, this.en, this.es});
+  const Message({
+    this.ca = "",
+    this.en = "",
+    this.es = "",
+  });
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(

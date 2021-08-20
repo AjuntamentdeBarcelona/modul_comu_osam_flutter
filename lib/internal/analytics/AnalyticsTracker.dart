@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import 'AnalyticsApis.dart';
 
 class AnalyticsTracker {
@@ -17,42 +15,42 @@ class AnalyticsTracker {
   };
 
   Future<void> trackVersionControlShown() {
-    Map parameters = _getParams(eventIdValue: "version_control_popup_showed");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "version_control_popup_showed");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackVersionControlAccepted() {
-    Map parameters = _getParams(eventIdValue: "version_control_popup_accepted");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "version_control_popup_accepted");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackVersionControlCancelled() {
-    Map parameters =
+    Map<String, dynamic> parameters =
         _getParams(eventIdValue: "version_control_popup_cancelled");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackRatingShown() {
-    Map parameters = _getParams(eventIdValue: "rating_popup_showed");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "rating_popup_showed");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackRatingAccepted() {
-    Map parameters = _getParams(eventIdValue: "rating_popup_accepted");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "rating_popup_accepted");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackRatingCancelled() {
-    Map parameters = _getParams(eventIdValue: "rating_popup_cancelled");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "rating_popup_cancelled");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
   Future<void> trackRatingLater() {
-    Map parameters = _getParams(eventIdValue: "rating_popup_later");
+    Map<String, dynamic> parameters = _getParams(eventIdValue: "rating_popup_later");
     return _analytics.logEvent(name: _EVENT_NAME, parameters: parameters);
   }
 
-  Map<String, dynamic> _getParams({@required String eventIdValue}) {
+  Map<String, dynamic> _getParams({required String eventIdValue}) {
     final Map<String, dynamic> parameters = {};
     parameters.addAll(_commonParams);
     parameters[_EVENT_ID_KEY] = eventIdValue;

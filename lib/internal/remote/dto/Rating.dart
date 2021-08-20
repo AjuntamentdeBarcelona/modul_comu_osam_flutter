@@ -6,21 +6,21 @@ class Rating {
   int appId;
   int id;
   String appStoreIdentifier;
-  Message message;
+  Message? message;
   int minutesUntilInitialPrompt;
   int minLaunchesUntilInitialPrompt;
   String packageName;
   String platform;
 
   Rating({
-    this.appId,
-    this.id,
-    this.appStoreIdentifier,
-    this.message,
-    this.minutesUntilInitialPrompt,
-    this.minLaunchesUntilInitialPrompt,
-    this.packageName,
-    this.platform,
+    required this.appId,
+    required this.id,
+    required this.appStoreIdentifier,
+    required this.message,
+    required this.minutesUntilInitialPrompt,
+    required this.minLaunchesUntilInitialPrompt,
+    required this.packageName,
+    required this.platform,
   });
 
   factory Rating.fromJson(Map<String, dynamic> json) {
@@ -28,8 +28,9 @@ class Rating {
       appId: json['appId'],
       id: json['id'],
       appStoreIdentifier: json['appStoreIdentifier'],
-      message:
-          json['message'] != null ? Message.fromJson(json['message']) : null,
+      message: json['message'] != null
+          ? Message.fromJson(json['message'])
+          : Message(),
       minutesUntilInitialPrompt: json['minutes'],
       minLaunchesUntilInitialPrompt: json['numAperture'],
       packageName: json['packageName'],
@@ -47,7 +48,7 @@ class Rating {
     data['packageName'] = this.packageName;
     data['platform'] = this.platform;
     if (this.message != null) {
-      data['message'] = this.message.toJson();
+      data['message'] = this.message?.toJson() ?? Message().toJson();
     }
     return data;
   }
@@ -57,7 +58,7 @@ class Rating {
       minutesUntilInitialPrompt: minutesUntilInitialPrompt,
       minLaunchesUntilInitialPrompt: minLaunchesUntilInitialPrompt,
       appStoreIdentifier: appStoreIdentifier,
-      message: message,
+      message: message ?? Message(),
     );
   }
 }

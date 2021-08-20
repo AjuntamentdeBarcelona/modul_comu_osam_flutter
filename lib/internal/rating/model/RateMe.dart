@@ -6,13 +6,13 @@ class RateMe {
   final int minLaunchesUntilInitialPrompt;
   final String appStoreIdentifier;
   final Message message;
-  ShowDialogResponse response;
+  ShowDialogResponse response = ShowDialogResponse.DONT_SHOW_DIALOG;
 
   RateMe({
-    this.minutesUntilInitialPrompt,
-    this.minLaunchesUntilInitialPrompt,
-    this.appStoreIdentifier,
-    this.message,
+    this.minutesUntilInitialPrompt = 0,
+    this.minLaunchesUntilInitialPrompt = 0,
+    this.appStoreIdentifier = "",
+    this.message = const Message(),
   });
 
   String playStoreUrl(String packageName) {

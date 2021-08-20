@@ -5,16 +5,16 @@ class Strings {
     String value;
     switch (language) {
       case Language.CA:
-        value = _CA[key];
+        value = _CA[key] ?? "";
         break;
       case Language.ES:
-        value = _ES[key];
+        value = _ES[key] ?? "";
         break;
       case Language.EN:
-        value = _EN[key];
+        value = _EN[key] ?? "";
         break;
       default:
-        value = _CA[key];
+        value = _CA[key] ?? "";
         break;
     }
     return value;

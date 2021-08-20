@@ -9,9 +9,9 @@ import 'dto/VersionResponse.dart';
 class Remote {
   final Dio dio = Dio();
 
-  static String _ENDPOINT = "https://osam-modul-comu.dtibcn.cat";
-  static String _VERSION = "api/version";
-  static String _RATING = "api/rating";
+  static const String _ENDPOINT = "https://osam-modul-comu.dtibcn.cat";
+  static const String _VERSION = "api/version";
+  static const String _RATING = "api/rating";
 
   Remote(String token) {
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {

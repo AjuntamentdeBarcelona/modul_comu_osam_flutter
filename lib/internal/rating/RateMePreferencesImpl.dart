@@ -27,41 +27,41 @@ class RateMePreferencesImpl extends RateMePreferences {
   @override
   bool getDontShowAgain() {
     return _prefs.containsKey(DONT_SHOW_AGAIN)
-        ? _prefs.getBool(DONT_SHOW_AGAIN)
+        ? _prefs.getBool(DONT_SHOW_AGAIN) ?? false
         : false;
   }
 
   @override
   int getLaunchesSinceLastPrompt() {
     return _prefs.containsKey(LAUNCHES_SINCE_LAST_PROMPT)
-        ? _prefs.getInt(LAUNCHES_SINCE_LAST_PROMPT)
+        ? _prefs.getInt(LAUNCHES_SINCE_LAST_PROMPT) ?? 0
         : 0;
   }
 
   @override
   int getTimeOfAbsoluteFirstLaunch() {
     return _prefs.containsKey(TIME_OF_ABSOLUTE_FIRST_LAUNCH)
-        ? _prefs.getInt(TIME_OF_ABSOLUTE_FIRST_LAUNCH)
+        ? _prefs.getInt(TIME_OF_ABSOLUTE_FIRST_LAUNCH) ?? 0
         : 0;
   }
 
   @override
   int getTimeOfLastPrompt() {
     return _prefs.containsKey(TIME_OF_LAST_PROMPT)
-        ? _prefs.getInt(TIME_OF_LAST_PROMPT)
+        ? _prefs.getInt(TIME_OF_LAST_PROMPT) ?? 0
         : 0;
   }
 
   @override
   int getTotalLaunchCount() {
     return _prefs.containsKey(TOTAL_LAUNCH_COUNT)
-        ? _prefs.getInt(TOTAL_LAUNCH_COUNT)
+        ? _prefs.getInt(TOTAL_LAUNCH_COUNT) ?? 0
         : 0;
   }
 
   @override
   int getVersionCode() {
-    return _prefs.containsKey(VERSION) ? _prefs.getInt(VERSION) : 0;
+    return _prefs.containsKey(VERSION) ? _prefs.getInt(VERSION) ?? 0 : 0;
   }
 
   @override

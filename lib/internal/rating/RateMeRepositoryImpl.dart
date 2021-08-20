@@ -63,7 +63,7 @@ class RateMeRepositoryImpl extends RateMeRepository {
         _rateMePreferences.getLaunchesSinceLastPrompt() + 1;
     _rateMePreferences.setLaunchesSinceLastPrompt(launchesSinceLastPrompt);
 
-    ShowDialogResponse showDialogResponse;
+    ShowDialogResponse? showDialogResponse;
     bool showDialog = false;
 
     if (rating.minLaunchesUntilInitialPrompt > 0) {

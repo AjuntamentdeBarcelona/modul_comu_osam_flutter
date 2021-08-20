@@ -14,32 +14,33 @@ class Version {
   int versionCode;
   String versionName;
 
-  Version(
-      {this.appId,
-      this.cancel,
-      this.comparisonMode,
-      this.id,
-      this.message,
-      this.ok,
-      this.packageName,
-      this.platform,
-      this.title,
-      this.url,
-      this.versionCode,
-      this.versionName});
+  Version({
+    required this.appId,
+    required this.cancel,
+    required this.comparisonMode,
+    required this.id,
+    required this.message,
+    required this.ok,
+    required this.packageName,
+    required this.platform,
+    required this.title,
+    required this.url,
+    required this.versionCode,
+    required this.versionName,
+  });
 
   factory Version.fromJson(Map<String, dynamic> json) {
     return Version(
       appId: json['appId'],
-      cancel: json['cancel'] != null ? Message.fromJson(json['cancel']) : null,
+      cancel: Message.fromJson(json['cancel']),
       comparisonMode:
           ComparisonModeExtensions.fromString(json['comparisonMode']),
       id: json['id'],
-      message: json['message'] != null ? Message.fromJson(json['message']) : null,
-      ok: json['ok'] != null ? Message.fromJson(json['ok']) : null,
+      message: Message.fromJson(json['message']),
+      ok: Message.fromJson(json['ok']),
       packageName: json['packageName'],
       platform: json['platform'],
-      title: json['title'] != null ? Message.fromJson(json['title']) : null,
+      title: Message.fromJson(json['title']),
       url: json['url'],
       versionCode: json['versionCode'],
       versionName: json['versionName'],
@@ -56,18 +57,10 @@ class Version {
     data['url'] = this.url;
     data['versionCode'] = this.versionCode;
     data['versionName'] = this.versionName;
-    if (this.cancel != null) {
-      data['cancel'] = this.cancel.toJson();
-    }
-    if (this.message != null) {
-      data['message'] = this.message.toJson();
-    }
-    if (this.ok != null) {
-      data['ok'] = this.ok.toJson();
-    }
-    if (this.title != null) {
-      data['title'] = this.title.toJson();
-    }
+    data['cancel'] = this.cancel.toJson();
+    data['message'] = this.message.toJson();
+    data['ok'] = this.ok.toJson();
+    data['title'] = this.title.toJson();
     return data;
   }
 }

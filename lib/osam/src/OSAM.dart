@@ -26,9 +26,9 @@ const Color confirmDialogCancelActionColor = Color(0xFF696973);
 const Color confirmDialogConfirmActionColor = Color(0xFF0069E1);
 
 class OSAM {
-  Remote _remote;
-  VersionControlRepository _versionControlRepository;
-  RateMeRepository _rateMeRepository;
+  late Remote _remote;
+  late VersionControlRepository _versionControlRepository;
+  late RateMeRepository _rateMeRepository;
 
   static const tagDialogVersionControl = "dialogVersionControl";
 
@@ -52,7 +52,7 @@ class OSAM {
 
   Future<VersionControlResponse> versionControl(
     BuildContext context, {
-    @required Language language,
+    required Language language,
   }) async {
     try {
       final versionResponse =
@@ -63,8 +63,9 @@ class OSAM {
       }
       DI.tracker.trackVersionControlShown();
 
-      Navigator.popUntil(context, (route) => route.settings.name != tagDialogVersionControl);
-      
+      Navigator.popUntil(
+          context, (route) => route.settings.name != tagDialogVersionControl);
+
       final result = await showDialog(
         context: context,
         routeSettings: RouteSettings(name: tagDialogVersionControl),
@@ -81,7 +82,6 @@ class OSAM {
                   DI.tracker.trackVersionControlAccepted();
                   String url = versionResponse.url;
                   if (versionResponse.comparisonMode.mustOpenStore() &&
-                      url != null &&
                       url.isNotEmpty) {
                     _openExternalUrl(url);
                   }
@@ -112,7 +112,7 @@ class OSAM {
 
   Future<RatingControlResponse> rating(
     BuildContext context, {
-    @required Language language,
+    required Language language,
   }) async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -156,7 +156,7 @@ class OSAM {
 
   Future<RatingControlResponse> _showCustomRatingDialog(BuildContext context,
       RateMe rateMe, Language language, String appId, String appName) async {
-    final RatingControlResponse result = await showDialog(
+    final RatingControlResponse? result = await showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
@@ -188,7 +188,7 @@ class OSAM {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                   Strings.getString(
                                           "rate_me_button_rate_now", language)
@@ -202,14 +202,14 @@ class OSAM {
                                 String url = rateMe.playStoreUrl(appId);
                                 await _rateMeRepository
                                     .handleAction(RateMeAction.RATE_NOW);
-                                if (url != null && url.isNotEmpty) {
+                                if (url.isNotEmpty) {
                                   _openExternalUrl(url);
                                 }
                                 Navigator.pop(
                                     context, RatingControlResponse.ACCEPTED);
                               },
                             ),
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 Strings.getString("rate_me_button_no", language)
                                     .toUpperCase(),
@@ -228,7 +228,7 @@ class OSAM {
                                 );
                               },
                             ),
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 Strings.getString(
                                   "rate_me_button_later",

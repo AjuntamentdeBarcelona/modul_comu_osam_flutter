@@ -4,11 +4,11 @@ class RatingResponse {
   Rating data;
   int statusCode;
 
-  RatingResponse({this.data, this.statusCode});
+  RatingResponse({required this.data, required this.statusCode});
 
   factory RatingResponse.fromJson(Map<String, dynamic> json) {
     return RatingResponse(
-      data: json['data'] != null ? Rating.fromJson(json['data']) : null,
+      data: Rating.fromJson(json['data']),
       statusCode: json['statusCode'],
     );
   }
@@ -16,9 +16,7 @@ class RatingResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['statusCode'] = this.statusCode;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data.toJson();
     return data;
   }
 }

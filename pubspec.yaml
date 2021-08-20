@@ -3,9 +3,10 @@ description: Flutter common module
 version: 1.0.0
 author: OSAM
 homepage:
+publish_to: none
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -21,7 +22,7 @@ dependencies:
   rate_my_app: ^1.1.0+1
   firebase_analytics: ^8.1.2
   package_info: ^2.0.2
-  group_radio_button: ^1.0.1
+  group_radio_button: ^1.1.0
   flutter_fgbg: ^0.1.0
 
 dev_dependencies:
