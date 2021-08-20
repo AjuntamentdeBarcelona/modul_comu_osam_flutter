@@ -9,8 +9,9 @@
 common_module_flutter:
     git:
       url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-      ref: '1.0.0'
+      ref: '2.0.0'
 ```
+A partir de la versió 2.0.0 el mòdul ja s'ha migrat a null safety.
 
 - Actualitzar mitjançant el comandament 'flutter packages get' les dependències.
 
