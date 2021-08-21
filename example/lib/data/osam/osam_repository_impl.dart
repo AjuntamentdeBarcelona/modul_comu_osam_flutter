@@ -33,6 +33,11 @@ class OsamRepositoryImpl extends OsamRepository {
         language = Language.ES;
         break;
       case AppLanguage.AppLanguage.CA:
+        language = Language.CA;
+        break;
+      case AppLanguage.AppLanguage.EN:
+        language = Language.EN;
+        break;
       default:
         language = Language.CA;
         break;
