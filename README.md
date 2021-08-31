@@ -9,7 +9,7 @@
 common_module_flutter:
     git:
       url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-      ref: '2.0.0'
+      ref: '2.0.1'
 ```
 A partir de la versió 2.0.0 el mòdul ja s'ha migrat a null safety.
 

@@ -85,7 +85,7 @@ class OSAM {
                       url.isNotEmpty) {
                     _openExternalUrl(url);
                   }
-                  Navigator.pop(context, VersionControlResponse.ACCEPTED);
+                  Navigator.pop(ctx, VersionControlResponse.ACCEPTED);
                 },
               ),
               if (versionResponse.comparisonMode.isLazy())
@@ -95,7 +95,7 @@ class OSAM {
                       .toUpperCase()),
                   onPressed: () {
                     DI.tracker.trackVersionControlCancelled();
-                    Navigator.pop(context, VersionControlResponse.CANCELLED);
+                    Navigator.pop(ctx, VersionControlResponse.CANCELLED);
                   },
                 ),
             ],

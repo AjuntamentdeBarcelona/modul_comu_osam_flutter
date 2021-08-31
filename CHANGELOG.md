@@ -7,4 +7,8 @@
 * Migrated to null safety
 * Fix english language in sample app
 
+## [2.0.1] - 31/08/2021
+
+* Fix Version Control Popup Context
+
 
