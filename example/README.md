@@ -1,6 +1,6 @@
-# example
+# common_module_flutter_example
 
-Example
+Demonstrates how to use the common_module_flutter plugin.
 
 ## Getting Started
 

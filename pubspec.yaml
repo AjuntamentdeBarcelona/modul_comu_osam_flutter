@@ -1,32 +1,27 @@
 name: common_module_flutter
-description: Flutter common module
-version: 2.0.1
-author: OSAM
+description: OSAM's Flutter common module
+version: 3.0.0
 homepage:
 publish_to: none
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=1.20.0"
 
 dependencies:
-  dio: ^4.0.0
   flutter:
     sdk: flutter
-  pretty_dio_logger: ^1.1.1
-  url_launcher: ^6.0.9
-  get_version:
-    git:
-      url: https://github.com/Creky/get_version.git
-  shared_preferences: ^2.0.6
-  rate_my_app: ^1.1.0+1
-  firebase_analytics: ^8.1.2
-  package_info: ^2.0.2
-  group_radio_button: ^1.1.0
-  flutter_fgbg: ^0.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: cat.bcn.commonmodule.flutter.common_module_flutter
+        pluginClass: CommonModuleFlutterPlugin
+      ios:
+        pluginClass: CommonModuleFlutterPlugin

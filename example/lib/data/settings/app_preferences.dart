@@ -1,5 +1,5 @@
-import 'package:example/data/interfaces.dart';
-import 'package:example/model/language.dart';
+import 'package:common_module_flutter_example/data/interfaces.dart';
+import 'package:common_module_flutter_example/model/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreferences extends Settings {
@@ -16,7 +16,8 @@ class AppPreferences extends Settings {
 
   @override
   AppLanguage getLanguage() {
-    return LanguageExtensions.fromLanguageCode(_prefs.getString(_LANGUAGE));
+    return AppLanguageExtensions.fromLanguageCode(
+        _prefs.getString(_LANGUAGE) ?? AppLanguage.CA.toLanguageCode());
   }
 
   @override

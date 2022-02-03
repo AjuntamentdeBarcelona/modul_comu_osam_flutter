@@ -1,6 +1,6 @@
-import 'package:common_module_flutter/osam/OSAM.dart';
-import 'package:example/mixin/osam_version_checker.dart';
-import 'package:example/model/language.dart';
+import 'package:common_module_flutter/osam.dart';
+import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
+import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
@@ -9,10 +9,12 @@ import 'di/di.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DI.initialize();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,13 +23,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Common Module Flutter Demo'),
+      home: const MyHomePage(title: 'Common Module Flutter Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -36,14 +38,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
-  AppLanguage _currentLanguage;
-  bool _isLoading;
+  late AppLanguage _currentLanguage;
+  late bool _isLoading;
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       if (!DI.settings.hasLanguage()) {
         await DI.settings.setLanguage(AppLanguage.CA);
         _currentLanguage = DI.settings.getLanguage();
@@ -63,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         title: Text(widget.title),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,18 +73,18 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Language"),
-                      SizedBox(height: 8),
-                      Container(
+                      const Text("Language"),
+                      const SizedBox(height: 8),
+                      SizedBox(
                         width: MediaQuery.of(context).size.width / 3,
                         child: RadioGroup<AppLanguage>.builder(
                           groupValue: _currentLanguage,
                           onChanged: (value) async {
-                            await DI.settings.setLanguage(value);
+                            await DI.settings.setLanguage(value!);
                             _currentLanguage = DI.settings.getLanguage();
                             setState(() {});
                           },
-                          items: [
+                          items: const [
                             AppLanguage.CA,
                             AppLanguage.ES,
                             AppLanguage.EN
@@ -109,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
   }
 
   void _onVersionControl() async {
-    final result = await DI.osamRepository.checkForUpdates(context);
+    final result = await DI.osamRepository.checkForUpdates();
 
     switch (result) {
       case VersionControlResponse.ACCEPTED:
@@ -120,13 +122,11 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         break;
       case VersionControlResponse.ERROR:
         break;
-      case VersionControlResponse.NOT_NEEDED:
-        break;
     }
   }
 
   void _onRating() async {
-    final result = await DI.osamRepository.checkRating(context);
+    final result = await DI.osamRepository.checkRating();
 
     switch (result) {
       case RatingControlResponse.ACCEPTED:
@@ -135,11 +135,9 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         break;
       case RatingControlResponse.CANCELLED:
         break;
+      case RatingControlResponse.LATER:
+        break;
       case RatingControlResponse.ERROR:
-        break;
-      case RatingControlResponse.NOT_NEEDED:
-        break;
-      case RatingControlResponse.HANDLED_BY_SYSTEM:
         break;
     }
   }

@@ -11,4 +11,8 @@
 
 * Fix Version Control Popup Context
 
+## [3.0.0] - 02/02/2022
 
+* Using [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) (
+  developed using Kotlin Multiplatform Mobile, KMM) to implement the functionality of this library.
+  This library is now a wrapper of the one developed in KMM.
