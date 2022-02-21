@@ -16,3 +16,8 @@
 * Using [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) (
   developed using Kotlin Multiplatform Mobile, KMM) to implement the functionality of this library.
   This library is now a wrapper of the one developed in KMM.
+
+## [3.0.1] - 21/02/2022
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 1.0.10; this version fixes a bug with rating in iOS.
