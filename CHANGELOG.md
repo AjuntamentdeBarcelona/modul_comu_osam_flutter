@@ -20,4 +20,9 @@
 ## [3.0.1] - 21/02/2022
 
 * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 1.0.10; this version fixes a bug with rating in iOS.
+  version 1.0.10. This version fixes a bug of the rating popup in iOS.
+
+## [3.0.2] - 22/02/2022
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 1.0.11. This version fixes a bug when using Proguard in Android.
