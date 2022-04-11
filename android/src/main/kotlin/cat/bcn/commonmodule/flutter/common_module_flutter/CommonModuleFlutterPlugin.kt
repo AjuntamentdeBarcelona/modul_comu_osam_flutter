@@ -1,6 +1,6 @@
 package cat.bcn.commonmodule.flutter.common_module_flutter
 
-import android.content.Context
+import android.app.Activity
 import androidx.annotation.NonNull
 import cat.bcn.commonmodule.flutter.common_module_flutter.analytics.AnalyticsBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics.CrashlyticsBridge
@@ -24,7 +24,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     /// when the Flutter Engine is detached from the Activity
     private lateinit var methodChannel: MethodChannel
 
-    private var context: Context? = null
+    private var activity: Activity? = null
     private var osamCommons: OSAMCommons? = null
     private val analyticsBridge = AnalyticsBridge()
     private val crashlyticsBridge = CrashlyticsBridge()
@@ -86,7 +86,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        context = binding.activity
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -94,7 +94,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        context = binding.activity
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivity() {
@@ -102,13 +102,19 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     }
 
     private fun createOSAMCommons(backendEndpoint: String) {
-        context?.let {
-            osamCommons = OSAMCommons(it, backendEndpoint, crashlyticsBridge, analyticsBridge)
+        activity?.let {
+            osamCommons = OSAMCommons(
+                activity = it,
+                context = it,
+                backendEndpoint,
+                crashlyticsBridge,
+                analyticsBridge
+            )
         }
     }
 
     private fun clearReferences() {
-        context = null
+        activity = null
         osamCommons = null
     }
 }

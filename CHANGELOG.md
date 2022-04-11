@@ -26,3 +26,9 @@
 
 * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
   version 1.0.11. This version fixes a bug when using Proguard in Android.
+
+## [4.0.0] - 11/04/2022
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.1. This version has the following changes:
+  - Version: Integrated capability for enable/disable version control based in a time range
+  - Rating: Integrated Google In App Review for Android

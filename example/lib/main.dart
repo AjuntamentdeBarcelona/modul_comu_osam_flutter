@@ -133,10 +133,6 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         break;
       case RatingControlResponse.DISMISSED:
         break;
-      case RatingControlResponse.CANCELLED:
-        break;
-      case RatingControlResponse.LATER:
-        break;
       case RatingControlResponse.ERROR:
         break;
     }

@@ -13,7 +13,7 @@
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '3.0.2'
+    ref: '4.0.0'
 ```
 
 A partir de la versió 2.0.0 el mòdul ja s'ha migrat a null safety.
@@ -175,7 +175,7 @@ En el Podfile del proyecto de iOS creat por Flutter haurem d'incloure el pod del
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '1.1.0'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.1'
 ```
 
 El Podfile quedaria de la següent manera:
@@ -367,10 +367,8 @@ Paràmetres de sortida:
 
 - **ratingControlResponse**: Objecte de tipus RatingControlResponse. Els valors de retorn són els
   següents:
-    - **RatingControlResponse.ACCEPTED**: si l'usuari ha escollit el botó d'acceptar/ok
-    - **RatingControlResponse.DISMISSED**: si l'usuari ha tret el popup
-    - **RatingControlResponse.CANCELLED**: si l'usuari ha escollit el botó de cancel·lar
-    - **RatingControlResponse.LATER**: si l'usuari ha escollit que se li recordi "més tard"
+    - **RatingControlResponse.ACCEPTED**: s'ha sol·licitat que surti el popup natiu de valoració de cada plataforma
+    - **RatingControlResponse.DISMISSED**: el popup no compleix les condicions per ser mostrat a l'usuari
     - **RatingControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
       necessaria o al mostrar el popup
 
@@ -388,10 +386,6 @@ void _onRating() async {
     case RatingControlResponse.DISMISSED:
       break;
     case RatingControlResponse.CANCELLED:
-      break;
-    case RatingControlResponse.LATER:
-      break;
-    case RatingControlResponse.ERROR:
       break;
   }
 }

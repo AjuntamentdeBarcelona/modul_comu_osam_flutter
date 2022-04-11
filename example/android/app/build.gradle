@@ -46,7 +46,7 @@ android {
 
     defaultConfig {
         applicationId "cat.bcn.commonmodule.flutter.example"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

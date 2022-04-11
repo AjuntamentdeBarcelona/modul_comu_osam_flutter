@@ -31,7 +31,5 @@ fun VersionControlResponse.toStringResponse(): String = when (this) {
 fun RatingControlResponse.toStringResponse(): String = when (this) {
     RatingControlResponse.ACCEPTED -> "ACCEPTED"
     RatingControlResponse.DISMISSED -> "DISMISSED"
-    RatingControlResponse.CANCELLED -> "CANCELLED"
-    RatingControlResponse.LATER -> "LATER"
     RatingControlResponse.ERROR -> "ERROR"
 }
