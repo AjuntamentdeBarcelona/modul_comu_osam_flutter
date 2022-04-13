@@ -171,7 +171,7 @@ fitxers `styles.xml` (tant el que està a la carpeta `values` como el que está 
 
 #### Podfile
 
-En el Podfile del proyecto de iOS creat por Flutter haurem d'incloure el pod del mòdul comú de
+En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del mòdul comú de
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```
@@ -243,14 +243,9 @@ Tindrem tres diferents tipus d'alerta:
 
 Pel que respecta al control de valoracions, la seva funcionalitat és mostrar periòdicament una popup
 que convida a l’usuari a deixar un comentari sobre l'app al market place corresponent (Google Play o
-AppStore). Per a Android, el popup té tres botons:
+AppStore).
 
-- **Positiu** (“VALORAR ARA”): El sistema obre la web de l’app client en el market, i l’usuari només
-  haurà de fer ‘new review’ i deixar el seu comentari i valoració sobre l’app.
-- **Negatiu** (“NO, GRÀCIES”). El popup es tanca i no tornarà a aparèixer.
-- **Neutre** (“MÉS TARD”). El popup es tanca i tornarà a aparèixer en un futur.
-
-En canvi, per a iOS s'utilitza un package de flutter que mostrarà el popup natiu.
+Tant per android com iOS, s'utilitza un package flutter que mostrarà el pop natiu de cada plataforma.
 
 ## Descàrrega del mòdul
 
@@ -406,6 +401,9 @@ mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriment
     "packageName": "cat.bcn.commonmodule",
     "versionCode": 2021050000,
     "versionName": "1.0.0",
+    "startDate": 1645311600000,
+    "endDate": 1645311600000,
+    "serverDate": 1645788600000,
     "platform": "IOS",
     "comparisonMode": "NONE",
     "title": {
@@ -436,36 +434,50 @@ mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriment
 #### Paràmetres
 
 - **packageName**
-    - Obligatori
-    - Especifica el ApplicationID o BundleID de l'app que afecta
+  - Obligatori
+  - Especifica el ApplicationID o BundleID de l'app que afecta
 - **versionCode**
-    - Obligatori
-    - Especifica la versió a la que afecta el control de versions
+  - Obligatori
+  - Especifica la versió a la que afecta el control de versions
+- **startDate**
+  - Opcional
+  - Data des de quan s'ha de començar a mostrar el pop-up del control de versions, expressada
+    amb *timestamp* (milisegons des del 01/01/1970). Si no arriba informada, es considerarà com si
+    fos el 0.
+- **endDate**
+  - Opcional
+  - Data fins quan s'ha de mostrar el pop-up del control de versions, expressada amb *timestamp* (
+    milisegons des del 01/01/1970). Si no arriba informada, es considerara com si fos
+    9223372036854775807 (el valor màxim possible del Long).
+- **serverDate**
+  - Obligatori
+  - Data actual proporcionada per el servidor. Serà la que s'utilitzi per comparar amb `startDate`
+    y `endDate`.
 - **platform**
-    - Obligatori
-    - Especifica per a quina plataforma (ANDROID o IOS) afecta
+  - Obligatori
+  - Especifica per a quina plataforma (ANDROID o IOS) afecta
 - **comparisonMode**
-    - Obligatori
-    - Especifica la manera de comparació de la versió de l'app amb el mòdul
+  - Obligatori
+  - Especifica la manera de comparació de la versió de l'app amb el mòdul
 - **title**
-    - Obligatori
-    - Títol de l'alerta en el cas que s'hagi de mostrar.
+  - Obligatori
+  - Títol de l'alerta en el cas que s'hagi de mostrar.
 - **message**
-    - Obligatori
-    - Missatge de l'alerta en cas que s'hagi de mostrar.
+  - Obligatori
+  - Missatge de l'alerta en cas que s'hagi de mostrar.
 - **ok**
-    - Opcional
-    - Títol del botó d'acceptar.
-    - Si es rep aquest paràmetre juntament amb el paràmetre okButtonActionURL, es mostrarà en
-      l'alerta un botó d'acceptar que obrirà el link que s'ha especificat en el paràmetre
-      okButtonActionURL.
+  - Opcional
+  - Títol del botó d'acceptar.
+  - Si es rep aquest paràmetre juntament amb el paràmetre okButtonActionURL, es mostrarà en
+    l'alerta un botó d'acceptar que obrirà el link que s'ha especificat en el paràmetre
+    okButtonActionURL.
 - **cancel**
-    - Opcional
-    - Títol del botó de cancel·lar
+  - Opcional
+  - Títol del botó de cancel·lar
 - **url**
-    - Opcional
-    - Link que s'obrirà quan l'usuari seleccioni el botó d'acceptar. Per exemple: link de la nova
-      versió de l'aplicació a l'App Store / Google Play.
+  - Opcional
+  - Link que s'obrirà quan l'usuari seleccioni el botó d'acceptar. Per exemple: link de la nova
+    versió de l'aplicació a l'App Store / Google Play.
 
 ### Control de Valoracions
 
@@ -506,8 +518,8 @@ mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriment
     - Obligatori
     - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
 - **message**
-    - Obligatori
-    - Missatge de l'alerta en cas que s'hagi de mostrar.
+    - Obsolet
+    - A partir de la versió 2.0.0, aquest paràmetre ja no es fa servir
 
 ## Com funciona el mòdul de control de versions
 
@@ -531,7 +543,4 @@ valors:
   popup i el comptador es reinicia independentment de la resposta de l’usuari.*
 - La operativa no es veu modificada si hi ha un canvi de versió (és a dir, es mantenen els valors de
   comptatge de dies i de nº de apertures).
-- El text que es mostra al popup és configurable des del servei
-
-*En iOS es crida un package de flutter i la mateixa llibreria s'encarrega de quan mostrar o no el
-popup
+- En cas de què s'hagi de mostrar el popup, a Android es crida a la llibreria de Google Play Core i a iOS es crida al SKStoreReviewController.
