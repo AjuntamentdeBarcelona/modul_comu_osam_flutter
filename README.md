@@ -13,7 +13,15 @@
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '4.0.0'
+    ref: '4.0.1'
+```
+
+En cas que les dependències de Firebase Analytics i Firebase Crashlytics fallin, cal afegir aquestes 
+aquesta configuració al pubspec:
+```yaml
+dependency_overrides:
+firebase_crashlytics_platform_interface: 3.1.13
+firebase_analytics_platform_interface: 3.0.5
 ```
 
 A partir de la versió 2.0.0 el mòdul ja s'ha migrat a null safety.

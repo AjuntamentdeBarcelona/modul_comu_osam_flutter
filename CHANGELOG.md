@@ -32,3 +32,8 @@
   version 2.0.1. This version has the following changes:
   - Version: Integrated capability for enable/disable version control based in a time range
   - Rating: Integrated Google In App Review for Android
+    
+## [4.0.1] - 26/04/2022
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.1. This version has the following changes:
+  - Rating: Exclude deprecated rating control responses 

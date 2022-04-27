@@ -56,10 +56,6 @@ extension RatingControlResponse {
             return "ACCEPTED"
         case .dismissed:
             return "DISMISSED"
-        case .cancelled:
-            return "CANCELLED"
-        case .later:
-            return "LATER"
         case .error:
             return "ERROR"
         default:
