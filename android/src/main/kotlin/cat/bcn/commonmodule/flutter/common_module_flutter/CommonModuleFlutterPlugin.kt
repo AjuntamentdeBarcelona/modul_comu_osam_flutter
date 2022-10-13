@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.annotation.NonNull
 import cat.bcn.commonmodule.flutter.common_module_flutter.analytics.AnalyticsBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics.CrashlyticsBridge
+import cat.bcn.commonmodule.flutter.common_module_flutter.platform_util.PlatformUtilBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.getLanguageFromString
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.toStringResponse
 import cat.bcn.commonmodule.ui.versioncontrol.OSAMCommons
@@ -28,6 +29,9 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     private var osamCommons: OSAMCommons? = null
     private val analyticsBridge = AnalyticsBridge()
     private val crashlyticsBridge = CrashlyticsBridge()
+    private val platformUtilBridge = PlatformUtilBridge({
+        activity
+    })
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel = MethodChannel(
@@ -108,7 +112,8 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 context = it,
                 backendEndpoint,
                 crashlyticsBridge,
-                analyticsBridge
+                analyticsBridge,
+                platformUtilBridge
             )
         }
     }

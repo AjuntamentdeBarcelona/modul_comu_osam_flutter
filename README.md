@@ -5,6 +5,15 @@
 
 # README
 
+- Nota:
+Per executar la versió pluguin de flutter 4.0.2 es va fer servir (flutter doctor -v):
+  • Flutter version 3.3.4 on channel stable
+  • Upstream repository https://github.com/flutter/flutter
+  • Framework revision eb6d86ee27, 2022-10-04 22:31:45 -0700
+  • Engine revision c08d7d5efc
+  • Dart version 2.18.2
+  • DevTools version 2.15.0
+
 ## Com es fa servir?
 
 - Afegeix aquesta dependència al pubspec:
@@ -13,7 +22,7 @@
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '4.0.1'
+    ref: '4.0.2'
 ```
 
 En cas que les dependències de Firebase Analytics i Firebase Crashlytics fallin, cal afegir aquestes 
@@ -183,7 +192,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.1'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.2'
 ```
 
 El Podfile quedaria de la següent manera:
@@ -223,7 +232,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.1'
+  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.2'
 end
 
 post_install do |installer|

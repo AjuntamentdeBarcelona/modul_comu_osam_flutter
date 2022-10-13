@@ -7,15 +7,17 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
     private var osamCommons: OSAMCommons? = nil
     let analyticsBridge: AnalyticsBridge
     let crashlyticsBridge: CrashlyticsBridge
+    let platformUtilBridge: PlatformUtilBridge
     
-    init(analyticsStreamHandler: AnalyticsBridge, crashlyticsStreamHandler: CrashlyticsBridge) {
+    init(analyticsStreamHandler: AnalyticsBridge, crashlyticsStreamHandler: CrashlyticsBridge, platformUtilStreamHandler: PlatformUtilBridge) {
         self.analyticsBridge   = analyticsStreamHandler
         self.crashlyticsBridge = crashlyticsStreamHandler
+        self.platformUtilBridge = platformUtilStreamHandler
     }
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "common_module_flutter_method_channel", binaryMessenger: registrar.messenger())
-        let instance = SwiftCommonModuleFlutterPlugin(analyticsStreamHandler: AnalyticsBridge(), crashlyticsStreamHandler: CrashlyticsBridge())
+        let instance = SwiftCommonModuleFlutterPlugin(analyticsStreamHandler: AnalyticsBridge(), crashlyticsStreamHandler: CrashlyticsBridge(), platformUtilStreamHandler: PlatformUtilBridge())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
         let analyticsEventChannel = FlutterEventChannel(name: "common_module_flutter_analytics_event_channel", binaryMessenger: registrar.messenger())
         analyticsEventChannel.setStreamHandler(instance.analyticsBridge)
@@ -60,7 +62,8 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
     
     private func createOSAMCommons(backendEndpoint: String) {
         if let viewController = UIApplication.shared.delegate?.window??.rootViewController {
-            osamCommons = OSAMCommons(vc: viewController, backendEndpoint: backendEndpoint, crashlyticsWrapper: crashlyticsBridge, analyticsWrapper: analyticsBridge)
+            osamCommons = OSAMCommons(vc: viewController, backendEndpoint: backendEndpoint,
+            crashlyticsWrapper: crashlyticsBridge, analyticsWrapper: analyticsBridge, platformUtil: platformUtilBridge);
         }
     }
 }
