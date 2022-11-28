@@ -1,3 +1,5 @@
+import 'package:common_module_flutter/model/app_information.dart';
+import 'package:common_module_flutter/model/device_information.dart';
 import 'package:common_module_flutter/osam.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/model/language.dart'
@@ -41,5 +43,15 @@ class OsamRepositoryImpl extends OsamRepository {
         break;
     }
     return language;
+  }
+
+  @override
+  Future<DeviceInformation> deviceInformation() {
+    return osamSdk.deviceInformation();
+  }
+
+  @override
+  Future<AppInformation> appInformation() {
+    return osamSdk.appInformation();
   }
 }

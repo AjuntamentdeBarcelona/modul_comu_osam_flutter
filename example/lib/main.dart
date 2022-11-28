@@ -1,3 +1,5 @@
+import 'package:common_module_flutter/model/app_information.dart';
+import 'package:common_module_flutter/model/device_information.dart';
 import 'package:common_module_flutter/osam.dart';
 import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
 import 'package:common_module_flutter_example/model/language.dart';
@@ -104,6 +106,14 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                     child: Text("Rating".toUpperCase()),
                     onPressed: () => _onRating(),
                   ),
+                  ElevatedButton(
+                    child: Text("Device Information".toUpperCase()),
+                    onPressed: () => _onDeviceInformation(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("App Information".toUpperCase()),
+                    onPressed: () => _onAppInformation(context),
+                  ),
                 ],
               ),
             ),
@@ -136,5 +146,28 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
       case RatingControlResponse.ERROR:
         break;
     }
+  }
+
+  void _onDeviceInformation(BuildContext context) async {
+    final result = await DI.osamRepository.deviceInformation();
+    _showToast(context, "${result.platformName}");
+    _showToast(context, "${result.platformVersion}");
+    _showToast(context, "${result.platformModel}");
+  }
+
+  void _onAppInformation(BuildContext context) async {
+    final result = await DI.osamRepository.appInformation();
+    _showToast(context, "${result.appName}");
+    _showToast(context, "${result.appVersionName}");
+    _showToast(context, "${result.appVersionCode}");
+  }
+
+  void _showToast(BuildContext context, String text) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
   }
 }

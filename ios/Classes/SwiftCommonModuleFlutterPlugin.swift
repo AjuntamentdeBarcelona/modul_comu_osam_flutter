@@ -3,18 +3,18 @@ import UIKit
 import OSAMCommon
 
 public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
-    
+
     private var osamCommons: OSAMCommons? = nil
     let analyticsBridge: AnalyticsBridge
     let crashlyticsBridge: CrashlyticsBridge
     let platformUtilBridge: PlatformUtilBridge
-    
+
     init(analyticsStreamHandler: AnalyticsBridge, crashlyticsStreamHandler: CrashlyticsBridge, platformUtilStreamHandler: PlatformUtilBridge) {
         self.analyticsBridge   = analyticsStreamHandler
         self.crashlyticsBridge = crashlyticsStreamHandler
         self.platformUtilBridge = platformUtilStreamHandler
     }
-    
+
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "common_module_flutter_method_channel", binaryMessenger: registrar.messenger())
         let instance = SwiftCommonModuleFlutterPlugin(analyticsStreamHandler: AnalyticsBridge(), crashlyticsStreamHandler: CrashlyticsBridge(), platformUtilStreamHandler: PlatformUtilBridge())
@@ -24,7 +24,7 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
         let crashlyticsEventChannel = FlutterEventChannel(name: "common_module_flutter_crashlytics_event_channel", binaryMessenger: registrar.messenger())
         crashlyticsEventChannel.setStreamHandler(instance.crashlyticsBridge)
     }
-    
+
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if call.method == "init" {
             let backendEndpoint = ((call.arguments as? Dictionary<String, Any>)?["backendEndpoint"] as? String) ?? ""
@@ -59,7 +59,7 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
             result(FlutterMethodNotImplemented)
         }
     }
-    
+
     private func createOSAMCommons(backendEndpoint: String) {
         if let viewController = UIApplication.shared.delegate?.window??.rootViewController {
             osamCommons = OSAMCommons(vc: viewController, backendEndpoint: backendEndpoint,

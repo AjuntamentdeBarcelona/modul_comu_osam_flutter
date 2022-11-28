@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+import 'model/app_information.dart';
+import 'model/device_information.dart';
 import 'model/language.dart';
 import 'model/rating_control_response.dart';
 import 'model/version_control_response.dart';
@@ -57,5 +59,15 @@ class OSAM {
     final String? response = await _methodChannel
         .invokeMethod('rating', {'language': language.toLanguageCode()});
     return RatingControlResponseExtensions.fromString(response ?? "");
+  }
+
+  Future<DeviceInformation> deviceInformation() async {
+    final String? response = await _methodChannel.invokeMethod('deviceInformation');
+    return DeviceInformationExtensions.fromJson(response ?? "");
+  }
+
+  Future<AppInformation> appInformation() async {
+    final String? response = await _methodChannel.invokeMethod('appInformation');
+    return AppInformationExtensions.fromJson(response ?? "");
   }
 }

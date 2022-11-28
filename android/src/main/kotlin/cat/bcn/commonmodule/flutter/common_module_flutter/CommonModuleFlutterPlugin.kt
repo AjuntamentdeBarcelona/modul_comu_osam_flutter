@@ -7,7 +7,11 @@ import cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics.Crashlytic
 import cat.bcn.commonmodule.flutter.common_module_flutter.platform_util.PlatformUtilBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.getLanguageFromString
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.toStringResponse
+import cat.bcn.commonmodule.model.AppInformation
+import cat.bcn.commonmodule.model.DeviceInformation
+import cat.bcn.commonmodule.ui.versioncontrol.DeviceInformationResponse
 import cat.bcn.commonmodule.ui.versioncontrol.OSAMCommons
+import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -74,6 +78,26 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                     val language = getLanguageFromString(call.argument("language") ?: "")
                     osamCommons.rating(language) {
                         result.success(it.toStringResponse())
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
+            "deviceInformation" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    osamCommons.deviceInformation() { deviceInformationResponse, deviceInformation ->
+                        result.success(Gson().toJson(deviceInformation ?: DeviceInformation("", "", "")))
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
+            "appInformation" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    osamCommons.appInformation() { appInformationResponse, appInformation ->
+                        result.success(Gson().toJson(appInformation ?: AppInformation("", "", "")))
                     }
                 } else {
                     result.error("NO_VIEW", "No Activity Available", null)
