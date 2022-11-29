@@ -59,10 +59,13 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
            if let osamCommons = self.osamCommons {
                osamCommons.deviceInformation(
                    f: { deviceInformationResponse, deviceInformation in
-                       let jsonEncoder = JSONEncoder()
-                       let jsonData = try jsonEncoder.encode(deviceInformation)
-                       let json = String(data: jsonData, encoding: String.Encoding.utf8)
-                       result(json)
+                       if let model = deviceInformation {
+                           let json = "{\"platformName\":\"\(model.platformName)\",\"platformVersion\":\"\(model.platformVersion)\",\"platformModel\":\"\(model.platformModel)\"}"
+                           result(json)
+                       } else {
+                           let json = "{\"platformName\":\"\",\"platformVersion\":\"\",\"platformModel\":\"\"}"
+                           result(json)
+                       }
                    }
                )
            } else {
@@ -72,10 +75,13 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
            if let osamCommons = self.osamCommons {
                osamCommons.appInformation(
                    f: { appInformationResponse, appInformation in
-                       let jsonEncoder = JSONEncoder()
-                       let jsonData = try jsonEncoder.encode(appInformation)
-                       let json = String(data: jsonData, encoding: String.Encoding.utf8)
-                       result(json)
+                       if let model = appInformation {
+                           let json = "{\"appName\":\"\(model.appName)\",\"appVersionName\":\"\(model.appVersionName)\",\"appVersionCode\":\"\(model.appVersionCode)\"}"
+                           result(json)
+                       } else {
+                           let json = "{\"appName\":\"\",\"appVersionName\":\"\",\"appVersionCode\":\"\"}"
+                           result(json)
+                       }
                    }
                )
            } else {
