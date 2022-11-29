@@ -55,8 +55,34 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
             } else {
                 result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
             }
+        } else if call.method == "deviceInformation" {
+           if let osamCommons = self.osamCommons {
+               osamCommons.deviceInformation(
+                   f: { deviceInformationResponse, deviceInformation in
+                       let jsonEncoder = JSONEncoder()
+                       let jsonData = try jsonEncoder.encode(deviceInformation)
+                       let json = String(data: jsonData, encoding: String.Encoding.utf8)
+                       result(json)
+                   }
+               )
+           } else {
+               result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
+           }
+        } else if call.method == "appInformation" {
+           if let osamCommons = self.osamCommons {
+               osamCommons.appInformation(
+                   f: { appInformationResponse, appInformation in
+                       let jsonEncoder = JSONEncoder()
+                       let jsonData = try jsonEncoder.encode(appInformation)
+                       let json = String(data: jsonData, encoding: String.Encoding.utf8)
+                       result(json)
+                   }
+               )
+           } else {
+               result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
+           }
         } else {
-            result(FlutterMethodNotImplemented)
+           result(FlutterMethodNotImplemented)
         }
     }
 
