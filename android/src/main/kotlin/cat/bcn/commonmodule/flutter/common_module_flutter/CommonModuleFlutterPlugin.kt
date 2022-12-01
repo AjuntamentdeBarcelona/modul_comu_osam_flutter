@@ -87,7 +87,14 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 val osamCommons = this.osamCommons
                 if (osamCommons != null) {
                     osamCommons.deviceInformation() { deviceInformationResponse, deviceInformation ->
-                        result.success(Gson().toJson(deviceInformation ?: DeviceInformation("", "", "")))
+                        val model = deviceInformation
+                        val json: String
+                        if (model != null) {
+                            json = "{\"platformName\":\"${model.platformName}\",\"platformVersion\":\"${model.platformVersion}\",\"platformModel\":\"${model.platformModel}\"}"
+                        } else {
+                            json = "{\"platformName\":\"\",\"platformVersion\":\"\",\"platformModel\":\"\"}"
+                        }
+                        result.success(json)
                     }
                 } else {
                     result.error("NO_VIEW", "No Activity Available", null)
@@ -97,7 +104,14 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 val osamCommons = this.osamCommons
                 if (osamCommons != null) {
                     osamCommons.appInformation() { appInformationResponse, appInformation ->
-                        result.success(Gson().toJson(appInformation ?: AppInformation("", "", "")))
+                        val model = appInformation
+                        val json: String
+                        if (model != null) {
+                            json = "{\"appName\":\"${model.appName}\",\"appVersionName\":\"${model.appVersionName}\",\"appVersionCode\":\"${model.appVersionCode}\"}"
+                        } else {
+                            json = "{\"appName\":\"\",\"appVersionName\":\"\",\"appVersionCode\":\"\"}"
+                        }
+                        result.success(json)
                     }
                 } else {
                     result.error("NO_VIEW", "No Activity Available", null)
