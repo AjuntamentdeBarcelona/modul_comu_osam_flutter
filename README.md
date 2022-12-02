@@ -6,13 +6,8 @@
 # README
 
 - Nota:
-Per executar la versió pluguin de flutter 4.0.2 es va fer servir (flutter doctor -v):
-  • Flutter version 3.3.4 on channel stable
-  • Upstream repository https://github.com/flutter/flutter
-  • Framework revision eb6d86ee27, 2022-10-04 22:31:45 -0700
-  • Engine revision c08d7d5efc
-  • Dart version 2.18.2
-  • DevTools version 2.15.0
+Per executar la versió pluguin de flutter 4.0.5 es va fer servir (flutter doctor -v):
+  • Flutter version 3.X.X on channel stable
 
 ## Com es fa servir?
 
@@ -22,7 +17,7 @@ Per executar la versió pluguin de flutter 4.0.2 es va fer servir (flutter docto
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '4.0.2'
+    ref: '4.0.5'
 ```
 
 En cas que les dependències de Firebase Analytics i Firebase Crashlytics fallin, cal afegir aquestes 
@@ -109,6 +104,16 @@ Future<VersionControlResponse> checkForUpdates() async {
 @override
 Future<RatingControlResponse> checkRating() async {
   return osamSdk.rating(language: _getLanguage(settings.getLanguage()));
+}
+
+@override
+Future<DeviceInformation> deviceInformation() {
+  return osamSdk.deviceInformation();
+}
+
+@override
+Future<AppInformation> appInformation() {
+  return osamSdk.appInformation();
 }
 ```
 
@@ -405,6 +410,47 @@ void _onRating() async {
 
 No és necessari capturar la resposta si no es necessita realitzar cap acció adicional, ja que el
 mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriments per a que es mostri
+
+## Implementació d'obtenció de informació de dispositiu i applicació
+
+Per obtenir la informació del dispositiu i de l'aplicació
+
+La signatura del mètodes són la següent:
+
+```dart
+Future<DeviceInformation> deviceInformation() async
+
+Future<AppInformation> appInformation() async
+```
+
+Paràmetres de sortida:
+
+- **deviceInformation**: Objecte de tipus DeviceInformation. Els valors que conté són:
+  següents:
+    - **platformName**: Nom de la plataforma
+    - **platformVersion**: Versió de la plataforma
+    - **platformModel**: Model del dispositiu
+    - **appName**: Nom de l'aplicació
+    - **appVersionName**: Codi nom de la versió
+    - **appVersionCode**: Codi numèric de l'aplicació
+
+Exemple:
+
+```dart
+void _onDeviceInformation(BuildContext context) async {
+  final result = await DI.osamRepository.deviceInformation();
+  _showToast(context, "${result.platformName}");
+  _showToast(context, "${result.platformVersion}");
+  _showToast(context, "${result.platformModel}");
+}
+
+void _onAppInformation(BuildContext context) async {
+  final result = await DI.osamRepository.appInformation();
+  _showToast(context, "${result.appName}");
+  _showToast(context, "${result.appVersionName}");
+  _showToast(context, "${result.appVersionCode}");
+}
+```
 
 ## Format JSONs
 
