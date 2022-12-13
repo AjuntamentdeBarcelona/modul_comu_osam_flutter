@@ -117,6 +117,18 @@ Future<AppInformation> appInformation() {
 }
 ```
 
+### Configuració de l'entorn
+
+En l'exemple anterior tenim la URL del mòdul comú hardcoded a la pròpia lògica. Però aquesta URL s'ha d'externalitzar com a variable de configuració, d'aquesta manera es pot generar la versió de producció només substituint el fitxer amb els valors correctes.
+
+Per fer-ho només cal crear el fitxer ".env" a l'arrel del projecte de Flutter i carregar aquest fitxer amb el plugin "flutter_dotenv". En aquesta URL hi ha la documentació de com afegir aquest fitxer i com carregar les dades al codi: https://pub.dev/packages/flutter_dotenv
+
+El fitxer ".env" ha de contenir la URL del mòdul comú en la variable "COMMON_MODULE_URL". Quedaria de la següent manera:
+```dosini
+COMMON_MODULE_URL=https://dev-osam-modul-comu.dtibcn.cat/
+```
+
+
 ## Configuració a la part nativa
 
 ### Android
