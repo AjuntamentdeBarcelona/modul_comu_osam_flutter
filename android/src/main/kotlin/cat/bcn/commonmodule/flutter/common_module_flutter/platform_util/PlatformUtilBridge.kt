@@ -26,6 +26,10 @@ class PlatformUtilBridge(val context: () -> Context?) : EventChannel.StreamHandl
         return false
     }
 
+    override fun getDeviceModelIdentifier(): String {
+        return ""
+    }
+
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         eventSink = events
     }
