@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.annotation.NonNull
 import cat.bcn.commonmodule.flutter.common_module_flutter.analytics.AnalyticsBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics.CrashlyticsBridge
+import cat.bcn.commonmodule.flutter.common_module_flutter.performance.PerformanceBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.platform_util.PlatformUtilBridge
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.getLanguageFromString
 import cat.bcn.commonmodule.flutter.common_module_flutter.extension.toStringResponse
@@ -33,6 +34,9 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     private var osamCommons: OSAMCommons? = null
     private val analyticsBridge = AnalyticsBridge()
     private val crashlyticsBridge = CrashlyticsBridge()
+    private val performanceBridge = PerformanceBridge({
+        activity
+    })
     private val platformUtilBridge = PlatformUtilBridge({
         activity
     })
@@ -53,6 +57,11 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
             "common_module_flutter_crashlytics_event_channel"
         )
         crashlyticsEventChannel.setStreamHandler(crashlyticsBridge)
+        val performanceEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger,
+            "common_module_flutter_performance_event_channel"
+        )
+        performanceEventChannel.setStreamHandler(performanceBridge)
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -150,6 +159,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 context = it,
                 backendEndpoint,
                 crashlyticsBridge,
+                performanceBridge,
                 analyticsBridge,
                 platformUtilBridge
             )

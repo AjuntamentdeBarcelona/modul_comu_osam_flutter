@@ -8,21 +8,25 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
     let analyticsBridge: AnalyticsBridge
     let crashlyticsBridge: CrashlyticsBridge
     let platformUtilBridge: PlatformUtilBridge
+    let performanceBridge: PerformanceBridge
 
-    init(analyticsStreamHandler: AnalyticsBridge, crashlyticsStreamHandler: CrashlyticsBridge, platformUtilStreamHandler: PlatformUtilBridge) {
+    init(analyticsStreamHandler: AnalyticsBridge, crashlyticsStreamHandler: CrashlyticsBridge, platformUtilStreamHandler: PlatformUtilBridge, performanceStreamHandler: PerformanceBridge) {
         self.analyticsBridge   = analyticsStreamHandler
         self.crashlyticsBridge = crashlyticsStreamHandler
         self.platformUtilBridge = platformUtilStreamHandler
+        self.performanceBridge = performanceStreamHandler
     }
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let methodChannel = FlutterMethodChannel(name: "common_module_flutter_method_channel", binaryMessenger: registrar.messenger())
-        let instance = SwiftCommonModuleFlutterPlugin(analyticsStreamHandler: AnalyticsBridge(), crashlyticsStreamHandler: CrashlyticsBridge(), platformUtilStreamHandler: PlatformUtilBridge())
+        let instance = SwiftCommonModuleFlutterPlugin(analyticsStreamHandler: AnalyticsBridge(), crashlyticsStreamHandler: CrashlyticsBridge(), platformUtilStreamHandler: PlatformUtilBridge(), performanceStreamHandler: PerformanceBridge())
         registrar.addMethodCallDelegate(instance, channel: methodChannel)
         let analyticsEventChannel = FlutterEventChannel(name: "common_module_flutter_analytics_event_channel", binaryMessenger: registrar.messenger())
         analyticsEventChannel.setStreamHandler(instance.analyticsBridge)
         let crashlyticsEventChannel = FlutterEventChannel(name: "common_module_flutter_crashlytics_event_channel", binaryMessenger: registrar.messenger())
         crashlyticsEventChannel.setStreamHandler(instance.crashlyticsBridge)
+        let performanceEventChannel = FlutterEventChannel(name: "common_module_flutter_performance_event_channel", binaryMessenger: registrar.messenger())
+        performanceEventChannel.setStreamHandler(instance.performanceBridge)
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -95,7 +99,7 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
     private func createOSAMCommons(backendEndpoint: String) {
         if let viewController = UIApplication.shared.delegate?.window??.rootViewController {
             osamCommons = OSAMCommons(vc: viewController, backendEndpoint: backendEndpoint,
-            crashlyticsWrapper: crashlyticsBridge, analyticsWrapper: analyticsBridge, platformUtil: platformUtilBridge);
+            crashlyticsWrapper: crashlyticsBridge, performanceWrapper: performanceBridge, analyticsWrapper: analyticsBridge, platformUtil: platformUtilBridge);
         }
     }
 }
