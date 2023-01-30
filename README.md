@@ -17,7 +17,7 @@ Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servi
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '4.0.8'
+    ref: '4.0.9'
 ```
 
 En cas que les dependències de Firebase Analytics i Firebase Crashlytics fallin, cal afegir aquestes 

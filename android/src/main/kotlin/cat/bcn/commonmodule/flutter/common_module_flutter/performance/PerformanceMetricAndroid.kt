@@ -16,7 +16,7 @@ class PerformanceMetricAndroid(val context: () -> Context?, val url: String, val
     override fun start() {
         val funName = object {}.javaClass.enclosingMethod?.name
         uiThreadHandler.post {
-            Log.d("PerformanceMetric", "${funName}")
+            Log.d("PerformanceMetric", "${funName} url: $url, httpMethod: $httpMethod")
             getEventSink()?.success(mapOf("uniqueId" to uniqueId, "event" to "start", "url" to url, "httpMethod" to httpMethod))
         }
     }

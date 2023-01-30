@@ -51,6 +51,8 @@ class OSAM {
       Map<String, String> params = {};
       switch (e) {
         case "start":
+          params["url"] = event["url"];
+          params["httpMethod"] = event["httpMethod"];
           break;
         case "setRequestPayloadSize":
           params["bytes"] = event["bytes"];
