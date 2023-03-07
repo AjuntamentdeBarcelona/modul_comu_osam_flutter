@@ -6,7 +6,7 @@
 # README
 
 - Nota:
-Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servir (flutter doctor -v):
+  Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servir (flutter doctor -v):
   • Flutter version 3.X.X on channel stable
 
 ## Com es fa servir?
@@ -20,12 +20,13 @@ common_module_flutter:
     ref: '4.0.9'
 ```
 
-En cas que les dependències de Firebase Analytics i Firebase Crashlytics fallin, cal afegir aquestes 
+En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes
 aquesta configuració al pubspec:
 ```yaml
 dependency_overrides:
 firebase_crashlytics_platform_interface: 3.1.13
 firebase_analytics_platform_interface: 3.0.5
+firebase_performance_platform_interface: ^0.1.1+18
 ```
 
 A partir de la versió 2.0.0 el mòdul ja s'ha migrat a null safety.
@@ -54,7 +55,7 @@ class DI {
     await Firebase.initializeApp();
     _prefs = await SharedPreferences.getInstance();
     _osamSdk = await OSAM.init("https://dev-osam-modul-comu.dtibcn.cat",
-        _onCrashlyticsException, _onAnalyticsEvent);
+        _onCrashlyticsException, _onAnalyticsEvent, _onPerformanceEvent);
   }
 
   static final Settings settings = AppPreferences(_prefs);
@@ -71,6 +72,113 @@ class DI {
     await FirebaseAnalytics.instance
         .logEvent(name: name, parameters: parameters);
   }
+
+  static _onPerformanceEvent(String uniqueId, String event,
+          Map<String, String> params) async {
+    var debugParamsLogs = [];
+    params.forEach((key, value) {
+      debugParamsLogs.add("$key: $value");
+    });
+    debugPrint("PerformanceMetric _onPerformanceEvent uniqueId: $uniqueId, event: $event, params(${debugParamsLogs.length}): ${debugParamsLogs.join(', ')}");
+    int currentTime = getCurrentTime();
+    HttpMetric? metric = performanceCurrentMetrics[uniqueId]?.item2;
+    switch (event) {
+      case "start":
+        String url = params["url"] ?? "";
+        HttpMethod httpMethod = HttpMethod.Get;
+        for (HttpMethod element in HttpMethod.values) {
+          if (element.name.toLowerCase() ==
+                  (params["httpMethod"] ?? "").toLowerCase()) {
+            httpMethod = element;
+            break;
+          }
+        }
+        metric = FirebasePerformance.instance
+                .newHttpMetric(url, httpMethod);
+        performanceCurrentMetrics[uniqueId] = Tuple(item1: currentTime, item2: metric);
+        debugPrint("PerformanceMetric case event: $event, uniqueId: $uniqueId, url: $url, httpMethod: $httpMethod");
+        await metric.start();
+        break;
+      case "setRequestPayloadSize":
+        int? bytes;
+        try {
+          bytes = int.parse(params["bytes"]!);
+        } catch (e) {
+          bytes = null;
+        }
+        if (bytes != null) {
+          debugPrint("PerformanceMetric case event: $event, bytes: $bytes");
+          metric?.requestPayloadSize = bytes;
+        }
+        break;
+      case "markRequestComplete":
+        debugPrint("PerformanceMetric case event: $event");
+        break;
+      case "markResponseStart":
+        debugPrint("PerformanceMetric case event: $event");
+        break;
+      case "setResponseContentType":
+        String? contentType = params["contentType"];
+        if (contentType != null) {
+          debugPrint("PerformanceMetric case event: $event, contentType: $contentType");
+          metric?.responseContentType = contentType;
+        }
+        break;
+      case "setHttpResponseCode":
+        int? responseCode;
+        try {
+          responseCode = int.parse(params["responseCode"]!);
+        } catch (e) {
+          responseCode = null;
+        }
+        if (responseCode != null) {
+          debugPrint("PerformanceMetric case event: $event, responseCode: $responseCode");
+          metric?.httpResponseCode = responseCode;
+        }
+        break;
+      case "setResponsePayloadSize":
+        int? bytes;
+        try {
+          bytes = int.parse(params["bytes"]!);
+        } catch (e) {
+          bytes = null;
+        }
+        if (bytes != null) {
+          debugPrint("PerformanceMetric case event: $event, bytes: $bytes");
+          metric?.responsePayloadSize = bytes;
+        }
+        break;
+      case "putAttribute":
+        String? attribute = params["attribute"];
+        String value = params["value"] ?? "";
+        if (attribute != null) {
+          debugPrint("PerformanceMetric case event: $event, attribute: $attribute, value: $value");
+          metric?.putAttribute(attribute, value);
+        }
+        break;
+      case "stop":
+        debugPrint("PerformanceMetric case event: $event");
+        metric?.stop();
+        //performanceCurrentMetrics.remove(uniqueId);
+        break;
+    }
+    try{
+      var keys = performanceCurrentMetrics.keys;
+      for(int i = keys.length - 1; i>=0; i--) {
+        var key = keys.toList()[i];
+        var value = performanceCurrentMetrics[key];
+        if (value == null || value.item1 < currentTime - 600 * 1000) {
+          debugPrint("PerformanceMetric deleting old uniqueId: $key");
+          performanceCurrentMetrics.remove(key);
+        }
+      }
+    }catch(e){
+    }
+  }
+
+  static int getCurrentTime() {
+    return DateTime.now().millisecondsSinceEpoch;
+  }
 }
 
 void main() async {
@@ -84,12 +192,15 @@ Com es pot veure, el mètode init, a més de necessitar que li passem la URL del
 callbacks:
 
 - **onCrashlyticsException**: Es crida cada vegada que es produeix una excepció a la llibreria, de
-  manera que permet reportarla al servei de informe de crashes que s'utilitzi. A l'aplicació
+  manera que permet reportarla al servei d'informe de crashes que s'utilitzi. A l'aplicació
   d'exemple s'utilitza Firebase Crashlytics.
 - **onAnalyticsEvent**: Es crida quan es produeix un event rellevant a la llibreria (mostrar un del
   pop-ups, prémer un dels botons, produir-se un error...). Proporciona un nom d'event i una sèrie de
   paràmetres que poden passar-se al servei d'analítics que s'està utilitzant. A l'app d'exemple
   s'utilitza Firebase Analytics.
+- **_onPerformanceEvent**: Es crida cada vegada que es produeix una crida a la xarxa, a la llibreria, de
+  manera que permet reportarla al servei d'informe de performance que s'utilitzi. A l'aplicació
+  d'exemple s'utilitza Firebase Performance.
 
 En el cas de l'app d'exemple, accedim a la instància creada a través de 'OsamRepository':
 
@@ -306,19 +417,19 @@ Paràmetres d'entrada:
 
 - **language**: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3
   idiomes:
-    - **Language.CA**: Català
-    - **Language.ES**: Castellà
-    - **Language.EN**: Anglès
+  - **Language.CA**: Català
+  - **Language.ES**: Castellà
+  - **Language.EN**: Anglès
 
 Paràmetres de sortida:
 
 - **versionControlResponse**: Objecte de tipus VersionControlResponse. Els valors de retorn són els
   següents:
-    - **VersionControlResponse.ACCEPTED**: si l'usuari ha escollit el botó d'acceptar/ok
-    - **VersionControlResponse.DISMISSED**: si l'usuari ha tret el popup
-    - **VersionControlResponse.CANCELLED**: si l'usuari ha escollit el botó de cancel·lar
-    - **VersionControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
-      necessaria o al mostrar el popup
+  - **VersionControlResponse.ACCEPTED**: si l'usuari ha escollit el botó d'acceptar/ok
+  - **VersionControlResponse.DISMISSED**: si l'usuari ha tret el popup
+  - **VersionControlResponse.CANCELLED**: si l'usuari ha escollit el botó de cancel·lar
+  - **VersionControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
+    necessaria o al mostrar el popup
 
 Exemple:
 
@@ -388,18 +499,18 @@ Paràmetres d'entrada:
 
 - **language**: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3
   idiomes:
-    - **Language.CA**: Català
-    - **Language.ES**: Castellà
-    - **Language.EN**: Anglès
+  - **Language.CA**: Català
+  - **Language.ES**: Castellà
+  - **Language.EN**: Anglès
 
 Paràmetres de sortida:
 
 - **ratingControlResponse**: Objecte de tipus RatingControlResponse. Els valors de retorn són els
   següents:
-    - **RatingControlResponse.ACCEPTED**: s'ha sol·licitat que surti el popup natiu de valoració de cada plataforma
-    - **RatingControlResponse.DISMISSED**: el popup no compleix les condicions per ser mostrat a l'usuari
-    - **RatingControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
-      necessaria o al mostrar el popup
+  - **RatingControlResponse.ACCEPTED**: s'ha sol·licitat que surti el popup natiu de valoració de cada plataforma
+  - **RatingControlResponse.DISMISSED**: el popup no compleix les condicions per ser mostrat a l'usuari
+  - **RatingControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
+    necessaria o al mostrar el popup
 
 Exemple:
 
@@ -439,12 +550,12 @@ Paràmetres de sortida:
 
 - **deviceInformation**: Objecte de tipus DeviceInformation. Els valors que conté són:
   següents:
-    - **platformName**: Nom de la plataforma
-    - **platformVersion**: Versió de la plataforma
-    - **platformModel**: Model del dispositiu
-    - **appName**: Nom de l'aplicació
-    - **appVersionName**: Codi nom de la versió
-    - **appVersionCode**: Codi numèric de l'aplicació
+  - **platformName**: Nom de la plataforma
+  - **platformVersion**: Versió de la plataforma
+  - **platformModel**: Model del dispositiu
+  - **appName**: Nom de l'aplicació
+  - **appVersionName**: Codi nom de la versió
+  - **appVersionCode**: Codi numèric de l'aplicació
 
 Exemple:
 
@@ -578,23 +689,23 @@ void _onAppInformation(BuildContext context) async {
 #### Paràmetres
 
 - **appStoreIdentifier**
-    - Obligatori
-    - Especifica el id de l'app al AppStore per poder valorar-la
+  - Obligatori
+  - Especifica el id de l'app al AppStore per poder valorar-la
 - **packageName**
-    - Obligatori
-    - Especifica el ApplicationID o BundleID de l'app que afecta
+  - Obligatori
+  - Especifica el ApplicationID o BundleID de l'app que afecta
 - **platform**
-    - Obligatori
-    - Especifica per a quina plataforma (ANDROID o IOS) afecta
+  - Obligatori
+  - Especifica per a quina plataforma (ANDROID o IOS) afecta
 - **minutes**
-    - Obligatori
-    - Especifica el temps (en minuts) que ha de passar perquè surti el popup
+  - Obligatori
+  - Especifica el temps (en minuts) que ha de passar perquè surti el popup
 - **numAperture**
-    - Obligatori
-    - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
+  - Obligatori
+  - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
 - **message**
-    - Obsolet
-    - A partir de la versió 2.0.0, aquest paràmetre ja no es fa servir
+  - Obsolet
+  - A partir de la versió 2.0.0, aquest paràmetre ja no es fa servir
 
 ## Com funciona el mòdul de control de versions
 
