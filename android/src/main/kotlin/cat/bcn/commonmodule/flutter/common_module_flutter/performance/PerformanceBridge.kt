@@ -10,10 +10,15 @@ class PerformanceBridge(val context: () -> Context?) : EventChannel.StreamHandle
 
     private var eventSink: EventChannel.EventSink? = null
 
-    override fun createMetric(url: String, httpMethod: String): PerformanceMetric {
-        val funName = object {}.javaClass.enclosingMethod?.name
-        Log.d("PerformanceMetric", "${funName} url: $url, httpMethod: $httpMethod")
-        return PerformanceMetricAndroid(context, url, httpMethod) { eventSink }
+    override fun createMetric(url: String, httpMethod: String): PerformanceMetric? {
+        try{
+            val funName = object {}.javaClass.enclosingMethod?.name
+            Log.d("PerformanceMetric", "${funName} url: $url, httpMethod: $httpMethod")
+            return PerformanceMetricAndroid(context, url, httpMethod) { eventSink }
+        } catch (t: Throwable) {
+            Log.d("PerformanceMetric", "createMetric error: $t")
+        }
+        return null
     }
 
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {

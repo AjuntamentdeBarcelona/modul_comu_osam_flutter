@@ -6,7 +6,7 @@
 # README
 
 - Nota:
-  Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servir (flutter doctor -v):
+Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servir (flutter doctor -v):
   • Flutter version 3.X.X on channel stable
 
 ## Com es fa servir?
@@ -17,10 +17,10 @@
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '4.0.9'
+    ref: '4.0.10'
 ```
 
-En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes
+En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes 
 aquesta configuració al pubspec:
 ```yaml
 dependency_overrides:
@@ -320,7 +320,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.12'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.14'
 ```
 
 El Podfile quedaria de la següent manera:
@@ -360,7 +360,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.12'
+  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.0.14'
 end
 
 post_install do |installer|
@@ -417,19 +417,19 @@ Paràmetres d'entrada:
 
 - **language**: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3
   idiomes:
-  - **Language.CA**: Català
-  - **Language.ES**: Castellà
-  - **Language.EN**: Anglès
+    - **Language.CA**: Català
+    - **Language.ES**: Castellà
+    - **Language.EN**: Anglès
 
 Paràmetres de sortida:
 
 - **versionControlResponse**: Objecte de tipus VersionControlResponse. Els valors de retorn són els
   següents:
-  - **VersionControlResponse.ACCEPTED**: si l'usuari ha escollit el botó d'acceptar/ok
-  - **VersionControlResponse.DISMISSED**: si l'usuari ha tret el popup
-  - **VersionControlResponse.CANCELLED**: si l'usuari ha escollit el botó de cancel·lar
-  - **VersionControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
-    necessaria o al mostrar el popup
+    - **VersionControlResponse.ACCEPTED**: si l'usuari ha escollit el botó d'acceptar/ok
+    - **VersionControlResponse.DISMISSED**: si l'usuari ha tret el popup
+    - **VersionControlResponse.CANCELLED**: si l'usuari ha escollit el botó de cancel·lar
+    - **VersionControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
+      necessaria o al mostrar el popup
 
 Exemple:
 
@@ -499,18 +499,18 @@ Paràmetres d'entrada:
 
 - **language**: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3
   idiomes:
-  - **Language.CA**: Català
-  - **Language.ES**: Castellà
-  - **Language.EN**: Anglès
+    - **Language.CA**: Català
+    - **Language.ES**: Castellà
+    - **Language.EN**: Anglès
 
 Paràmetres de sortida:
 
 - **ratingControlResponse**: Objecte de tipus RatingControlResponse. Els valors de retorn són els
   següents:
-  - **RatingControlResponse.ACCEPTED**: s'ha sol·licitat que surti el popup natiu de valoració de cada plataforma
-  - **RatingControlResponse.DISMISSED**: el popup no compleix les condicions per ser mostrat a l'usuari
-  - **RatingControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
-    necessaria o al mostrar el popup
+    - **RatingControlResponse.ACCEPTED**: s'ha sol·licitat que surti el popup natiu de valoració de cada plataforma
+    - **RatingControlResponse.DISMISSED**: el popup no compleix les condicions per ser mostrat a l'usuari
+    - **RatingControlResponse.ERROR**: si hi ha hagut cap error al procés d'obtenir la informació
+      necessaria o al mostrar el popup
 
 Exemple:
 
@@ -550,12 +550,12 @@ Paràmetres de sortida:
 
 - **deviceInformation**: Objecte de tipus DeviceInformation. Els valors que conté són:
   següents:
-  - **platformName**: Nom de la plataforma
-  - **platformVersion**: Versió de la plataforma
-  - **platformModel**: Model del dispositiu
-  - **appName**: Nom de l'aplicació
-  - **appVersionName**: Codi nom de la versió
-  - **appVersionCode**: Codi numèric de l'aplicació
+    - **platformName**: Nom de la plataforma
+    - **platformVersion**: Versió de la plataforma
+    - **platformModel**: Model del dispositiu
+    - **appName**: Nom de l'aplicació
+    - **appVersionName**: Codi nom de la versió
+    - **appVersionCode**: Codi numèric de l'aplicació
 
 Exemple:
 
@@ -689,23 +689,23 @@ void _onAppInformation(BuildContext context) async {
 #### Paràmetres
 
 - **appStoreIdentifier**
-  - Obligatori
-  - Especifica el id de l'app al AppStore per poder valorar-la
+    - Obligatori
+    - Especifica el id de l'app al AppStore per poder valorar-la
 - **packageName**
-  - Obligatori
-  - Especifica el ApplicationID o BundleID de l'app que afecta
+    - Obligatori
+    - Especifica el ApplicationID o BundleID de l'app que afecta
 - **platform**
-  - Obligatori
-  - Especifica per a quina plataforma (ANDROID o IOS) afecta
+    - Obligatori
+    - Especifica per a quina plataforma (ANDROID o IOS) afecta
 - **minutes**
-  - Obligatori
-  - Especifica el temps (en minuts) que ha de passar perquè surti el popup
+    - Obligatori
+    - Especifica el temps (en minuts) que ha de passar perquè surti el popup
 - **numAperture**
-  - Obligatori
-  - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
+    - Obligatori
+    - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
 - **message**
-  - Obsolet
-  - A partir de la versió 2.0.0, aquest paràmetre ja no es fa servir
+    - Obsolet
+    - A partir de la versió 2.0.0, aquest paràmetre ja no es fa servir
 
 ## Com funciona el mòdul de control de versions
 
