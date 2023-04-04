@@ -42,3 +42,7 @@
 * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
   version 2.0.2. This version has the following changes:
   - Version: Fix bug related to URL handling
+
+## [5.0.0] - 04/04/2023
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.16. Updated to version 5.0.0 of modul_comu_osam_flutter, it has flutter 3.X support.
