@@ -16,12 +16,9 @@ dependencies:
   shared_preferences: ^2.0.6
   group_radio_button: ^1.1.0
   flutter_fgbg: ^0.2.0
-  firebase_crashlytics: ^2.4.5
-  firebase_analytics: ^9.0.5
-  firebase_performance: ^0.8.0
-
-dependency_overrides:
-  firebase_core_platform_interface: 4.5.1
+  firebase_crashlytics: ^3.1.0
+  firebase_analytics: ^10.2.0
+  firebase_performance: ^0.9.1
 
 dev_dependencies:
   flutter_test:
