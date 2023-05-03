@@ -17,7 +17,7 @@ Per executar la versió pluguin de flutter a partir de la 4.0.5, es va fer servi
 common_module_flutter:
   git:
     url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-    ref: '5.0.2'
+    ref: '5.0.3'
 ```
 
 En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes 
@@ -320,7 +320,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.3'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.5'
 ```
 
 El Podfile quedaria de la següent manera:
@@ -360,7 +360,7 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.3'
+  pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.5'
 end
 
 post_install do |installer|
