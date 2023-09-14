@@ -490,7 +490,7 @@ variables ja definides i mostrarà l'alerta segons els valors rebuts.
 La signatura del mètode és la següent:
 
 ```dart
-Future<VersionControlResponse> versionControl({
+Future<RatingControlResponse> rating({
   required Language language,
 });
 ```
