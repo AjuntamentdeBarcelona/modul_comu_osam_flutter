@@ -1,3 +1,11 @@
+## 6.0.0
+
+* BREAKING CHANGES
+  * Rename package from `common_module_flutter` to `osam_common_module_flutter`
+  * To import, use only `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';` and not src/ or other subdirectories.
+  * Need to use minimal Dart SDK version 3.0.0
+  * Need to use minimal Flutter version 3.10.0
+
 ## 5.1.0
 
 * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.1.8. Only for Android.

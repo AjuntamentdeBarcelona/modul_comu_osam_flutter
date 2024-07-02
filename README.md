@@ -5,6 +5,15 @@
 
 ---
 
+## Migrate from 5.0.x to 6.0.0
+
+- Rename package from `common_module_flutter` to `osam_common_module_flutter`
+  - On pubspec.yaml, change `common_module_flutter` to `osam_common_module_flutter`
+  - On imports, change `import 'package:common_module_flutter/common_module_flutter.dart';` to `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';`
+- To import, use only `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';` and not src/ or other subdirectories.
+- Need to use minimal Dart SDK version 3.0.0
+- Need to use minimal Flutter version 3.10.0
+
 ## Introdució
 
 Des de la OSAM es proporcionen mòduls per realitzar un conjunt de tasques comunes a totes les apps publicades per l'Ajuntament de Barcelona.
@@ -26,7 +35,7 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
     osam_common_module_flutter:
       git:
         url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-        ref: '5.1.0'
+        ref: '6.0.0'
     ```
 
     En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
