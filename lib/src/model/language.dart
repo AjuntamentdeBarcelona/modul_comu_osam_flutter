@@ -1,26 +1,38 @@
-enum Language { CA, ES, EN }
+// ignore_for_file: constant_identifier_names
+
+/// Represent langauges supported by the module
+enum Language {
+  /// Catalan
+  CA,
+
+  /// Spanish
+  ES,
+
+  /// English
+  EN,
+}
 
 extension LanguageExtensions on Language {
   String toLanguageCode() {
     switch (this) {
       case Language.CA:
-        return "ca";
+        return 'ca';
       case Language.ES:
-        return "es";
+        return 'es';
       case Language.EN:
-        return "en";
+        return 'en';
       default:
-        return "ca";
+        return 'ca';
     }
   }
 
   static Language fromLanguageCode(String languageCode) {
     switch (languageCode) {
-      case "ca":
+      case 'ca':
         return Language.CA;
-      case "es":
+      case 'es':
         return Language.ES;
-      case "en":
+      case 'en':
         return Language.EN;
       default:
         return Language.CA;

@@ -1,6 +1,4 @@
-import 'package:common_module_flutter/model/app_information.dart';
-import 'package:common_module_flutter/model/device_information.dart';
-import 'package:common_module_flutter/osam.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/model/language.dart';
 
 abstract class OsamRepository {

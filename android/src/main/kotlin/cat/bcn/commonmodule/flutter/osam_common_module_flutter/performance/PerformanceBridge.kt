@@ -1,4 +1,4 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter.performance
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter.performance
 
 import android.content.Context
 import cat.bcn.commonmodule.performance.PerformanceMetric

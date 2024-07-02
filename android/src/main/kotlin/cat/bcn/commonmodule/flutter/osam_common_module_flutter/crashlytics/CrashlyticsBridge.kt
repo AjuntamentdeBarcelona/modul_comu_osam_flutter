@@ -1,4 +1,4 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter.crashlytics
 
 import cat.bcn.commonmodule.crashlytics.CrashlyticsWrapper
 import io.flutter.plugin.common.EventChannel

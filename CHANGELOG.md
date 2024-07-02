@@ -1,48 +1,64 @@
-## [1.0.0] - 23/07/2021
+## 5.1.0
 
-* First version of common module flutter (not null safety)
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.1.8. Only for Android.
+* Improve linting.
+* Refactor package to pub dev standards.
+* Refactor documentation.
+* Add GitHub templates.
 
-## [2.0.0] - 21/08/2021
+## 5.0.4
 
-* Migrated to null safety
-* Fix english language in sample app
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.1.7.
 
-## [2.0.1] - 31/08/2021
+## 5.0.0
 
-* Fix Version Control Popup Context
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.16. Updated to version 5.0.0 of modul_comu_osam_flutter, it has flutter 3.X support.
 
-## [3.0.0] - 02/02/2022
+## 4.0.2
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.2. This version has the following changes:
+  * Version: Fix bug related to URL handling
+
+## 4.0.1
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.1. This version has the following changes:
+  * Rating: Exclude deprecated rating control responses
+
+## 4.0.0
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 2.0.1. This version has the following changes:
+  * Version: Integrated capability for enable/disable version control based in a time range
+  * Rating: Integrated Google In App Review for Android
+
+## 3.0.2
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 1.0.11. This version fixes a bug when using Proguard in Android.
+
+## 3.0.1
+
+* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
+  version 1.0.10. This version fixes a bug of the rating popup in iOS.
+
+## 3.0.0
 
 * Using [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) (
   developed using Kotlin Multiplatform Mobile, KMM) to implement the functionality of this library.
   This library is now a wrapper of the one developed in KMM.
 
-## [3.0.1] - 21/02/2022
+## 2.0.1
 
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 1.0.10. This version fixes a bug of the rating popup in iOS.
+* Fix Version Control Popup Context
 
-## [3.0.2] - 22/02/2022
+## 2.0.0
 
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 1.0.11. This version fixes a bug when using Proguard in Android.
+* Migrated to null safety
+* Fix english language in sample app
 
-## [4.0.0] - 11/04/2022
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 2.0.1. This version has the following changes:
-  - Version: Integrated capability for enable/disable version control based in a time range
-  - Rating: Integrated Google In App Review for Android
+## 1.0.0
 
-## [4.0.1] - 26/04/2022
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 2.0.1. This version has the following changes:
-  - Rating: Exclude deprecated rating control responses
-
-## [4.0.2] - 13/10/2022
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 2.0.2. This version has the following changes:
-  - Version: Fix bug related to URL handling
-
-## [5.0.0] - 04/04/2023
-* Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to
-  version 2.0.16. Updated to version 5.0.0 of modul_comu_osam_flutter, it has flutter 3.X support.
+* First version of common module flutter (not null safety)

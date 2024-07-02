@@ -1,13 +1,13 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter
 
 import android.app.Activity
 import androidx.annotation.NonNull
-import cat.bcn.commonmodule.flutter.common_module_flutter.analytics.AnalyticsBridge
-import cat.bcn.commonmodule.flutter.common_module_flutter.crashlytics.CrashlyticsBridge
-import cat.bcn.commonmodule.flutter.common_module_flutter.performance.PerformanceBridge
-import cat.bcn.commonmodule.flutter.common_module_flutter.platform_util.PlatformUtilBridge
-import cat.bcn.commonmodule.flutter.common_module_flutter.extension.getLanguageFromString
-import cat.bcn.commonmodule.flutter.common_module_flutter.extension.toStringResponse
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.analytics.AnalyticsBridge
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.crashlytics.CrashlyticsBridge
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.performance.PerformanceBridge
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.platform_util.PlatformUtilBridge
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.getLanguageFromString
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.toStringResponse
 import cat.bcn.commonmodule.model.AppInformation
 import cat.bcn.commonmodule.model.DeviceInformation
 import cat.bcn.commonmodule.ui.versioncontrol.DeviceInformationResponse

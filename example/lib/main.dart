@@ -1,6 +1,4 @@
-import 'package:common_module_flutter/model/app_information.dart';
-import 'package:common_module_flutter/model/device_information.dart';
-import 'package:common_module_flutter/osam.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
 import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Common Module Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'Common Module Flutter Demo'),
     );
   }
@@ -36,18 +32,17 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
+class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
   late AppLanguage _currentLanguage;
-  late bool _isLoading;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true;
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!DI.settings.hasLanguage()) {
         await DI.settings.setLanguage(AppLanguage.CA);
         _currentLanguage = DI.settings.getLanguage();
@@ -123,51 +118,62 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
   void _onVersionControl() async {
     final result = await DI.osamRepository.checkForUpdates();
 
-    switch (result) {
-      case VersionControlResponse.ACCEPTED:
-        break;
-      case VersionControlResponse.DISMISSED:
-        break;
-      case VersionControlResponse.CANCELLED:
-        break;
-      case VersionControlResponse.ERROR:
-        break;
+    if (context.mounted) {
+      switch (result) {
+        case VersionControlResponse.ACCEPTED:
+          _showToast(context, VersionControlResponse.ACCEPTED.name);
+          break;
+        case VersionControlResponse.DISMISSED:
+          _showToast(context, VersionControlResponse.DISMISSED.name);
+          break;
+        case VersionControlResponse.CANCELLED:
+          _showToast(context, VersionControlResponse.CANCELLED.name);
+          break;
+        case VersionControlResponse.ERROR:
+          _showToast(context, VersionControlResponse.ERROR.name);
+          break;
+      }
     }
   }
 
   void _onRating() async {
     final result = await DI.osamRepository.checkRating();
 
-    switch (result) {
-      case RatingControlResponse.ACCEPTED:
-        break;
-      case RatingControlResponse.DISMISSED:
-        break;
-      case RatingControlResponse.ERROR:
-        break;
+    if (context.mounted) {
+      switch (result) {
+        case RatingControlResponse.ACCEPTED:
+          _showToast(context, RatingControlResponse.ACCEPTED.name);
+          break;
+        case RatingControlResponse.DISMISSED:
+          _showToast(context, RatingControlResponse.DISMISSED.name);
+          break;
+        case RatingControlResponse.ERROR:
+          _showToast(context, RatingControlResponse.ERROR.name);
+          break;
+      }
     }
   }
 
   void _onDeviceInformation(BuildContext context) async {
     final result = await DI.osamRepository.deviceInformation();
-    _showToast(context, "${result.platformName}");
-    _showToast(context, "${result.platformVersion}");
-    _showToast(context, "${result.platformModel}");
+    if (context.mounted) {
+      _showToast(context, result.platformName);
+      _showToast(context, result.platformVersion);
+      _showToast(context, result.platformModel);
+    }
   }
 
   void _onAppInformation(BuildContext context) async {
     final result = await DI.osamRepository.appInformation();
-    _showToast(context, "${result.appName}");
-    _showToast(context, "${result.appVersionName}");
-    _showToast(context, "${result.appVersionCode}");
+    if (context.mounted) {
+      _showToast(context, result.appName);
+      _showToast(context, result.appVersionName);
+      _showToast(context, result.appVersionCode);
+    }
   }
 
   void _showToast(BuildContext context, String text) {
     final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(text),
-      ),
-    );
+    scaffold.showSnackBar(SnackBar(content: Text(text)));
   }
 }

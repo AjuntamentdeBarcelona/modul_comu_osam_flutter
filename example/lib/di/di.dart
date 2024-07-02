@@ -1,4 +1,4 @@
-import 'package:common_module_flutter/osam.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/data/osam/osam_repository_impl.dart';
 import 'package:common_module_flutter_example/data/settings/app_preferences.dart';
@@ -9,7 +9,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class DI {
   static late SharedPreferences _prefs;
@@ -25,7 +24,7 @@ class DI {
 
   static final Settings settings = AppPreferences(_prefs);
   static final OsamRepository osamRepository =
-  OsamRepositoryImpl(_osamSdk, settings);
+      OsamRepositoryImpl(_osamSdk, settings);
 
   static _onCrashlyticsException(String className, String stackTrace) async {
     await FirebaseCrashlytics.instance.recordError(
@@ -38,13 +37,14 @@ class DI {
         .logEvent(name: name, parameters: parameters);
   }
 
-  static _onPerformanceEvent(String uniqueId, String event,
-      Map<String, String> params) async {
+  static _onPerformanceEvent(
+      String uniqueId, String event, Map<String, String> params) async {
     var debugParamsLogs = [];
     params.forEach((key, value) {
       debugParamsLogs.add("$key: $value");
     });
-    debugPrint("PerformanceMetric _onPerformanceEvent uniqueId: $uniqueId, event: $event, params(${debugParamsLogs.length}): ${debugParamsLogs.join(', ')}");
+    debugPrint(
+        "PerformanceMetric _onPerformanceEvent uniqueId: $uniqueId, event: $event, params(${debugParamsLogs.length}): ${debugParamsLogs.join(', ')}");
     int currentTime = getCurrentTime();
     HttpMetric? metric = performanceCurrentMetrics[uniqueId]?.item2;
     switch (event) {
@@ -58,10 +58,11 @@ class DI {
             break;
           }
         }
-        metric = FirebasePerformance.instance
-            .newHttpMetric(url, httpMethod);
-        performanceCurrentMetrics[uniqueId] = Tuple(item1: currentTime, item2: metric);
-        debugPrint("PerformanceMetric case event: $event, uniqueId: $uniqueId, url: $url, httpMethod: $httpMethod");
+        metric = FirebasePerformance.instance.newHttpMetric(url, httpMethod);
+        performanceCurrentMetrics[uniqueId] =
+            Tuple(item1: currentTime, item2: metric);
+        debugPrint(
+            "PerformanceMetric case event: $event, uniqueId: $uniqueId, url: $url, httpMethod: $httpMethod");
         await metric.start();
         break;
       case "setRequestPayloadSize":
@@ -85,7 +86,8 @@ class DI {
       case "setResponseContentType":
         String? contentType = params["contentType"];
         if (contentType != null) {
-          debugPrint("PerformanceMetric case event: $event, contentType: $contentType");
+          debugPrint(
+              "PerformanceMetric case event: $event, contentType: $contentType");
           metric?.responseContentType = contentType;
         }
         break;
@@ -97,7 +99,8 @@ class DI {
           responseCode = null;
         }
         if (responseCode != null) {
-          debugPrint("PerformanceMetric case event: $event, responseCode: $responseCode");
+          debugPrint(
+              "PerformanceMetric case event: $event, responseCode: $responseCode");
           metric?.httpResponseCode = responseCode;
         }
         break;
@@ -117,7 +120,8 @@ class DI {
         String? attribute = params["attribute"];
         String value = params["value"] ?? "";
         if (attribute != null) {
-          debugPrint("PerformanceMetric case event: $event, attribute: $attribute, value: $value");
+          debugPrint(
+              "PerformanceMetric case event: $event, attribute: $attribute, value: $value");
           metric?.putAttribute(attribute, value);
         }
         break;
@@ -127,9 +131,9 @@ class DI {
         //performanceCurrentMetrics.remove(uniqueId);
         break;
     }
-    try{
+    try {
       var keys = performanceCurrentMetrics.keys;
-      for(int i = keys.length - 1; i>=0; i--) {
+      for (int i = keys.length - 1; i >= 0; i--) {
         var key = keys.toList()[i];
         var value = performanceCurrentMetrics[key];
         if (value == null || value.item1 < currentTime - 600 * 1000) {
@@ -137,7 +141,8 @@ class DI {
           performanceCurrentMetrics.remove(key);
         }
       }
-    }catch(e){
+    } catch (e) {
+      debugPrint("PerformanceMetric deleting old uniqueId error: $e");
     }
   }
 

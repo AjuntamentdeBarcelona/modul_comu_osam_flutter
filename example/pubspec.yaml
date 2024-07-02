@@ -4,21 +4,23 @@ publish_to: 'none'
 version: 3.0.1+20230417
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
 
 
 dependencies:
   flutter:
     sdk: flutter
-  common_module_flutter:
+  osam_common_module_flutter:
     path: ../
-  cupertino_icons: ^1.0.3
+  cupertino_icons: ^1.0.6
   shared_preferences: ^2.0.5
   group_radio_button: ^1.3.0
-  flutter_fgbg: ^0.2.0
+  flutter_fgbg: ^0.2.2
   firebase_crashlytics: ^2.5.0
   firebase_analytics: ^9.1.0
   firebase_performance: ^0.8.0+5
+  firebase_core: ^1.24.0
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.1
@@ -26,7 +28,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.3
 
 #for firebase remote config
 

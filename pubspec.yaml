@@ -1,27 +1,28 @@
-name: common_module_flutter
+name: osam_common_module_flutter
 description: OSAM's Flutter common module
-version: 5.0.4
-homepage:
-publish_to: none
+version: 5.1.0
+homepage: 'https://ajuntament.barcelona.cat/imi/ca/oficina-de-serveis-al-mobil'
+issue_tracker: 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/issues'
+repository: 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter'
 
 environment:
-  sdk: ">=2.12.0"
-  flutter: ">=1.20.0"
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ^2.0.3
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
 
 flutter:
   plugin:
     platforms:
       android:
-        package: cat.bcn.commonmodule.flutter.common_module_flutter
+        package: cat.bcn.commonmodule.flutter.osam_common_module_flutter
         pluginClass: CommonModuleFlutterPlugin
       ios:
         pluginClass: CommonModuleFlutterPlugin

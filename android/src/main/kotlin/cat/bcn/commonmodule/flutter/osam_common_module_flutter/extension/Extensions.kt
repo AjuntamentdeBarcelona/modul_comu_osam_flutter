@@ -1,4 +1,4 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter.extension
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension
 
 import cat.bcn.commonmodule.ui.versioncontrol.Language
 import cat.bcn.commonmodule.ui.versioncontrol.RatingControlResponse

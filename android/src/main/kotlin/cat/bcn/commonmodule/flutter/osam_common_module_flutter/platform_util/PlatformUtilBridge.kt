@@ -1,4 +1,4 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter.platform_util
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter.platform_util
 
 import cat.bcn.commonmodule.platform.PlatformUtil
 import io.flutter.plugin.common.EventChannel

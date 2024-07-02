@@ -7,7 +7,8 @@ import 'package:flutter_fgbg/flutter_fgbg.dart';
 // A Navigator observer that notifies RouteAwares of changes to state of their Route
 final routeObserver = RouteObserver<PageRoute>();
 
-mixin OsamVersionChecker<T extends StatefulWidget> on State<T> implements RouteAware {
+mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
+    implements RouteAware {
   late StreamSubscription<FGBGType> subscription;
 
   @override

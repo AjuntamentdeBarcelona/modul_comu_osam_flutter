@@ -1,9 +1,7 @@
-import 'package:common_module_flutter/model/app_information.dart';
-import 'package:common_module_flutter/model/device_information.dart';
-import 'package:common_module_flutter/osam.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/model/language.dart'
-    as AppLanguage;
+    as app_language;
 
 class OsamRepositoryImpl extends OsamRepository {
   final OSAM osamSdk;
@@ -26,16 +24,16 @@ class OsamRepositoryImpl extends OsamRepository {
     return osamSdk.rating(language: _getLanguage(settings.getLanguage()));
   }
 
-  Language _getLanguage(AppLanguage.AppLanguage appLanguage) {
+  Language _getLanguage(app_language.AppLanguage appLanguage) {
     Language language;
     switch (appLanguage) {
-      case AppLanguage.AppLanguage.ES:
+      case app_language.AppLanguage.ES:
         language = Language.ES;
         break;
-      case AppLanguage.AppLanguage.CA:
+      case app_language.AppLanguage.CA:
         language = Language.CA;
         break;
-      case AppLanguage.AppLanguage.EN:
+      case app_language.AppLanguage.EN:
         language = Language.EN;
         break;
       default:

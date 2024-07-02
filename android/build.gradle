@@ -1,4 +1,4 @@
-group 'cat.bcn.commonmodule.flutter.common_module_flutter'
+group 'cat.bcn.commonmodule.flutter.osam_common_module_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -26,7 +26,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -48,6 +48,6 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
-    implementation("com.github.AjuntamentdeBarcelona.modul_comu_osam:common:2.1.7")
+    implementation("com.github.AjuntamentdeBarcelona.modul_comu_osam:common:2.1.8")
     implementation("com.google.code.gson:gson:2.10.1")
 }

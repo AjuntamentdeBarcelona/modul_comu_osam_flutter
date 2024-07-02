@@ -1,4 +1,4 @@
-package cat.bcn.commonmodule.flutter.common_module_flutter.analytics
+package cat.bcn.commonmodule.flutter.osam_common_module_flutter.analytics
 
 import cat.bcn.commonmodule.analytics.AnalyticsWrapper
 import io.flutter.plugin.common.EventChannel
