@@ -78,7 +78,7 @@ L'atribut `compileSdkVersion` del fitxer build.gradle de l'aplicació d'Android 
 
 #### Multidex
 
-Si la versió mínima de Android a la que es dona suport (`minSdkVersion`) a l'aplicació d'Android es inferior a 21, serà necessari [habilitar multidex](https://developer.android.com/studio/build/multidex), ja que, si no, apareixerà un error al compilar.
+Si la versió mínima de Android a la que es dona suport (`minSdkVersion`) a l'aplicació d'Android es inferior a 21, serà necessari [habilitar multidex](https://developer.android.com/build/multidex), ja que, si no, apareixerà un error al compilar.
 
 #### Estil
 
