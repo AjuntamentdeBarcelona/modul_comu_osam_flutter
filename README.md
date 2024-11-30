@@ -1,154 +1,157 @@
-# modul_comu_osam_flutter
-[![](https://jitpack.io/v/AjuntamentdeBarcelona/modul_comu_osam.svg)](https://jitpack.io/#AjuntamentdeBarcelona/modul_comu_osam_flutter)
+# Modul comú OSAM Flutter
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-# README
-## Com es fa servir?
-- Afegeix aquesta dependència al pubspec:
-```
-common_module_flutter:
-    git:
-      url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-      ref: '1.0.0'
-```
 
-- Actualitzar mitjançant el comandament 'flutter packages get' les dependències.
+---
 
-- Afegir el import on sigui necessari:
-```
-import 'package:common_module_flutter/osam/OSAM.dart';
-```
+## Migrate from 5.0.x to 6.0.0
 
-- Per utilitzar la llibreria, necessitem crear una instància de la classe OSAM i cridar al mètode init
-abans de fer servir qualsevol dels mètodes.
-Aquí tenim un example de inicialització.
+- Rename package from `common_module_flutter` to `osam_common_module_flutter`
+  - On pubspec.yaml, change `common_module_flutter` to `osam_common_module_flutter`
+  - On imports, change `import 'package:common_module_flutter/common_module_flutter.dart';` to `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';`
+- To import, use only `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';` and not src/ or other subdirectories.
+- Need to use minimal Dart SDK version 3.0.0
+- Need to use minimal Flutter version 3.10.0
 
-```
-class DI {
-  static SharedPreferences _prefs;
+## Introdució
 
-  static Future<void> initialize() async {
-    _prefs = await SharedPreferences.getInstance();
-    await _osamSdk.init();
-  }
-
-  static OSAM _osamSdk = OSAM("b3NhbTpvc2Ft");
-  static final Settings settings = AppPreferences(_prefs);
-  static final OsamRepository osamRepository =
-      OsamRepositoryImpl(_osamSdk, settings);
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DI.initialize();
-  runApp(MyApp());
-}
-```
-En el cas de l'app d'exemple, accedim a la instància creada a través de 'OsamRepository':
-```
- Future<VersionControlResponse> checkForUpdates(BuildContext context) async {
-    return osamSdk.versionControl(
-      context,
-      language: _getLanguage(settings.getLanguage()),
-    );
-  }
-
-  @override
-  Future<RatingControlResponse> checkRating(BuildContext context) async {
-    return osamSdk.rating(context,
-        language: _getLanguage(settings.getLanguage()));
-  }
-```
-
-## Introducció
-
-Aquest mòdul uneix el control de versions i el control de valoracions.
-
-En el control de versions es mostrarà un avís quan el servei avisi que hi ha una nova versió de l'app.
-Aquesta alerta la podem mostrar amb un missatge amb botons de confirmació d'accions.
-
-Tindrem tres diferents tipus d'alerta:
-
-1. Informativa: Alerta amb un missatge i / o un títol informatiu, amb un botó d ' "ok" per confirmar que s'ha llegit.
-2. Restrictiva: Alerta amb un missatge i / o un títol, amb botó d ' "ok" que un cop fet clic redirigirà l'usuari a una url.
-3. Permisiva: Alerta amb un missatge i / o un títol, amb botons de "ok" i "cancel". Si fem clic al botó de cancel·lar l'alerta desapareixerà, i si ho fem al de confirmar s'obrirà una url.
-
-Pel que respecta al control de valoracions, la seva funcionalitat és mostrar periòdicament una popup que convida a l’usuari a deixar un comentari sobre l'app al market place corresponent (Google Play o AppStore).
-Per a Android, el popup té tres botons:
-
-- Positiu (“VALORAR ARA”): El sistema obre la web de l’app client en el market, i l’usuari només haurà de fer ‘new review’ i deixar el seu comentari i valoració sobre l’app.
-- Negatiu (“NO, GRÀCIES”).  El popup es tanca i no tornarà a aparèixer.
-- Neutre (“MÉS TARD”). El popup es tanca i tornarà a aparèixer en un futur.
-
-En canvi, per a iOS s'utilitza un package de flutter que mostrarà el popup natiu.
-
-## Descàrrega del mòdul
 Des de la OSAM es proporcionen mòduls per realitzar un conjunt de tasques comunes a totes les apps publicades per l'Ajuntament de Barcelona.
+El mòdul comú (Flutter) està disponible com a repositori a [Github](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter)
 
-El mòdul comú (Flutter) està disponible com a repositori a:
-https://github.com/AjuntamentdeBarcelona/modul_comu_osam
+Useful links:
+
+- [Lògica de negoci](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/doc/bussiness_logic.md)
+- [Backend (json)](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/doc/backend.md)
+- Modul comú requirements [catalá](https://ajuntament.barcelona.cat/imi/ca/oficina-de-serveis-al-mobil/informacio-destacada-del-proces-de-publicacio-daplicacions-mobil/proveidor-aplicacio/requeriments-tecnics-aplicacions/generals#moduls_osam) o [espanyol](https://ajuntament.barcelona.cat/imi/es/oficina-de-servicios-al-movil/informacion-destacada-del-proceso-de-publicacion-de-aplicaciones-moviles/proveedor-aplicacion/requisitos-tecnicos-aplicacion/generales#r_1_7_modulososam)
+
+A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en Kotlin Multiplatform](https://github.com/AjuntamentdeBarcelona/modul_comu_osam)
+
+## Com es fa servir?
+
+1. Afegeix aquesta dependència al pubspec:
+
+    ```yaml
+    osam_common_module_flutter:
+      git:
+        url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
+        ref: '6.0.0'
+    ```
+
+    En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
+
+    ```yaml
+    dependency_overrides:
+    firebase_crashlytics_platform_interface: 3.1.13
+    firebase_analytics_platform_interface: 3.0.5
+    firebase_performance_platform_interface: ^0.1.1+18
+    ```
+
+2. Actualitzar mitjançant el comandament 'flutter packages get' les dependències.
+3. Afegir el import on sigui necessari:
+
+    ```dart
+    import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
+    ```
+
+4. Per utilitzar la llibreria necessitem crear una instància de la clase OSAM, la qual es fa a través del mètode estàtic (i asíncron) `init()`.
+
+    Tenim un example de inicialització on [example/lib/di/di.dart](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/lib/di/di.dart)
+
+    En el cas de l'app d'exemple, accedim a la instància creada a través de [OsamRepository](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/lib/data/osam/osam_repository_impl.dart)
+
+### Configuració de l'entorn
+
+En l'exemple anterior tenim la URL del mòdul comú hardcoded a la pròpia lògica. Però aquesta URL s'ha d'externalitzar com a variable de configuració, d'aquesta manera es pot generar la versió de producció només substituint el fitxer amb els valors correctes.
+
+Per fer-ho només cal crear el fitxer ".env" a l'arrel del projecte de Flutter i carregar aquest fitxer amb el plugin [flutter_dotenv](https://pub.dev/packages/flutter_dotenv). En aquesta URL hi ha la documentació de com afegir aquest fitxer i com carregar les dades al codi
+
+El fitxer ".env" ha de contenir la URL del mòdul comú en la variable "COMMON_MODULE_URL". Quedaria de la següent manera:
+
+```dosini
+COMMON_MODULE_URL=https://dev-osam-modul-comu.dtibcn.cat/
+```
+
+## Configuració a la part nativa
+
+### Android
+
+#### Versió de Kotlin
+
+S'ha d'utilitzar, com a mínim, la versió **1.6.10** de Kotlin.
+
+#### compileSdkVersion
+
+L'atribut `compileSdkVersion` del fitxer build.gradle de l'aplicació d'Android ha de tenir el valor
+**31 o superior**.
+
+#### Multidex
+
+Si la versió mínima de Android a la que es dona suport (`minSdkVersion`) a l'aplicació d'Android es inferior a 21, serà necessari [habilitar multidex](https://developer.android.com/build/multidex), ja que, si no, apareixerà un error al compilar.
+
+#### Estil
+
+Si volem que els pop-ups es vegin amb l'estil correcte, haurem d'utilitzar un estil que extengui d' AppCompat. A l'aplicació de Android que crea Flutter s'hauria de modificar els fitxers `styles.xml`
+
+- [values-night](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/android/app/src/main/res/values-night/styles.xml)
+- [values](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/android/app/src/main/res/values/styles.xml)
+
+### iOS
+
+#### Podfile
+
+En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del mòdul comú de
+Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
+
+```plist
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.7'
+```
+
+El Podfile quedaria de [la següent manera](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/ios/Podfile)
 
 ## Implementació control de versions
 
 Per crear el missatge d'alerta, únicament hem de cridar a la funció que descarregarà el json amb les variables ja definides i mostrarà l'alerta segons els valors rebuts.
-
-La signatura del mètode és la següent:
-```
-Future<VersionControlResponse> versionControl(
-    BuildContext context, {
-    @required Language language,
-  })
-```
-Paràmetres d'entrada:
-- context: BuildContext del widget des d'on estem cridant al control de versions
-- language: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3 idiomes:
-    - Language.CA: Català
-    - Language.ES: Castellà
-    - Language.EN: Anglès
-
-Paràmetres de sortida:
-- versionControlResponse: Objecte de tipus VersionControlResponse. Els valors de retorn són els següents:
-    - VersionControlResponse.ACCEPTED: si l'usuari ha escollit el botó d'acceptar/ok
-    - VersionControlResponse.DISMISSED: si l'usuari ha tret el popup
-    - VersionControlResponse.CANCELLED: si l'usuari ha escollit el botó de cancel·lar
-    - VersionControlResponse.ERROR: si hi ha hagut cap error al procés d'obtenir la informació necessaria o al mostrar el popup
-    - VersionControlResponse.NOT_NEEDED: si no és necessari mostrar el popup
-
 Exemple:
-```
+
+```dart
 void _onVersionControl() async {
-    final result = await DI.osamSdk.versionControl(
-      context,
-      language: Language.CA,
-    );
+  final result = await DI.osamSdk.versionControl(
+    language: Language.CA,
+  );
 
-    switch (result) {
-      case VersionControlResponse.ACCEPTED:
-        break;
-      case VersionControlResponse.DISMISSED:
-        break;
-      case VersionControlResponse.CANCELLED:
-        break;
-      case VersionControlResponse.ERROR:
-        break;
-      case VersionControlResponse.NOT_NEEDED:
-        break;
-    }
+  switch (result) {
+    case VersionControlResponse.ACCEPTED:
+      break;
+    case VersionControlResponse.DISMISSED:
+      break;
+    case VersionControlResponse.CANCELLED:
+      break;
+    case VersionControlResponse.ERROR:
+      break;
   }
+}
 ```
-No és necessari capturar la resposta si no es necessita realitzar cap acció adicional, ja que el mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriments per a que es mostri
 
-##### Mostrar el control de versions cada vegada que l'app torna a primer pla
-Si és necessari executar el control de versions cada vegada que l'app torna a primer pla, a l'app demo hem impleentat aquesta funcionalitat en un mixin anomenat OsamVersionChecker:
-```
+No és necessari capturar la resposta si no es necessita realitzar cap acció adicional, ja que el
+mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriments per a que es mostri
+
+### Mostrar el control de versions cada vegada que l'app torna a primer pla
+
+Si és necessari executar el control de versions cada vegada que l'app torna a primer pla, a l'app
+demo hem implementat aquesta funcionalitat en un mixin anomenat OsamVersionChecker:
+
+```dart
 class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
 ```
-Hem utilitzat el package https://pub.dev/packages/flutter_fgbg:
-```
+
+Hem utilitzat el package [flutter_fgbg](https://pub.dev/packages/flutter_fgbg):
+
+```dart
 mixin OsamVersionChecker<T extends StatefulWidget> on State<T> implements RouteAware {
   StreamSubscription<FGBGType> subscription;
 
-@override
+  @override
   void initState() {
     super.initState();
     subscription = FGBGEvents.stream.listen((event) async {
@@ -157,178 +160,51 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T> implements RouteA
       }
     });
   }
+}
 ```
 
-## Implementació control de valoració`
+## Implementació control de valoració
 
 Per crear el missatge d'alerta, únicament hem de cridar a la funció que descarregarà el json amb les variables ja definides i mostrarà l'alerta segons els valors rebuts.
-
-La signatura del mètode és la següent:
-```
-Future<RatingControlResponse> rating(
-    BuildContext context, {
-    @required Language language,
-  }) async {
-```
-Paràmetres d'entrada:
-- context: BuildContext del widget des d'on estem cridant al control de versions
-- language: Objecte de tipus Language (pertany al mòdul comú). Actualment, hi ha suportats 3 idiomes:
-    - Language.CA: Català
-    - Language.ES: Castellà
-    - Language.EN: Anglès
-
-Paràmetres de sortida:
-- ratingControlResponse: Objecte de tipus RatingControlResponse. Els valors de retorn són els següents:
-    - RatingControlResponse.ACCEPTED: si l'usuari ha escollit el botó d'acceptar/ok
-    - RatingControlResponse.DISMISSED: si l'usuari ha tret el popup
-    - RatingControlResponse.CANCELLED: si l'usuari ha escollit el botó de cancel·lar
-    - RatingControlResponse.ERROR: si hi ha hagut cap error al procés d'obtenir la informació necessaria o al mostrar el popup
-    - RatingControlResponse.NOT_NEEDED: si no és necessari mostrar el popup
-    - RatingControlResponse.HANDLED_BY_SYSTEM: valor que es retorna sempre a iOS, ja que a iOS no tenim cap control sobre l'acció de l'usuari
-
 Exemple:
-```
+
+```dart
 void _onRating() async {
-    final result = await DI.osamSdk.rating(
-      context,
-      language: Language.EN,
-    );
+  final result = await DI.osamSdk.rating(
+    language: Language.EN,
+  );
 
-    switch (result) {
-      case RatingControlResponse.ACCEPTED:
-        break;
-      case RatingControlResponse.DISMISSED:
-        break;
-      case RatingControlResponse.CANCELLED:
-        break;
-      case RatingControlResponse.ERROR:
-        break;
-      case RatingControlResponse.NOT_NEEDED:
-        break;
-      case RatingControlResponse.HANDLED_BY_SYSTEM:
-        break;
-    }
+  switch (result) {
+    case RatingControlResponse.ACCEPTED:
+      break;
+    case RatingControlResponse.DISMISSED:
+      break;
+    case RatingControlResponse.CANCELLED:
+      break;
   }
+}
 ```
-No és necessari capturar la resposta si no es necessita realitzar cap acció adicional, ja que el mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriments per a que es mostri
 
-## Format JSONs
-### Control de Versions
+No és necessari capturar la resposta si no es necessita realitzar cap acció adicional, ja que el
+mòdul comú s'encarregarà de mostrar el popup si es compleixen els requeriments per a que es mostri
+
+## Implementació d'obtenció de informació de dispositiu i applicació
+
+Per obtenir la informació del dispositiu i de l'aplicació
+Exemple:
+
+```dart
+void _onDeviceInformation(BuildContext context) async {
+  final result = await DI.osamRepository.deviceInformation();
+  _showToast(context, "${result.platformName}");
+  _showToast(context, "${result.platformVersion}");
+  _showToast(context, "${result.platformModel}");
+}
+
+void _onAppInformation(BuildContext context) async {
+  final result = await DI.osamRepository.appInformation();
+  _showToast(context, "${result.appName}");
+  _showToast(context, "${result.appVersionName}");
+  _showToast(context, "${result.appVersionCode}");
+}
 ```
-"data": {
-        "id": 109,
-        "appId": 400,
-        "packageName": "cat.bcn.commonmodule",
-        "versionCode": 2021050000,
-        "versionName": "1.0.0",
-        "platform": "IOS",
-        "comparisonMode": "NONE",
-        "title": {
-            "es": "TITLE_ES",
-            "en": "TITLE_EN",
-            "ca": "TITLE_CA"
-        },
-        "message": {
-            "es": "MESSAGE_ES",
-            "en": "MESSAGE_EN",
-            "ca": "MESSAGE_CA"
-        },
-        "ok": {
-            "es": "OK",
-            "en": "OK",
-            "ca": "OK"
-        },
-        "cancel": {
-            "es": "Cancelar",
-            "en": "Cancel",
-            "ca": "Cancel.lar"
-        },
-        "url": "https://apps.apple.com/es/app/barcelona-a-la-butxaca/id1465234509?l=ca"
-    }
-```
-#### Paràmetres
-- packageName
-    - Obligatori
-    - Especifica el ApplicationID o BundleID de l'app que afecta
-- versionCode
-  - Obligatori
-  - Especifica la versió a la que afecta el control de versions
-- platform
-  - Obligatori
-  - Especifica per a quina plataforma (ANDROID o IOS) afecta
-- comparisonMode
-    - Obligatori
-    - Especifica la manera de comparació de la versió de l'app amb el mòdul
-- title
-    - Obligatori
-    - Títol de l'alerta en el cas que s'hagi de mostrar.
-- message
-    - Obligatori
-    - Missatge de l'alerta en cas que s'hagi de mostrar.
-- ok
-    - Opcional
-    - Títol del botó d'acceptar.
-    - Si es rep aquest paràmetre juntament amb el paràmetre okButtonActionURL, es mostrarà en l'alerta un botó d'acceptar que obrirà el link que s'ha especificat en el paràmetre okButtonActionURL.
-- cancel
-    - Opcional
-    - Títol del botó de cancel·lar
-- url
-    - Opcional
-    - Link que s'obrirà quan l'usuari seleccioni el botó d'acceptar. Per exemple: link de la nova versió de l'aplicació a l'App Store / Google Play.
-
-### Control de Valoracions
-```
-"data": {
-        "id": 74,
-        "appId": 401,
-        "appStoreIdentifier": "1234567890",
-        "packageName": "cat.bcn.commonmodule",
-        "platform": "ANDROID",
-        "minutes": 2880,
-        "numAperture": 5,
-        "message": {
-            "es": "MESSAGE_ES",
-            "en": "MESSAGE_EN",
-            "ca": "MESSAGE_CA"
-        }
-    }
-```
-#### Paràmetres
-- appStoreIdentifier
-  - Obligatori
-  - Especifica el id de l'app al AppStore per poder valorar-la
-- packageName
-    - Obligatori
-    - Especifica el ApplicationID o BundleID de l'app que afecta
-- platform
-  - Obligatori
-  - Especifica per a quina plataforma (ANDROID o IOS) afecta
-- minutes
-    - Obligatori
-    - Especifica el temps (en minuts) que ha de passar perquè surti el popup
-- numAperture
-    - Obligatori
-    - Especifica la quantitat de vegades que s'ha d'obrir l'app perquè surti el popup
-- message
-    - Obligatori
-    - Missatge de l'alerta en cas que s'hagi de mostrar.
-
-
-## Com funciona el mòdul de control de versions
-Depenent del valor del paràmetre "comparisonMode" mostrarem l'alerta.
-
-Aquest paràmetre compararà la versió instal·lada amb la qual rebem del json, en funció de tres valors:
-
-  -> FORCE: Mostra l'alerta i no es pot treure. Actualització obligatoria
-  -> LAZY: Mostra l'alerta amb l'opció d'actualitzar l'app o seguir utilitzant l'actual. Actualització voluntaria
-  -> INFO: Mostra l'alerta amb un missatge informatiu. Deixa seguir utilitzant l'app amb normalitat
-  -> NONE: no es mostra el popup
-
-## Com funciona el control de valoracions
-- L’app compta cada vegada que s’obre (s'ha de cridar el mètode "rating" de la llibreria)
-- L’app espera a que passin un nº de minuts determinats (p.ex. 90) des de l’últim cop que ha mostrat la pop up (per tal de l’usuari no la consideri intrusiva o abusiva).
-- Un cop passats aquests dies i quan el comptador superi un valor determinat (p.ex. 20), mostra el popup i el comptador es reinicia independentment de la resposta de l’usuari.*
-- La operativa no es veu modificada si hi ha un canvi de versió (és a dir, es mantenen els valors de comptatge de dies i de nº de apertures).
-- El text que es mostra al popup és configurable des del servei
-
-*En iOS es crida un package de flutter i la mateixa llibreria s'encarrega de quan mostrar o no el popup

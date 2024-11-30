@@ -1,6 +1,6 @@
-import 'package:common_module_flutter/osam/OSAM.dart';
-import 'package:example/mixin/osam_version_checker.dart';
-import 'package:example/model/language.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
+import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
+import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 
@@ -9,40 +9,39 @@ import 'di/di.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DI.initialize();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Common Module Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Common Module Flutter Demo'),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const MyHomePage(title: 'Common Module Flutter Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
-  AppLanguage _currentLanguage;
-  bool _isLoading;
+class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
+  late AppLanguage _currentLanguage;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _isLoading = true;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!DI.settings.hasLanguage()) {
         await DI.settings.setLanguage(AppLanguage.CA);
@@ -63,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         title: Text(widget.title),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,18 +70,18 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Language"),
-                      SizedBox(height: 8),
-                      Container(
+                      const Text("Language"),
+                      const SizedBox(height: 8),
+                      SizedBox(
                         width: MediaQuery.of(context).size.width / 3,
                         child: RadioGroup<AppLanguage>.builder(
                           groupValue: _currentLanguage,
                           onChanged: (value) async {
-                            await DI.settings.setLanguage(value);
+                            await DI.settings.setLanguage(value!);
                             _currentLanguage = DI.settings.getLanguage();
                             setState(() {});
                           },
-                          items: [
+                          items: const [
                             AppLanguage.CA,
                             AppLanguage.ES,
                             AppLanguage.EN
@@ -102,6 +101,14 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                     child: Text("Rating".toUpperCase()),
                     onPressed: () => _onRating(),
                   ),
+                  ElevatedButton(
+                    child: Text("Device Information".toUpperCase()),
+                    onPressed: () => _onDeviceInformation(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("App Information".toUpperCase()),
+                    onPressed: () => _onAppInformation(context),
+                  ),
                 ],
               ),
             ),
@@ -109,38 +116,64 @@ class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
   }
 
   void _onVersionControl() async {
-    final result = await DI.osamRepository.checkForUpdates(context);
+    final result = await DI.osamRepository.checkForUpdates();
 
-    switch (result) {
-      case VersionControlResponse.ACCEPTED:
-        break;
-      case VersionControlResponse.DISMISSED:
-        break;
-      case VersionControlResponse.CANCELLED:
-        break;
-      case VersionControlResponse.ERROR:
-        break;
-      case VersionControlResponse.NOT_NEEDED:
-        break;
+    if (context.mounted) {
+      switch (result) {
+        case VersionControlResponse.ACCEPTED:
+          _showToast(context, VersionControlResponse.ACCEPTED.name);
+          break;
+        case VersionControlResponse.DISMISSED:
+          _showToast(context, VersionControlResponse.DISMISSED.name);
+          break;
+        case VersionControlResponse.CANCELLED:
+          _showToast(context, VersionControlResponse.CANCELLED.name);
+          break;
+        case VersionControlResponse.ERROR:
+          _showToast(context, VersionControlResponse.ERROR.name);
+          break;
+      }
     }
   }
 
   void _onRating() async {
-    final result = await DI.osamRepository.checkRating(context);
+    final result = await DI.osamRepository.checkRating();
 
-    switch (result) {
-      case RatingControlResponse.ACCEPTED:
-        break;
-      case RatingControlResponse.DISMISSED:
-        break;
-      case RatingControlResponse.CANCELLED:
-        break;
-      case RatingControlResponse.ERROR:
-        break;
-      case RatingControlResponse.NOT_NEEDED:
-        break;
-      case RatingControlResponse.HANDLED_BY_SYSTEM:
-        break;
+    if (context.mounted) {
+      switch (result) {
+        case RatingControlResponse.ACCEPTED:
+          _showToast(context, RatingControlResponse.ACCEPTED.name);
+          break;
+        case RatingControlResponse.DISMISSED:
+          _showToast(context, RatingControlResponse.DISMISSED.name);
+          break;
+        case RatingControlResponse.ERROR:
+          _showToast(context, RatingControlResponse.ERROR.name);
+          break;
+      }
     }
+  }
+
+  void _onDeviceInformation(BuildContext context) async {
+    final result = await DI.osamRepository.deviceInformation();
+    if (context.mounted) {
+      _showToast(context, result.platformName);
+      _showToast(context, result.platformVersion);
+      _showToast(context, result.platformModel);
+    }
+  }
+
+  void _onAppInformation(BuildContext context) async {
+    final result = await DI.osamRepository.appInformation();
+    if (context.mounted) {
+      _showToast(context, result.appName);
+      _showToast(context, result.appVersionName);
+      _showToast(context, result.appVersionCode);
+    }
+  }
+
+  void _showToast(BuildContext context, String text) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(SnackBar(content: Text(text)));
   }
 }

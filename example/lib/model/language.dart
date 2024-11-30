@@ -1,8 +1,10 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/widgets.dart';
 
 enum AppLanguage { CA, ES, EN }
 
-extension LanguageExtensions on AppLanguage {
+extension AppLanguageExtensions on AppLanguage {
   String toLanguageCode() {
     switch (this) {
       case AppLanguage.CA:
@@ -32,13 +34,13 @@ extension LanguageExtensions on AppLanguage {
   Locale toLocale() {
     switch (this) {
       case AppLanguage.CA:
-        return Locale("ca", "ES");
+        return const Locale("ca", "ES");
       case AppLanguage.ES:
-        return Locale("es", "ES");
+        return const Locale("es", "ES");
       case AppLanguage.EN:
-        return Locale("en", "US");
+        return const Locale("en", "US");
       default:
-        return Locale("ca", "ES");
+        return const Locale("ca", "ES");
     }
   }
 }

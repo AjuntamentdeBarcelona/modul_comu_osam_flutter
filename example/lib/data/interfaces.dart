@@ -1,11 +1,14 @@
-import 'package:common_module_flutter/osam/OSAM.dart';
-import 'package:example/model/language.dart';
-import 'package:flutter/widgets.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
+import 'package:common_module_flutter_example/model/language.dart';
 
 abstract class OsamRepository {
-  Future<VersionControlResponse> checkForUpdates(BuildContext context);
+  Future<VersionControlResponse> checkForUpdates();
 
-  Future<RatingControlResponse> checkRating(BuildContext context);
+  Future<RatingControlResponse> checkRating();
+
+  Future<DeviceInformation> deviceInformation();
+
+  Future<AppInformation> appInformation();
 }
 
 abstract class Settings {
