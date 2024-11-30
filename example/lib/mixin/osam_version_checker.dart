@@ -14,7 +14,7 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
   @override
   void initState() {
     super.initState();
-    subscription = FGBGEvents.stream.listen((event) async {
+    subscription = FGBGEvents.instance.stream.listen((event) async {
       if (event.toString() == "FGBGType.foreground") {
         await DI.osamRepository.checkForUpdates();
       }

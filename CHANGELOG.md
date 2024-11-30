@@ -1,3 +1,11 @@
+## 7.0.0
+
+* BREAKING CHANGES
+  * Update dependencies
+  * Compatibility with XCode 16
+  * Need to use minimal Dart SDK version ^3.5.0
+  * Need to use minimal Flutter version 3.24.3
+
 ## 6.0.0
 
 * BREAKING CHANGES

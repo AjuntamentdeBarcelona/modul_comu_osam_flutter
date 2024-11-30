@@ -64,6 +64,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'cat.bcn.commonmodule.flutter.common_module_flutter_example'
 }
 
 flutter {
