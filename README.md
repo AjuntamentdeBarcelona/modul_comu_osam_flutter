@@ -5,6 +5,11 @@
 
 ---
 
+## Migrate from 6.0.0 to 7.0.0
+
+- Need to use minimal Dart SDK version ^3.5.0
+- Need to use minimal Flutter version 3.24.3
+
 ## Migrate from 5.0.x to 6.0.0
 
 - Rename package from `common_module_flutter` to `osam_common_module_flutter`
