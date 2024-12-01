@@ -40,7 +40,7 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
     osam_common_module_flutter:
       git:
         url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-        ref: '6.0.0'
+        ref: '7.0.0'
     ```
 
     En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
@@ -83,7 +83,7 @@ COMMON_MODULE_URL=https://dev-osam-modul-comu.dtibcn.cat/
 
 #### Versió de Kotlin
 
-S'ha d'utilitzar, com a mínim, la versió **1.6.10** de Kotlin.
+S'ha d'utilitzar, com a mínim, la versió **1.9.0** de Kotlin.
 
 #### compileSdkVersion
 
@@ -109,7 +109,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```plist
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.1.7'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.2.2'
 ```
 
 El Podfile quedaria de [la següent manera](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/ios/Podfile)
