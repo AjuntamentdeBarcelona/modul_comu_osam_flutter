@@ -1,3 +1,8 @@
+## 7.0.1
+
+* BREAKING CHANGES
+  * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.2.3 fixing returned value from INFO mode.
+
 ## 7.0.0
 
 * BREAKING CHANGES
