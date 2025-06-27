@@ -109,7 +109,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```plist
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.2.2'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.2.3'
 ```
 
 El Podfile quedaria de [la següent manera](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/ios/Podfile)
