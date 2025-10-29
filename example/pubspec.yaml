@@ -1,7 +1,7 @@
 name: common_module_flutter_example
 description: Sample app to handle version control and rating for OSAM applications
 publish_to: 'none'
-version: 3.0.1+20230417
+version: 3.0.2+20251029
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
