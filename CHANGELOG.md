@@ -1,3 +1,8 @@
+## 7.0.2
+
+* BREAKING CHANGES
+  * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.2.4 fixing version control in app update and offline mode.
+
 ## 7.0.1
 
 * BREAKING CHANGES
