@@ -49,4 +49,7 @@ example/android/app/google-services.json
 example/ios/Runner/GoogleService-Info.plist
 
 # FVM Version Cache
-.fvm/
+.fvm/flutter_sdk
+.fvm/versions
+.fvm/release
+.fvm/version
