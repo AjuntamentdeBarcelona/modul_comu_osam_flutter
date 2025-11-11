@@ -1,3 +1,8 @@
+## 7.0.3-dev
+
+* BREAKING CHANGES
+  * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 2.3.0 adding the checkbox "Dont Show again" to modes INFO and LAZY.
+
 ## 7.0.2
 
 * BREAKING CHANGES
