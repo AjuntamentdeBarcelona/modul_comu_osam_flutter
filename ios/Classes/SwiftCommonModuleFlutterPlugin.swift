@@ -91,6 +91,18 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
            } else {
                result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
            }
+        } else if call.method == "changeLanguageEvent" {
+            if let osamCommons = self.osamCommons {
+                let language : String = ((call.arguments as? Dictionary<String, Any>)?["language"] as? String) ?? ""
+                osamCommons.changeLanguageEvent(
+                    language: getLanguageFromString(langugageCode: language),
+                    f: { languageInformationResponse in
+                        result(languageInformationResponse.toString())
+                    }
+                )
+            } else {
+                result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
+            }
         } else {
            result(FlutterMethodNotImplemented)
         }
