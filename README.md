@@ -213,3 +213,28 @@ void _onAppInformation(BuildContext context) async {
   _showToast(context, "${result.appVersionCode}");
 }
 ```
+
+## Implementació per enviar l'esdeveniment de canvi d'idioma a l'aplicació
+
+Aquest esdeveniment recull la informació de l'idioma anterior al canvi, l'idioma recent seleccionat i l'idioma
+del dispositiu mòbil
+Exemple:
+
+```dart
+void _onLanguageInformation(BuildContext context) async {
+  final result = await DI.osamRepository.languageInformation();
+  if (context.mounted) {
+    switch (result) {
+      case LanguageInformationResponse.SENT:
+        _showToast(context, LanguageInformationResponse.SENT.name);
+        break;
+      case LanguageInformationResponse.NOT_SENT:
+        _showToast(context, LanguageInformationResponse.NOT_SENT.name);
+        break;
+      case LanguageInformationResponse.ERROR:
+        _showToast(context, LanguageInformationResponse.ERROR.name);
+        break;
+    }
+  }
+}
+```

@@ -9,6 +9,8 @@ abstract class OsamRepository {
   Future<DeviceInformation> deviceInformation();
 
   Future<AppInformation> appInformation();
+
+  Future<LanguageInformationResponse> languageInformation();
 }
 
 abstract class Settings {

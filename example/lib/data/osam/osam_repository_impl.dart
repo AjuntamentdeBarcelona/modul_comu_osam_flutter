@@ -52,4 +52,11 @@ class OsamRepositoryImpl extends OsamRepository {
   Future<AppInformation> appInformation() {
     return osamSdk.appInformation();
   }
+
+  @override
+  Future<LanguageInformationResponse> languageInformation() {
+    return osamSdk.changeLanguageEvent(
+      language: _getLanguage(settings.getLanguage()),
+    );
+  }
 }

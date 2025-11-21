@@ -126,6 +126,17 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                     result.error("NO_VIEW", "No Activity Available", null)
                 }
             }
+            "changeLanguageEvent" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    val language = getLanguageFromString(call.argument("language") ?: "")
+                    osamCommons.changeLanguageEvent(language) {
+                        result.success(it.toString())
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
             else -> {
                 result.notImplemented()
             }

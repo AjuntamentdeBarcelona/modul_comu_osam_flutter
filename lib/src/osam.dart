@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:flutter/services.dart';
 
-import 'package:osam_common_module_flutter/src/model/app_information.dart';
+import 'package:flutter/services.dart';
 import 'package:osam_common_module_flutter/src/model/device_information.dart';
 import 'package:osam_common_module_flutter/src/model/language.dart';
+import 'package:osam_common_module_flutter/src/model/language_information_response.dart';
 import 'package:osam_common_module_flutter/src/model/rating_control_response.dart';
 import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
+
+import '../osam_common_module_flutter.dart';
 
 /// A callback type that is returned a className and stackTrace whenever an
 /// exception
@@ -151,5 +153,16 @@ class OSAM {
     final String? response =
         await _methodChannel.invokeMethod('appInformation');
     return AppInformationExtensions.fromJson(response ?? '');
+  }
+
+  /// Get information about the language
+  Future<LanguageInformationResponse> changeLanguageEvent({
+    required Language language,
+  }) async {
+    final String? response = await _methodChannel.invokeMethod(
+      'changeLanguageEvent',
+      {'language': language.toLanguageCode()},
+    );
+    return LanguageInformationResponseExtensions.fromString(response ?? '');
   }
 }
