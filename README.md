@@ -5,7 +5,7 @@
 
 ---
 
-## Migrate from 6.0.0 to 7.0.0
+## Migrate from 6.0.0 to 8.0.0
 
 - Need to use minimal Dart SDK version ^3.5.0
 - Need to use minimal Flutter version 3.24.3
@@ -43,13 +43,14 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
         ref: '7.0.2'
     ```
 
-    En cas que les dependències de Firebase Analytics, Firebase Performance i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
+    En cas que les dependències de Firebase Analytics, Firebase Performance, Firebase Messaging i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
 
     ```yaml
     dependency_overrides:
     firebase_crashlytics_platform_interface: 3.1.13
     firebase_analytics_platform_interface: 3.0.5
     firebase_performance_platform_interface: ^0.1.1+18
+    firebase_messaging_platform_interface: ^5.0.0
     ```
 
 2. Actualitzar mitjançant el comandament 'flutter packages get' les dependències.
@@ -216,23 +217,107 @@ void _onAppInformation(BuildContext context) async {
 
 ## Implementació per enviar l'esdeveniment de canvi d'idioma a l'aplicació
 
-Aquest esdeveniment recull la informació de l'idioma anterior al canvi, l'idioma recent seleccionat i l'idioma
-del dispositiu mòbil
+Aquesta funció orquestra tota la lògica associada al canvi d'idioma de l'aplicació.
+En ser invocada, actualitza les preferències locals desant tant l'idioma nou com l'anterior,
+registra un esdeveniment language_change a Firebase Analytics amb els detalls del canvi,
+i actualitza la subscripció als topics de notificacions de Firebase Cloud Messaging per garantir que
+l'usuari rebi les comunicacions en l'idioma seleccionat.
+
 Exemple:
 
 ```dart
-void _onLanguageInformation(BuildContext context) async {
-  final result = await DI.osamRepository.languageInformation();
+void _onChangeLanguageEvent(BuildContext context) async {
+  final result = await DI.osamRepository.changeLanguageEvent();
   if (context.mounted) {
     switch (result) {
-      case LanguageInformationResponse.SENT:
-        _showToast(context, LanguageInformationResponse.SENT.name);
+      case AppLanguageResponse.SUCCESS:
+        _showToast(context, AppLanguageResponse.SENT.name);
         break;
-      case LanguageInformationResponse.NOT_SENT:
-        _showToast(context, LanguageInformationResponse.NOT_SENT.name);
+      case LanguageInformationResponse.UNCHANGED:
+        _showToast(context, AppLanguageResponse.NOT_SENT.name);
         break;
       case LanguageInformationResponse.ERROR:
-        _showToast(context, LanguageInformationResponse.ERROR.name);
+        _showToast(context, AppLanguageResponse.ERROR.name);
+        break;
+    }
+  }
+}
+```
+
+## Com funciona el event del'esdeveniment d'inici o actualització de l'app
+
+Aquesta funció, que s'ha de cridar en iniciar l'aplicació, gestiona la subscripció inicial
+o l'actualització dels topics de notificacions per assegurar que el dispositiu estigui subscrit
+al canal correcte de Firebase Cloud Messaging. El procés recupera l'últim topic registrat,
+construeix el nou basant-se en la versió de l'app i l'idioma del dispositiu, actualitza
+la subscripció a Firebase donant de baixa l'antic i registrant el nou, i finalment desa
+localment la informació de la nova versió per a futures execucions.
+
+```dart
+void _onFirstTimeOrUpdateEvent(BuildContext context) async {
+  final result = await DI.osamRepository.firstTimeOrUpdateEvent();
+  if (context.mounted) {
+    switch (result) {
+      case AppLanguageResponse.SUCCESS:
+        _showToast(context, AppLanguageResponse.SUCCESS.name);
+        break;
+      case LanguageInformationResponse.UNCHANGED:
+        _showToast(context, AppLanguageResponse.UNCHANGED.name);
+        break;
+      case LanguageInformationResponse.ERROR:
+        _showToast(context, AppLanguageResponse.ERROR.name);
+        break;
+    }
+  }
+}
+```
+
+## Com funciona el event de la subscripció a un topic personalitzat
+
+Aquesta funció permet subscriure l'aplicació a un topic de
+notificacions de Firebase amb un nom específic i personalitzat.
+
+És útil per a campanyes de màrqueting o per segmentar usuaris en
+grups que no depenen de la versió de l'app o de l'idioma.
+La funció s'encarrega de gestionar la comunicació amb Firebase
+per realitzar la subscripció de manera asíncrona.
+
+```dart
+void _onSubscribeToCustomTopic(BuildContext context, String topic) async {
+  final result = await DI.osamRepository.subscribeToCustomTopic(topic: topic);
+  if (context.mounted) {
+    switch (result) {
+      case AppLanguageResponse.ACCEPTED:
+        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+        break;
+      case LanguageInformationResponse.ERROR:
+        _showToast(context, AppLanguageResponse.ERROR.name);
+        break;
+    }
+  }
+}
+```
+
+## Com funciona el event de la desubscripció a un topic personalitzat
+
+Aquesta funció permet desubscriure l'aplicació d'un topic de
+notificacions de Firebase amb un nom específic i personalitzat.
+
+És l'operació inversa a subscribeToCustomTopic i és útil per
+aturar la recepció de notificacions d'una campanya concreta o per
+netejar subscripcions quan ja no són necessàries.
+La funció s'encarrega de gestionar la comunicació amb Firebase per realitzar la desubscripció de manera asíncrona.
+
+```dart
+void _onUnsubscribeToCustomTopic(BuildContext context, String topic) async {
+  final result = await DI.osamRepository.unsubscribeToCustomTopic(topic: topic);
+  if (context.mounted) {
+    switch (result) {
+      case AppLanguageResponse.ACCEPTED:
+        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+        break;
+      case LanguageInformationResponse.ERROR:
+        _showToast(context, AppLanguageResponse.ERROR.name);
         break;
     }
   }

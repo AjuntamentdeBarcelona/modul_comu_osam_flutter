@@ -1,7 +1,9 @@
 package cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension
 
+import cat.bcn.commonmodule.ui.versioncontrol.AppLanguageResponse
 import cat.bcn.commonmodule.ui.versioncontrol.Language
 import cat.bcn.commonmodule.ui.versioncontrol.RatingControlResponse
+import cat.bcn.commonmodule.ui.versioncontrol.SubscriptionResponse
 import cat.bcn.commonmodule.ui.versioncontrol.VersionControlResponse
 
 private const val catalanLanguageCode = "ca"
@@ -32,4 +34,15 @@ fun RatingControlResponse.toStringResponse(): String = when (this) {
     RatingControlResponse.ACCEPTED -> "ACCEPTED"
     RatingControlResponse.DISMISSED -> "DISMISSED"
     RatingControlResponse.ERROR -> "ERROR"
+}
+
+fun AppLanguageResponse.toStringResponse(): String = when (this) {
+    AppLanguageResponse.SUCCESS -> "SUCCESS"
+    AppLanguageResponse.UNCHANGED -> "UNCHANGED"
+    AppLanguageResponse.ERROR -> "ERROR"
+}
+
+fun SubscriptionResponse.toStringResponse(): String = when (this) {
+    SubscriptionResponse.ACCEPTED -> "ACCEPTED"
+    SubscriptionResponse.ERROR -> "ERROR"
 }

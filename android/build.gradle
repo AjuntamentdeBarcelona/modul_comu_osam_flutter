@@ -49,6 +49,6 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
-    implementation("com.github.AjuntamentdeBarcelona.modul_comu_osam:common:2.2.7-dev")
+    implementation("com.github.AjuntamentdeBarcelona.modul_comu_osam:common:2.2.8-dev")
     implementation("com.google.code.gson:gson:2.10.1")
 }

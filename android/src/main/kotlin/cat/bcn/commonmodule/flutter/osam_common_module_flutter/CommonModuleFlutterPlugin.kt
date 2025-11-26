@@ -8,9 +8,7 @@ import cat.bcn.commonmodule.flutter.osam_common_module_flutter.performance.Perfo
 import cat.bcn.commonmodule.flutter.osam_common_module_flutter.platform_util.PlatformUtilBridge
 import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.getLanguageFromString
 import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.toStringResponse
-import cat.bcn.commonmodule.model.AppInformation
-import cat.bcn.commonmodule.model.DeviceInformation
-import cat.bcn.commonmodule.ui.versioncontrol.DeviceInformationResponse
+import cat.bcn.commonmodule.flutter.osam_common_module_flutter.messaging.MessagingBridge
 import cat.bcn.commonmodule.ui.versioncontrol.OSAMCommons
 import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -40,6 +38,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     private val platformUtilBridge = PlatformUtilBridge({
         activity
     })
+    private val messagingBridge = MessagingBridge()
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel = MethodChannel(
@@ -62,6 +61,12 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
             "common_module_flutter_performance_event_channel"
         )
         performanceEventChannel.setStreamHandler(performanceBridge)
+        // Setup the event channel for Messaging
+        val messagingEventChannel = EventChannel(
+            flutterPluginBinding.binaryMessenger,
+            "common_module_flutter_messaging_event_channel"
+        )
+        messagingEventChannel.setStreamHandler(messagingBridge)
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -131,12 +136,47 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 if (osamCommons != null) {
                     val language = getLanguageFromString(call.argument("language") ?: "")
                     osamCommons.changeLanguageEvent(language) {
-                        result.success(it.toString())
+                        result.success(it.toStringResponse())
                     }
                 } else {
                     result.error("NO_VIEW", "No Activity Available", null)
                 }
             }
+            "firstTimeOrUpdateAppEvent" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    val language = getLanguageFromString(call.argument("language") ?: "")
+                    osamCommons.firstTimeOrUpdateEvent(language) {
+                        result.success(it.toStringResponse())
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
+            "subscribeToCustomTopic" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    val topic = call.argument("topic") ?: ""
+                    osamCommons.subscribeToCustomTopic(topic) {
+                        result.success(it.toStringResponse())
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
+            "unsubscribeToCustomTopic" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    val topic = call.argument("topic") ?: ""
+                    osamCommons.unsubscribeToCustomTopic(topic) {
+                        result.success(it.toStringResponse())
+                    }
+                } else {
+                    result.error("NO_VIEW", "No Activity Available", null)
+                }
+            }
+
+
             else -> {
                 result.notImplemented()
             }
@@ -172,7 +212,8 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 crashlyticsBridge,
                 performanceBridge,
                 analyticsBridge,
-                platformUtilBridge
+                platformUtilBridge,
+                messagingBridge
             )
         }
     }

@@ -1,5 +1,6 @@
 import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/model/language.dart';
+import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
 
 abstract class OsamRepository {
   Future<VersionControlResponse> checkForUpdates();
@@ -10,7 +11,13 @@ abstract class OsamRepository {
 
   Future<AppInformation> appInformation();
 
-  Future<LanguageInformationResponse> languageInformation();
+  Future<AppLanguageResponse> changeLanguageEvent();
+
+  Future<AppLanguageResponse> firstTimeOrUpdateEvent();
+
+  Future<SubscriptionResponse> subscribeToCustomTopic();
+
+  Future<SubscriptionResponse> unsubscribeToCustomTopic();
 }
 
 abstract class Settings {

@@ -63,3 +63,31 @@ extension RatingControlResponse {
         }
     }
 }
+
+extension AppLanguageResponse {
+    func toStringResponse() -> String {
+        switch self {
+        case .success:
+            return "SUCCESS"
+        case .unchanged:
+            return "UNCHANGED"
+        case .error:
+            return "ERROR"
+        default:
+            return "UNCHANGED"
+        }
+    }
+}
+
+extension SubscriptionResponse {
+    func toStringResponse() -> String {
+        switch self {
+        case .accepted:
+            return "ACCEPTED"
+        case .error:
+            return "ERROR"
+        default:
+            return "ERROR"
+        }
+    }
+}
