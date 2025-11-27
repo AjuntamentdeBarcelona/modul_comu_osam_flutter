@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:osam_common_module_flutter/src/model/device_information.dart';
 import 'package:osam_common_module_flutter/src/model/language.dart';
-import 'package:osam_common_module_flutter/src/model/language_information_response.dart';
+import 'package:osam_common_module_flutter/src/model/app_language_response.dart';
 import 'package:osam_common_module_flutter/src/model/rating_control_response.dart';
+import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
 import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
 
 import '../osam_common_module_flutter.dart';
@@ -26,6 +27,9 @@ typedef OnPerformanceEvent = Function(
   Map<String, String> params,
 );
 
+/// A single callback that provides the topic and the action ('subscribe' or 'unsubscribe')
+typedef OnMessagingEvent = Function(String topic, String action);
+
 class OSAM {
   static const MethodChannel _methodChannel =
       MethodChannel('common_module_flutter_method_channel');
@@ -35,6 +39,8 @@ class OSAM {
       EventChannel('common_module_flutter_crashlytics_event_channel');
   static const EventChannel _performanceEventChannel =
       EventChannel('common_module_flutter_performance_event_channel');
+  static const EventChannel _messagingEventChannel =
+      EventChannel('common_module_flutter_messaging_event_channel');
 
   OSAM._();
 
@@ -61,6 +67,11 @@ class OSAM {
     /// so that it can be reported to the performance reporting service
     /// being used. For example, Firebase Performance.
     OnPerformanceEvent onPerformanceEvent,
+
+    /// It is called when the native library requests to subscribe
+    /// or unsubscribe from a specific topic.
+    /// For example, Firebase Messaging.
+    OnMessagingEvent onMessagingEvent,
   ) async {
     await _methodChannel
         .invokeMethod('init', {'backendEndpoint': backendEndpoint});
@@ -108,6 +119,17 @@ class OSAM {
       }
       onPerformanceEvent(uniqueId, e, params);
     });
+    _messagingEventChannel.receiveBroadcastStream().listen((event) {
+      if (event is Map) {
+        final String? topic = event['topic'];
+        final String? action = event['action'];
+
+        if (topic != null && action != null) {
+          onMessagingEvent(topic, action);
+        }
+      }
+    });
+
     return OSAM._();
   }
 
@@ -156,13 +178,43 @@ class OSAM {
   }
 
   /// Get information about the language
-  Future<LanguageInformationResponse> changeLanguageEvent({
+  Future<AppLanguageResponse> changeLanguageEvent({
     required Language language,
   }) async {
     final String? response = await _methodChannel.invokeMethod(
       'changeLanguageEvent',
       {'language': language.toLanguageCode()},
     );
-    return LanguageInformationResponseExtensions.fromString(response ?? '');
+    return AppLanguageResponseExtensions.fromString(response ?? '');
+  }
+
+  Future<AppLanguageResponse> firstTimeOrUpdateAppEvent({
+    required Language language,
+  }) async {
+    final String? response = await _methodChannel.invokeMethod(
+      'firstTimeOrUpdateAppEvent',
+      {'language': language.toLanguageCode()},
+    );
+    return AppLanguageResponseExtensions.fromString(response ?? '');
+  }
+
+  Future<SubscriptionResponse> subscribeToCustomTopic({
+    required String topic,
+  }) async {
+    final String? response = await _methodChannel.invokeMethod(
+      'subscribeToCustomTopic',
+      {'topic': topic},
+    );
+    return SubscriptionResponseExtensions.fromString(response ?? '');
+  }
+
+  Future<SubscriptionResponse> unsubscribeToCustomTopic({
+    required String topic,
+  }) async {
+    final String? response = await _methodChannel.invokeMethod(
+      'unsubscribeToCustomTopic',
+      {'topic': topic},
+    );
+    return SubscriptionResponseExtensions.fromString(response ?? '');
   }
 }

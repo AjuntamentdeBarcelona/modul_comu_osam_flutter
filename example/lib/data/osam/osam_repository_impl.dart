@@ -2,6 +2,7 @@ import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/model/language.dart'
     as app_language;
+import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
 
 class OsamRepositoryImpl extends OsamRepository {
   final OSAM osamSdk;
@@ -54,9 +55,26 @@ class OsamRepositoryImpl extends OsamRepository {
   }
 
   @override
-  Future<LanguageInformationResponse> languageInformation() {
+  Future<AppLanguageResponse> changeLanguageEvent() {
     return osamSdk.changeLanguageEvent(
       language: _getLanguage(settings.getLanguage()),
     );
+  }
+
+  @override
+  Future<AppLanguageResponse> firstTimeOrUpdateEvent() {
+    return osamSdk.firstTimeOrUpdateAppEvent(
+      language: _getLanguage(settings.getLanguage()),
+    );
+  }
+
+  @override
+  Future<SubscriptionResponse> subscribeToCustomTopic() {
+    return osamSdk.subscribeToCustomTopic(topic: "TestTopic");
+  }
+
+  @override
+  Future<SubscriptionResponse> unsubscribeToCustomTopic() {
+    return osamSdk.unsubscribeToCustomTopic(topic: "TestTopic");
   }
 }

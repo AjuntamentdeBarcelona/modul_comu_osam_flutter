@@ -3,6 +3,7 @@ import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
 import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
 
 import 'di/di.dart';
 
@@ -110,8 +111,20 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                     onPressed: () => _onAppInformation(context),
                   ),
                   ElevatedButton(
-                    child: Text("Language Information".toUpperCase()),
-                    onPressed: () => _onLanguageInformation(context),
+                    child: Text("Change Language Event".toUpperCase()),
+                    onPressed: () => _onChangeLanguageEvent(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("First Time or Update Event".toUpperCase()),
+                    onPressed: () => _onFirstTimeOrUpdateEvent(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("Subscribe To Custom Topic".toUpperCase()),
+                    onPressed: () => _onSubscribeToCustomTopic(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("Unsubscribe To Custom Topic".toUpperCase()),
+                    onPressed: () => _onUnsubscribeToCustomTopic(context),
                   ),
                 ],
               ),
@@ -176,18 +189,63 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
     }
   }
 
-  void _onLanguageInformation(BuildContext context) async {
-    final result = await DI.osamRepository.languageInformation();
+  void _onChangeLanguageEvent(BuildContext context) async {
+    final result = await DI.osamRepository.changeLanguageEvent();
     if (context.mounted) {
       switch (result) {
-        case LanguageInformationResponse.SENT:
-          _showToast(context, LanguageInformationResponse.SENT.name);
+        case AppLanguageResponse.SUCCESS:
+          _showToast(context, AppLanguageResponse.SUCCESS.name);
           break;
-        case LanguageInformationResponse.NOT_SENT:
-          _showToast(context, LanguageInformationResponse.NOT_SENT.name);
+        case AppLanguageResponse.UNCHANGED:
+          _showToast(context, AppLanguageResponse.UNCHANGED.name);
           break;
-        case LanguageInformationResponse.ERROR:
-          _showToast(context, LanguageInformationResponse.ERROR.name);
+        case AppLanguageResponse.ERROR:
+          _showToast(context, AppLanguageResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onFirstTimeOrUpdateEvent(BuildContext context) async {
+    final result = await DI.osamRepository.firstTimeOrUpdateEvent();
+    if (context.mounted) {
+      switch (result) {
+        case AppLanguageResponse.SUCCESS:
+          _showToast(context, AppLanguageResponse.SUCCESS.name);
+          break;
+        case AppLanguageResponse.UNCHANGED:
+          _showToast(context, AppLanguageResponse.UNCHANGED.name);
+          break;
+        case AppLanguageResponse.ERROR:
+          _showToast(context, AppLanguageResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onSubscribeToCustomTopic(BuildContext context) async {
+    final result = await DI.osamRepository.subscribeToCustomTopic();
+    if (context.mounted) {
+      switch (result) {
+        case SubscriptionResponse.ACCEPTED:
+          _showToast(context, SubscriptionResponse.ACCEPTED.name);
+          break;
+        case SubscriptionResponse.ERROR:
+          _showToast(context, SubscriptionResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onUnsubscribeToCustomTopic(BuildContext context) async {
+    final result = await DI.osamRepository.unsubscribeToCustomTopic();
+    if (context.mounted) {
+      switch (result) {
+        case SubscriptionResponse.ACCEPTED:
+          _showToast(context, SubscriptionResponse.ACCEPTED.name);
+          break;
+        case SubscriptionResponse.ERROR:
+          _showToast(context, SubscriptionResponse.ERROR.name);
           break;
       }
     }
