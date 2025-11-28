@@ -1,6 +1,8 @@
 import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/model/language.dart';
 import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
+import 'package:osam_common_module_flutter/src/model/token_response.dart';
+
 
 abstract class OsamRepository {
   Future<VersionControlResponse> checkForUpdates();
@@ -18,6 +20,8 @@ abstract class OsamRepository {
   Future<SubscriptionResponse> subscribeToCustomTopic();
 
   Future<SubscriptionResponse> unsubscribeToCustomTopic();
+
+  Future<TokenResponse> getFCMToken();
 }
 
 abstract class Settings {

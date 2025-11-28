@@ -16,6 +16,7 @@ class DI {
   static late OSAM _osamSdk;
   static Map<String, Tuple<int, HttpMetric>?> performanceCurrentMetrics = {};
 
+
   static Future<void> initialize() async {
     await Firebase.initializeApp();
     _initializeMessaging();
@@ -153,14 +154,15 @@ class DI {
   }
 
   static _onMessagingEvent(String topic, String action) async {
-    debugPrint("MessagingEvent: $action to topic: $topic");
-
     switch (action) {
       case 'subscribe':
         await FirebaseMessaging.instance.subscribeToTopic(topic);
         break;
       case 'unsubscribe':
         await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+        break;
+      case 'getToken':
+        cacheTokenForNative();
         break;
       default:
         debugPrint("MessagingEvent error: Unknown action $action");
@@ -169,7 +171,6 @@ class DI {
 
   static Future<void> _initializeMessaging() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-
     // 1. Request Permission (Crucial for iOS & Android 13+)
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -208,5 +209,12 @@ class DI {
 
   static int getCurrentTime() {
     return DateTime.now().millisecondsSinceEpoch;
+  }
+
+  static Future<void> cacheTokenForNative() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await _prefs.setString('fcm_token', token);
+    }
   }
 }

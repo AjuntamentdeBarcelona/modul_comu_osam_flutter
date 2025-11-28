@@ -147,6 +147,25 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
             } else {
                 result(FlutterError(code: "NO_VIEW", message: "No ViewController Available", details: nil))
             }
+        }else if call.method == "getFCMToken" {
+            if let osamCommons = self.osamCommons {
+                // Call the getFCMToken method which provides the result in a callback.
+                osamCommons.getFCMToken { tokenResponse in
+                    // Handle the response inside the callback.
+                    switch tokenResponse {
+                    case let success as TokenResponse.Success:
+                        // On success, send the token back to Flutter.
+                        result(success.token)
+                    case let error as TokenResponse.Error:
+                        // On error, send an error code and the message from the response.
+                        let errorMessage = error.error.message ?? "Failed to retrieve FCM token."
+                        result(FlutterError(code: "GET_TOKEN_ERROR", message: errorMessage, details: nil))
+                    default:
+                        // Handle any other unexpected response types.
+                        result(FlutterError(code: "UNKNOWN_ERROR", message: "An unknown error occurred.", details: nil))
+                    }
+                }
+            }
         }
         else {
            result(FlutterMethodNotImplemented)

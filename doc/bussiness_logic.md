@@ -73,3 +73,9 @@ notificacions de Firebase amb un nom específic i personalitzat.
 aturar la recepció de notificacions d'una campanya concreta o per
 netejar subscripcions quan ja no són necessàries.
 La funció s'encarrega de gestionar la comunicació amb Firebase per realitzar la desubscripció de manera asíncrona.
+
+## Com funciona el event per obtenir el token de Firebase
+
+Aquesta funció permet obtenir el token de registre de Firebase Cloud Messaging (FCM) del dispositiu.
+Aquest token és un identificador únic que s'utilitza per enviar notificacions push directament a un
+dispositiu específic. L'operació es realitza de manera asíncrona.

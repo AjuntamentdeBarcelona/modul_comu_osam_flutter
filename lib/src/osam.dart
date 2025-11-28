@@ -7,6 +7,8 @@ import 'package:osam_common_module_flutter/src/model/app_language_response.dart'
 import 'package:osam_common_module_flutter/src/model/rating_control_response.dart';
 import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
 import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
+import 'package:osam_common_module_flutter/src/model/token_response.dart';
+
 
 import '../osam_common_module_flutter.dart';
 
@@ -216,5 +218,19 @@ class OSAM {
       {'topic': topic},
     );
     return SubscriptionResponseExtensions.fromString(response ?? '');
+  }
+
+  Future<TokenResponse> getFCMToken() async {
+    try {
+      // On success, the native side sends the token String directly.
+      final String token = await _methodChannel.invokeMethod('getFCMToken');
+      return Success(token);
+    } on PlatformException catch (e) {
+      // On failure, the native side sends a PlatformException.
+      return Error(e);
+    } catch (e) {
+      // Catch any other unexpected errors.
+      return Error(Exception('An unexpected error occurred: $e'));
+    }
   }
 }

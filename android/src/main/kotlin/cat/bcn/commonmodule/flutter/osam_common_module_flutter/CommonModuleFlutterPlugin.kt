@@ -10,6 +10,7 @@ import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.getLang
 import cat.bcn.commonmodule.flutter.osam_common_module_flutter.extension.toStringResponse
 import cat.bcn.commonmodule.flutter.osam_common_module_flutter.messaging.MessagingBridge
 import cat.bcn.commonmodule.ui.versioncontrol.OSAMCommons
+import cat.bcn.commonmodule.ui.versioncontrol.TokenResponse
 import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -38,7 +39,7 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
     private val platformUtilBridge = PlatformUtilBridge({
         activity
     })
-    private val messagingBridge = MessagingBridge()
+    private val messagingBridge = MessagingBridge { activity }
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         methodChannel = MethodChannel(
@@ -171,11 +172,26 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                     osamCommons.unsubscribeToCustomTopic(topic) {
                         result.success(it.toStringResponse())
                     }
-                } else {
-                    result.error("NO_VIEW", "No Activity Available", null)
                 }
             }
-
+            "getFCMToken" -> {
+                val osamCommons = this.osamCommons
+                if (osamCommons != null) {
+                    osamCommons.getFCMToken { tokenResponse ->
+                        when (tokenResponse) {
+                            is TokenResponse.Success -> {
+                                result.success(tokenResponse.token)
+                            }
+                            is TokenResponse.Error -> {
+                                val errorMessage = tokenResponse.error.message ?: "Failed to retrieve FCM token."
+                                result.error("GET_TOKEN_ERROR", errorMessage, null)
+                            }
+                        }
+                    }
+                } else {
+                    result.error("NOT_INITIALIZED", "OSAMCommons is not initialized. Call init() first.", null)
+                }
+            }
 
             else -> {
                 result.notImplemented()

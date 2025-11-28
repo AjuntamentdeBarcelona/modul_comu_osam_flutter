@@ -4,6 +4,7 @@ import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
+import 'package:osam_common_module_flutter/src/model/token_response.dart';
 
 import 'di/di.dart';
 
@@ -126,6 +127,10 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                     child: Text("Unsubscribe To Custom Topic".toUpperCase()),
                     onPressed: () => _onUnsubscribeToCustomTopic(context),
                   ),
+                  ElevatedButton(
+                    child: Text("Get FCM Token".toUpperCase()),
+                    onPressed: () => _onGetFCMToken(context),
+                  ),
                 ],
               ),
             ),
@@ -247,6 +252,18 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
         case SubscriptionResponse.ERROR:
           _showToast(context, SubscriptionResponse.ERROR.name);
           break;
+      }
+    }
+  }
+
+  void _onGetFCMToken(BuildContext context) async {
+    final result = await DI.osamRepository.getFCMToken();
+    if (context.mounted) {
+      switch (result) {
+        case Success(token: final token):
+          _showToast(context, 'SUCCESS: $token');
+        case Error(error: final error):
+          _showToast(context, 'ERROR: ${error.toString()}');
       }
     }
   }

@@ -323,3 +323,51 @@ void _onUnsubscribeToCustomTopic(BuildContext context, String topic) async {
   }
 }
 ```
+
+## Com funciona el event per obtenir el token de Firebase
+
+Aquesta funció permet obtenir el token de registre de Firebase Cloud Messaging (FCM) del dispositiu.
+Aquest token és un identificador únic que s'utilitza per enviar notificacions push directament a un
+dispositiu específic. L'operació es realitza de manera asíncrona.
+
+```dart
+void _onGetFCMToken(BuildContext context) async {
+  final result = await DI.osamRepository.getFCMToken();
+  if (context.mounted) {
+    switch (result) {
+      case Success(token: final token):
+        _showToast(context, 'SUCCESS: $token');
+      case Error(error: final error):
+        _showToast(context, 'ERROR: ${error.toString()}');
+    }
+  }
+}
+```
+
+Perquè aquesta funció s’executi correctament, és necessari inicialitzar la lògica del **MessagingEvent**.
+Pots veure’n un exemple a example.lib.di.di.dart, tal com es mostra a continuació:
+
+```dart
+
+static _onMessagingEvent(String topic, String action) async {
+    switch (action) {
+      case 'subscribe':
+        await FirebaseMessaging.instance.subscribeToTopic(topic);
+        break;
+      case 'unsubscribe':
+        await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+        break;
+      case 'getToken':
+        cacheTokenForNative();
+        break;
+      default:
+        debugPrint("MessagingEvent error: Unknown action $action");
+    }
+}
+
+static Future<void> cacheTokenForNative() async {
+  String? token = await FirebaseMessaging.instance.getToken();
+  if (token != null) {
+ await _prefs.setString('fcm_token', token);
+}
+```
