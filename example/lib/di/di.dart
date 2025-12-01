@@ -16,7 +16,6 @@ class DI {
   static late OSAM _osamSdk;
   static Map<String, Tuple<int, HttpMetric>?> performanceCurrentMetrics = {};
 
-
   static Future<void> initialize() async {
     await Firebase.initializeApp();
     _initializeMessaging();

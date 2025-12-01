@@ -16,4 +16,3 @@ final class Error extends TokenResponse {
 
   Error(this.error);
 }
-

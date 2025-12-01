@@ -9,7 +9,6 @@ import 'package:osam_common_module_flutter/src/model/subscription_response.dart'
 import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
 import 'package:osam_common_module_flutter/src/model/token_response.dart';
 
-
 import '../osam_common_module_flutter.dart';
 
 /// A callback type that is returned a className and stackTrace whenever an
