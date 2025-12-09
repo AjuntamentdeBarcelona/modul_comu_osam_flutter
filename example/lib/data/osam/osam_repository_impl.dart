@@ -2,8 +2,6 @@ import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/model/language.dart'
     as app_language;
-import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
-import 'package:osam_common_module_flutter/src/model/token_response.dart';
 
 class OsamRepositoryImpl extends OsamRepository {
   final OSAM osamSdk;

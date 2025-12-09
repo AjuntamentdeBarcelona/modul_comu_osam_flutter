@@ -3,8 +3,6 @@ import 'package:common_module_flutter_example/mixin/osam_version_checker.dart';
 import 'package:common_module_flutter_example/model/language.dart';
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
-import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
-import 'package:osam_common_module_flutter/src/model/token_response.dart';
 
 import 'di/di.dart';
 
