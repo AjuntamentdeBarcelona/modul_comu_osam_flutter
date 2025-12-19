@@ -1,15 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:osam_common_module_flutter/src/model/device_information.dart';
-import 'package:osam_common_module_flutter/src/model/language.dart';
-import 'package:osam_common_module_flutter/src/model/app_language_response.dart';
-import 'package:osam_common_module_flutter/src/model/rating_control_response.dart';
-import 'package:osam_common_module_flutter/src/model/subscription_response.dart';
-import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
-import 'package:osam_common_module_flutter/src/model/token_response.dart';
-
-import '../osam_common_module_flutter.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 
 /// A callback type that is returned a className and stackTrace whenever an
 /// exception
@@ -28,7 +20,8 @@ typedef OnPerformanceEvent = Function(
   Map<String, String> params,
 );
 
-/// A single callback that provides the topic and the action ('subscribe' or 'unsubscribe')
+/// A single callback that provides the topic and the action ('subscribe' or
+/// 'unsubscribe')
 typedef OnMessagingEvent = Function(String topic, String action);
 
 class OSAM {

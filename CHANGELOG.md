@@ -1,3 +1,10 @@
+## 8.0.1-dev
+
+* BREAKING CHANGES
+    * Updated the app demo showing functionalities and configurations;
+    * Adding new screens to the demo app.
+    * Inclusion of user cases in the demo app for the providers to check if they want to.
+
 ## 8.0.0
 
 * BREAKING CHANGES

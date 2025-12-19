@@ -45,7 +45,5 @@ app.*.map.json
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # FVM Version Cache
-.fvm/flutter_sdk
-.fvm/versions
-.fvm/release
-.fvm/version
+.fvm/*
+!.fvm/fvm_config.json

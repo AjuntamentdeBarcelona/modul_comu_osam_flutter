@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:common_module_flutter_example/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
+
+import '../di/di.dart';
 
 // A Navigator observer that notifies RouteAwares of changes to state of their Route
 final routeObserver = RouteObserver<PageRoute>();
@@ -15,8 +16,11 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
   void initState() {
     super.initState();
     subscription = FGBGEvents.instance.stream.listen((event) async {
-      if (event.toString() == "FGBGType.foreground") {
-        await DI.osamRepository.checkForUpdates();
+      if (event == FGBGType.foreground) {
+        // Only check for updates if the setting is enabled
+        if (DI.settings.getShowVersionControlPopup()) {
+          await DI.osamRepository.checkForUpdates();
+        }
       }
     });
   }
@@ -30,6 +34,7 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    subscription.cancel(); // Cancel subscription to prevent memory leaks
     super.dispose();
   }
 
