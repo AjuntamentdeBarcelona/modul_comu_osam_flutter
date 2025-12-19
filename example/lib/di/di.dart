@@ -1,4 +1,3 @@
-import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/data/osam/osam_repository_impl.dart';
 import 'package:common_module_flutter_example/data/settings/app_preferences.dart';
@@ -9,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DI {
@@ -153,49 +153,61 @@ class DI {
   }
 
   static _onMessagingEvent(String topic, String action) async {
-    switch (action) {
-      case 'subscribe':
-        await FirebaseMessaging.instance.subscribeToTopic(topic);
-        break;
-      case 'unsubscribe':
-        await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
-        break;
-      case 'getToken':
-        cacheTokenForNative();
-        break;
-      default:
-        debugPrint("MessagingEvent error: Unknown action $action");
+    try {
+      switch (action) {
+        case 'subscribe':
+          await FirebaseMessaging.instance.subscribeToTopic(topic);
+          await settings.addSubscribedTopic(topic);
+          break;
+        case 'unsubscribe':
+          await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+          await settings.removeSubscribedTopic(topic);
+          break;
+        case 'getToken':
+          cacheTokenForNative();
+          break;
+        default:
+          debugPrint("MessagingEvent error: Unknown action $action");
+      }
+    } catch (e) {
+      debugPrint("MessagingEvent error: $e");
     }
   }
 
   static Future<void> _initializeMessaging() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    // 1. Request Permission (Crucial for iOS & Android 13+)
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      // 1. Request Permission (Crucial for iOS & Android 13+)
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
 
-    debugPrint('Messaging permission status: ${settings.authorizationStatus}');
+      debugPrint(
+          'Messaging permission status: ${settings.authorizationStatus}');
 
-    // 2. Set Foreground Notification Options (for iOS to show heads-up notifications while app is open)
-    await messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+      // 2. Set Foreground Notification Options (for iOS to show heads-up notifications while app is open)
+      await messaging.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    // 3. Register Background Handler
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      // 3. Register Background Handler
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
 
-    // 4. Get and log the token (Optional: helpful for debugging)
-    final token = await messaging.getToken();
-    debugPrint("FCM Token: $token");
+      // 4. Get and log the token (Optional: helpful for debugging)
+      final token = await messaging.getToken();
+      debugPrint("FCM Token: $token");
+    } catch (e) {
+      debugPrint("Error initializing messaging: $e");
+    }
   }
 
   @pragma('vm:entry-point')
@@ -211,9 +223,13 @@ class DI {
   }
 
   static Future<void> cacheTokenForNative() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    if (token != null) {
-      await _prefs.setString('fcm_token', token);
+    try {
+      String? token = await FirebaseMessaging.instance.getToken();
+      if (token != null) {
+        await _prefs.setString('fcm_token', token);
+      }
+    } catch (e) {
+      debugPrint("Error caching token: $e");
     }
   }
 }
