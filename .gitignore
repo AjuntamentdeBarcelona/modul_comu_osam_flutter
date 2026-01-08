@@ -44,9 +44,8 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# Firebase
-example/android/app/google-services.json
-example/ios/Runner/GoogleService-Info.plist
-
 # FVM Version Cache
-.fvm/
+.fvm/flutter_sdk
+.fvm/versions
+.fvm/release
+.fvm/version

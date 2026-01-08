@@ -1,3 +1,12 @@
+## 8.0.0
+
+* BREAKING CHANGES
+  * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.0.0; 
+  * Adding the checkbox "Dont Show again" to modes INFO and LAZY.
+  * For the INFO and LAZY modes, when the user opens version control and accepts, there is now a field that defines the amount of time before that popup appears again.
+  * We have added language change analytic events for firebase.
+  * Integrated Firebase Messaging to manage notification topic subscriptions based on language changes.
+
 ## 7.0.2
 
 * BREAKING CHANGES

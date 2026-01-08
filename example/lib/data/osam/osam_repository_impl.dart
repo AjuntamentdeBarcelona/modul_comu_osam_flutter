@@ -52,4 +52,33 @@ class OsamRepositoryImpl extends OsamRepository {
   Future<AppInformation> appInformation() {
     return osamSdk.appInformation();
   }
+
+  @override
+  Future<AppLanguageResponse> changeLanguageEvent() {
+    return osamSdk.changeLanguageEvent(
+      language: _getLanguage(settings.getLanguage()),
+    );
+  }
+
+  @override
+  Future<AppLanguageResponse> firstTimeOrUpdateEvent() {
+    return osamSdk.firstTimeOrUpdateAppEvent(
+      language: _getLanguage(settings.getLanguage()),
+    );
+  }
+
+  @override
+  Future<SubscriptionResponse> subscribeToCustomTopic() {
+    return osamSdk.subscribeToCustomTopic(topic: "TestTopic");
+  }
+
+  @override
+  Future<SubscriptionResponse> unsubscribeToCustomTopic() {
+    return osamSdk.unsubscribeToCustomTopic(topic: "TestTopic");
+  }
+
+  @override
+  Future<TokenResponse> getFCMToken() {
+    return osamSdk.getFCMToken();
+  }
 }

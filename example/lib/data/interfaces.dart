@@ -9,6 +9,16 @@ abstract class OsamRepository {
   Future<DeviceInformation> deviceInformation();
 
   Future<AppInformation> appInformation();
+
+  Future<AppLanguageResponse> changeLanguageEvent();
+
+  Future<AppLanguageResponse> firstTimeOrUpdateEvent();
+
+  Future<SubscriptionResponse> subscribeToCustomTopic();
+
+  Future<SubscriptionResponse> unsubscribeToCustomTopic();
+
+  Future<TokenResponse> getFCMToken();
 }
 
 abstract class Settings {

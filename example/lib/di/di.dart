@@ -6,6 +6,7 @@ import 'package:common_module_flutter_example/model/tuple.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,9 +18,14 @@ class DI {
 
   static Future<void> initialize() async {
     await Firebase.initializeApp();
+    _initializeMessaging();
     _prefs = await SharedPreferences.getInstance();
-    _osamSdk = await OSAM.init("https://dev-osam-modul-comu.dtibcn.cat",
-        _onCrashlyticsException, _onAnalyticsEvent, _onPerformanceEvent);
+    _osamSdk = await OSAM.init(
+        "https://dev-osam-modul-comu.dtibcn.cat",
+        _onCrashlyticsException,
+        _onAnalyticsEvent,
+        _onPerformanceEvent,
+        _onMessagingEvent);
   }
 
   static final Settings settings = AppPreferences(_prefs);
@@ -146,7 +152,68 @@ class DI {
     }
   }
 
+  static _onMessagingEvent(String topic, String action) async {
+    switch (action) {
+      case 'subscribe':
+        await FirebaseMessaging.instance.subscribeToTopic(topic);
+        break;
+      case 'unsubscribe':
+        await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+        break;
+      case 'getToken':
+        cacheTokenForNative();
+        break;
+      default:
+        debugPrint("MessagingEvent error: Unknown action $action");
+    }
+  }
+
+  static Future<void> _initializeMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    // 1. Request Permission (Crucial for iOS & Android 13+)
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    debugPrint('Messaging permission status: ${settings.authorizationStatus}');
+
+    // 2. Set Foreground Notification Options (for iOS to show heads-up notifications while app is open)
+    await messaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    // 3. Register Background Handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // 4. Get and log the token (Optional: helpful for debugging)
+    final token = await messaging.getToken();
+    debugPrint("FCM Token: $token");
+  }
+
+  @pragma('vm:entry-point')
+  static Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    // If you need to access other Firebase services here, you must call initializeApp again
+    await Firebase.initializeApp();
+    debugPrint("Handling a background message: ${message.messageId}");
+  }
+
   static int getCurrentTime() {
     return DateTime.now().millisecondsSinceEpoch;
+  }
+
+  static Future<void> cacheTokenForNative() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await _prefs.setString('fcm_token', token);
+    }
   }
 }

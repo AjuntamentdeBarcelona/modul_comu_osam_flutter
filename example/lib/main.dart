@@ -13,7 +13,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -109,6 +109,26 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
                     child: Text("App Information".toUpperCase()),
                     onPressed: () => _onAppInformation(context),
                   ),
+                  ElevatedButton(
+                    child: Text("Change Language Event".toUpperCase()),
+                    onPressed: () => _onChangeLanguageEvent(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("First Time or Update Event".toUpperCase()),
+                    onPressed: () => _onFirstTimeOrUpdateEvent(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("Subscribe To Custom Topic".toUpperCase()),
+                    onPressed: () => _onSubscribeToCustomTopic(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("Unsubscribe To Custom Topic".toUpperCase()),
+                    onPressed: () => _onUnsubscribeToCustomTopic(context),
+                  ),
+                  ElevatedButton(
+                    child: Text("Get FCM Token".toUpperCase()),
+                    onPressed: () => _onGetFCMToken(context),
+                  ),
                 ],
               ),
             ),
@@ -169,6 +189,80 @@ class MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
       _showToast(context, result.appName);
       _showToast(context, result.appVersionName);
       _showToast(context, result.appVersionCode);
+    }
+  }
+
+  void _onChangeLanguageEvent(BuildContext context) async {
+    final result = await DI.osamRepository.changeLanguageEvent();
+    if (context.mounted) {
+      switch (result) {
+        case AppLanguageResponse.SUCCESS:
+          _showToast(context, AppLanguageResponse.SUCCESS.name);
+          break;
+        case AppLanguageResponse.UNCHANGED:
+          _showToast(context, AppLanguageResponse.UNCHANGED.name);
+          break;
+        case AppLanguageResponse.ERROR:
+          _showToast(context, AppLanguageResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onFirstTimeOrUpdateEvent(BuildContext context) async {
+    final result = await DI.osamRepository.firstTimeOrUpdateEvent();
+    if (context.mounted) {
+      switch (result) {
+        case AppLanguageResponse.SUCCESS:
+          _showToast(context, AppLanguageResponse.SUCCESS.name);
+          break;
+        case AppLanguageResponse.UNCHANGED:
+          _showToast(context, AppLanguageResponse.UNCHANGED.name);
+          break;
+        case AppLanguageResponse.ERROR:
+          _showToast(context, AppLanguageResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onSubscribeToCustomTopic(BuildContext context) async {
+    final result = await DI.osamRepository.subscribeToCustomTopic();
+    if (context.mounted) {
+      switch (result) {
+        case SubscriptionResponse.ACCEPTED:
+          _showToast(context, SubscriptionResponse.ACCEPTED.name);
+          break;
+        case SubscriptionResponse.ERROR:
+          _showToast(context, SubscriptionResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onUnsubscribeToCustomTopic(BuildContext context) async {
+    final result = await DI.osamRepository.unsubscribeToCustomTopic();
+    if (context.mounted) {
+      switch (result) {
+        case SubscriptionResponse.ACCEPTED:
+          _showToast(context, SubscriptionResponse.ACCEPTED.name);
+          break;
+        case SubscriptionResponse.ERROR:
+          _showToast(context, SubscriptionResponse.ERROR.name);
+          break;
+      }
+    }
+  }
+
+  void _onGetFCMToken(BuildContext context) async {
+    final result = await DI.osamRepository.getFCMToken();
+    if (context.mounted) {
+      switch (result) {
+        case Success(token: final token):
+          _showToast(context, 'SUCCESS: $token');
+        case Error(error: final error):
+          _showToast(context, 'ERROR: ${error.toString()}');
+      }
     }
   }
 
