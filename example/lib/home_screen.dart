@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> with OsamVersionChecker {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkVersionControl();
+      DI.osamRepository.firstTimeOrUpdateEvent();
     });
   }
 

@@ -371,3 +371,6 @@ static Future<void> cacheTokenForNative() async {
  await _prefs.setString('fcm_token', token);
 }
 ```
+## Flutter app demo
+Hi ha una app demo en aquest mòdul flutter amb moltes funcionalitats disponibles que poden ajudar a entendre com funciona el mòdul comú i veure quines 
+accions es duen a terme i com.
