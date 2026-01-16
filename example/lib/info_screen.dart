@@ -33,6 +33,8 @@ class _InfoScreenState extends State<InfoScreen> with OsamVersionChecker {
           _subscribedTopics = topics;
         });
       }
+      DI.settings.setAppVersionName(_appInformation?.appVersionName ?? "");
+      DI.settings.setAppVersionCode(_appInformation?.appVersionCode ?? "");
     });
   }
 
@@ -91,7 +93,7 @@ class _InfoScreenState extends State<InfoScreen> with OsamVersionChecker {
                   title: 'App Information',
                   info: {
                     'App Name': _appInformation?.appName,
-                    'Version Name': DI.settings.getAppVersionName(),
+                    'Version Name': _appInformation?.appVersionName,
                     'Version Code': _appInformation?.appVersionCode,
                   },
                 ),

@@ -190,7 +190,10 @@ class _OptionsScreenState extends State<OptionsScreen> with OsamVersionChecker {
               ),
             ),
           ),
-          Card(
+          // COMMENTED UNTIL THE FUTURE COMMON MODULE PASSES THE VERSIONS
+          // AS A PARAMETER, SO THIS SECTION WILL WORK AND BE USEFUL
+
+          /*Card(
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -234,7 +237,7 @@ class _OptionsScreenState extends State<OptionsScreen> with OsamVersionChecker {
                 ],
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

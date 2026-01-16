@@ -54,10 +54,10 @@ class _SplashScreenState extends State<SplashScreen>
       final String popupMode = DI.settings.getPopupMode();
 
       if (appVersionName.isEmpty) {
-        DI.settings.setAppVersionName("2.3.0");
+        DI.settings.setAppVersionName("");
       }
       if (appVersionCode.isEmpty) {
-        DI.settings.setAppVersionCode("20251029");
+        DI.settings.setAppVersionCode("");
       }
 
       bool shouldNavigate = true;
