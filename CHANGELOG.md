@@ -1,9 +1,11 @@
-## 8.0.1-dev
+## 8.1.0
 
 * BREAKING CHANGES
     * Updated the app demo showing functionalities and configurations;
     * Adding new screens to the demo app.
     * Inclusion of user cases in the demo app for the providers to check if they want to.
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.1.0 (adding more login version control and fixing some bugs);
+    * To show icon in version control in iOS you need to add the image "dialog_app_icon" with the icon image.
 
 ## 8.0.0
 
