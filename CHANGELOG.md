@@ -1,3 +1,8 @@
+## 8.1.1-dev
+
+* BREAKING CHANGES
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.0.1-dev accessible popup.
+
 ## 8.1.0
 
 * BREAKING CHANGES
