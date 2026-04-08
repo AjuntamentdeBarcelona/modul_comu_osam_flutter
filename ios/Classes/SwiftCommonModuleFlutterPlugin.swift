@@ -46,8 +46,10 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
         if call.method == "versionControl" {
             if let osamCommons = self.osamCommons {
                 let language : String = ((call.arguments as? Dictionary<String, Any>)?["language"] as? String) ?? ""
+                let isDarkMode : Bool = ((call.arguments as? Dictionary<String, Any>)?["isDarkMode"] as? Bool) ?? false
                 osamCommons.versionControl(
                     language: getLanguageFromString(langugageCode: language),
+                    isDarkMode: isDarkMode,
                     f: { versionControlResponse in
                         result(versionControlResponse.toStringResponse())
                     }
@@ -58,8 +60,10 @@ public class SwiftCommonModuleFlutterPlugin: NSObject, FlutterPlugin {
         } else if call.method == "rating" {
             if let osamCommons = self.osamCommons {
                 let language : String = ((call.arguments as? Dictionary<String, Any>)?["language"] as? String) ?? ""
+                let isDarkMode : Bool = ((call.arguments as? Dictionary<String, Any>)?["isDarkMode"] as? Bool) ?? false
                 osamCommons.rating(
                     language: getLanguageFromString(langugageCode: language),
+                    isDarkMode: isDarkMode,
                     f: { versionControlResponse in
                         result(versionControlResponse.toStringResponse())
                     }

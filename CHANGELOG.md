@@ -1,3 +1,10 @@
+## 8.1.2-dev
+
+* IMPLEMENTED CUSTOM POPUPS
+    * Added custom Flutter popups implementation to support dark/light mode colors (#1C1C1C and #B0B0B0) as requested.
+    * Added UIHelper and OSAMDialog widget in the Flutter part.
+    * Updated example app with "Custom Flutter Popup" button to test the new UI.
+
 ## 8.1.1-dev
 
 * BREAKING CHANGES

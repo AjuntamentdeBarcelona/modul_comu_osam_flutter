@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 import 'package:common_module_flutter_example/data/interfaces.dart';
 import 'package:common_module_flutter_example/model/language.dart'
@@ -16,12 +17,18 @@ class OsamRepositoryImpl extends OsamRepository {
   Future<VersionControlResponse> checkForUpdates() async {
     return osamSdk.versionControl(
       language: _getLanguage(settings.getLanguage()),
+      isDarkMode:
+          PlatformDispatcher.instance.platformBrightness == Brightness.dark,
     );
   }
 
   @override
   Future<RatingControlResponse> checkRating() async {
-    return osamSdk.rating(language: _getLanguage(settings.getLanguage()));
+    return osamSdk.rating(
+      language: _getLanguage(settings.getLanguage()),
+      isDarkMode:
+          PlatformDispatcher.instance.platformBrightness == Brightness.dark,
+    );
   }
 
   Language _getLanguage(app_language.AppLanguage appLanguage) {
