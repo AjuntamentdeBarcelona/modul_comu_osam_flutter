@@ -1,3 +1,8 @@
+## 8.1.3-dev
+
+* IMPLEMENTED STYLES FLEXIBILITY FOR CUSTOM POPUPS
+    * Added a parameter when building the version control popup for adding foreign styles or keeping their own.
+
 ## 8.1.2-dev
 
 * IMPLEMENTED CUSTOM POPUPS
