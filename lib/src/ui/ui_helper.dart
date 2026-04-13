@@ -110,199 +110,158 @@ class _OSAMDialogState extends State<OSAMDialog> {
     }
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+      alignment: Alignment.center,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minWidth: 300,
-          maxWidth: 450,
+        constraints: BoxConstraints(
+          minWidth: 280,
+          maxWidth: MediaQuery.of(context).size.width * 0.9,
         ),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.showClose)
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: Icon(
-                        Icons.close,
-                        color: closeIconColor,
-                        size: 24,
-                      ),
-                      onPressed: () => Navigator.of(context).pop(
-                        VersionControlResult(
-                          response: VersionControlResponse.CANCELLED,
-                          isCheckBoxChecked: _dontShowAgain,
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height * 0.4,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (widget.showClose)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: Icon(
+                          Icons.close,
+                          color: closeIconColor,
+                          size: 24,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(
+                          VersionControlResult(
+                            response: VersionControlResponse.CANCELLED,
+                            isCheckBoxChecked: _dontShowAgain,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                if (widget.appIcon != null)
+                  if (widget.appIcon != null)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: widget.appIcon,
+                        ),
+                      ),
+                    ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                    child: SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: widget.appIcon,
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        widget.version.title.localize(widget.language),
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: textColor,
+                          height: 1.2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Semantics(
-                    header: true,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
                     child: Text(
-                      widget.version.title.localize(widget.language),
+                      widget.version.message.localize(widget.language),
                       style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
                         color: textColor,
-                        height: 1.2,
+                        height: 1.4,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Text(
-                    widget.version.message.localize(widget.language),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: textColor,
-                      height: 1.4,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                if (widget.showCheckBox &&
-                    widget.version.checkBoxDontShowAgain.isCheckBoxVisible)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _dontShowAgain = !_dontShowAgain;
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Theme(
-                            data: ThemeData(
-                              unselectedWidgetColor: UIHelper.mediumLightGrey,
-                            ),
-                            child: SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Checkbox(
-                                value: _dontShowAgain,
-                                activeColor: checkboxActiveColor,
-                                checkColor: checkboxCheckColor,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dontShowAgain = value ?? false;
-                                  });
-                                },
+                  if (widget.showCheckBox &&
+                      widget.version.checkBoxDontShowAgain.isCheckBoxVisible)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _dontShowAgain = !_dontShowAgain;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Theme(
+                              data: ThemeData(
+                                unselectedWidgetColor: UIHelper.mediumLightGrey,
+                              ),
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: Checkbox(
+                                  value: _dontShowAgain,
+                                  activeColor: checkboxActiveColor,
+                                  checkColor: checkboxCheckColor,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dontShowAgain = value ?? false;
+                                    });
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              widget.version.checkBoxDontShowAgain.text
-                                  .localize(widget.language),
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 14,
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                widget.version.checkBoxDontShowAgain.text
+                                    .localize(widget.language),
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: widget.applyComModStyles
-                        ? ElevatedButton(
-                            onPressed: () => Navigator.of(context).pop(
-                              VersionControlResult(
-                                response: VersionControlResponse.ACCEPTED,
-                                isCheckBoxChecked: _dontShowAgain,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryButtonColor,
-                              foregroundColor: primaryButtonTextColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(28),
-                              ),
-                              elevation: 0,
-                            ),
-                            child: Text(
-                              widget.version.ok.localize(widget.language),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          )
-                        : TextButton(
-                            onPressed: () => Navigator.of(context).pop(
-                              VersionControlResult(
-                                response: VersionControlResponse.ACCEPTED,
-                                isCheckBoxChecked: _dontShowAgain,
-                              ),
-                            ),
-                            style: TextButton.styleFrom(
-                              foregroundColor: primaryButtonTextColor,
-                            ),
-                            child: Text(
-                              widget.version.ok.localize(widget.language),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                  ),
-                ),
-                if (widget.showNegative)
                   Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
+                    padding: const EdgeInsets.only(top: 24.0),
                     child: SizedBox(
                       width: double.infinity,
                       height: 52,
                       child: widget.applyComModStyles
-                          ? OutlinedButton(
+                          ? ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(
                                 VersionControlResult(
-                                  response: VersionControlResponse.CANCELLED,
+                                  response: VersionControlResponse.ACCEPTED,
                                   isCheckBoxChecked: _dontShowAgain,
                                 ),
                               ),
-                              style: OutlinedButton.styleFrom(
-                                side: secondaryButtonBorder,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryButtonColor,
+                                foregroundColor: primaryButtonTextColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(28),
                                 ),
-                                foregroundColor: secondaryButtonTextColor,
+                                elevation: 0,
                               ),
                               child: Text(
-                                widget.version.cancel.localize(widget.language),
+                                widget.version.ok.localize(widget.language),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -312,24 +271,76 @@ class _OSAMDialogState extends State<OSAMDialog> {
                           : TextButton(
                               onPressed: () => Navigator.of(context).pop(
                                 VersionControlResult(
-                                  response: VersionControlResponse.CANCELLED,
+                                  response: VersionControlResponse.ACCEPTED,
                                   isCheckBoxChecked: _dontShowAgain,
                                 ),
                               ),
                               style: TextButton.styleFrom(
-                                foregroundColor: secondaryButtonTextColor,
+                                foregroundColor: primaryButtonTextColor,
                               ),
                               child: Text(
-                                widget.version.cancel.localize(widget.language),
+                                widget.version.ok.localize(widget.language),
                                 style: const TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
                     ),
                   ),
-              ],
+                  if (widget.showNegative)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: widget.applyComModStyles
+                            ? OutlinedButton(
+                                onPressed: () => Navigator.of(context).pop(
+                                  VersionControlResult(
+                                    response: VersionControlResponse.CANCELLED,
+                                    isCheckBoxChecked: _dontShowAgain,
+                                  ),
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  side: secondaryButtonBorder,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(28),
+                                  ),
+                                  foregroundColor: secondaryButtonTextColor,
+                                ),
+                                child: Text(
+                                  widget.version.cancel
+                                      .localize(widget.language),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: () => Navigator.of(context).pop(
+                                  VersionControlResult(
+                                    response: VersionControlResponse.CANCELLED,
+                                    isCheckBoxChecked: _dontShowAgain,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: secondaryButtonTextColor,
+                                ),
+                                child: Text(
+                                  widget.version.cancel
+                                      .localize(widget.language),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
