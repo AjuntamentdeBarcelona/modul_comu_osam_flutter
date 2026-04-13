@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:osam_common_module_flutter/src/model/language.dart';
 import 'package:osam_common_module_flutter/src/model/version.dart';
 import 'package:osam_common_module_flutter/src/model/version_control_response.dart';
+import 'package:osam_common_module_flutter/src/model/version_control_result.dart';
 
 class UIHelper {
   static const Color veryDarkGrey = Color(0xFF1C1C1C);
   static const Color mediumLightGrey = Color(0xFFB0B0B0);
 
-  static Future<VersionControlResponse?> showVersionDialog({
+  static Future<VersionControlResult?> showVersionDialog({
     required BuildContext context,
     required Version version,
     required Language language,
@@ -15,9 +16,10 @@ class UIHelper {
     bool showClose = true,
     bool showCheckBox = true,
     bool isDarkMode = false,
+    bool applyComModStyles = false,
     Widget? appIcon,
   }) {
-    return showDialog<VersionControlResponse>(
+    return showDialog<VersionControlResult>(
       context: context,
       barrierDismissible: showClose,
       builder: (BuildContext context) {
@@ -28,6 +30,7 @@ class UIHelper {
           showClose: showClose,
           showCheckBox: showCheckBox,
           isDarkMode: isDarkMode,
+          applyComModStyles: applyComModStyles,
           appIcon: appIcon,
         );
       },
@@ -42,6 +45,7 @@ class OSAMDialog extends StatefulWidget {
   final bool showClose;
   final bool showCheckBox;
   final bool isDarkMode;
+  final bool applyComModStyles;
   final Widget? appIcon;
 
   const OSAMDialog({
@@ -52,6 +56,7 @@ class OSAMDialog extends StatefulWidget {
     required this.showClose,
     required this.showCheckBox,
     required this.isDarkMode,
+    this.applyComModStyles = false,
     this.appIcon,
   });
 
@@ -64,13 +69,45 @@ class _OSAMDialogState extends State<OSAMDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor =
-        widget.isDarkMode ? UIHelper.veryDarkGrey : Colors.white;
-    final Color textColor = widget.isDarkMode ? Colors.white : Colors.black;
-    final Color primaryButtonColor =
-        widget.isDarkMode ? Colors.white : UIHelper.veryDarkGrey;
-    final Color primaryButtonTextColor =
-        widget.isDarkMode ? UIHelper.veryDarkGrey : Colors.white;
+    final Color backgroundColor;
+    final Color textColor;
+    final Color primaryButtonColor;
+    final Color primaryButtonTextColor;
+    final Color secondaryButtonTextColor;
+    final BorderSide? secondaryButtonBorder;
+    final Color checkboxActiveColor;
+    final Color checkboxCheckColor;
+    final Color closeIconColor;
+
+    if (widget.applyComModStyles) {
+      backgroundColor =
+          widget.isDarkMode ? UIHelper.veryDarkGrey : Colors.white;
+      textColor = widget.isDarkMode ? Colors.white : Colors.black;
+      primaryButtonColor =
+          widget.isDarkMode ? Colors.white : UIHelper.veryDarkGrey;
+      primaryButtonTextColor =
+          widget.isDarkMode ? UIHelper.veryDarkGrey : Colors.white;
+      secondaryButtonTextColor =
+          widget.isDarkMode ? Colors.white : UIHelper.veryDarkGrey;
+      secondaryButtonBorder = BorderSide(
+        color: widget.isDarkMode ? Colors.white : UIHelper.mediumLightGrey,
+      );
+      checkboxActiveColor =
+          widget.isDarkMode ? Colors.white : UIHelper.veryDarkGrey;
+      checkboxCheckColor =
+          widget.isDarkMode ? UIHelper.veryDarkGrey : Colors.white;
+      closeIconColor = widget.isDarkMode ? Colors.white : Colors.black;
+    } else {
+      backgroundColor = widget.isDarkMode ? Colors.black : Colors.white;
+      textColor = widget.isDarkMode ? Colors.white : Colors.black;
+      primaryButtonColor = Colors.transparent;
+      primaryButtonTextColor = Colors.grey[800]!; // Approx DKGRAY
+      secondaryButtonTextColor = Colors.grey[800]!;
+      secondaryButtonBorder = null;
+      checkboxActiveColor = Theme.of(context).primaryColor;
+      checkboxCheckColor = Colors.white;
+      closeIconColor = Colors.grey[800]!;
+    }
 
     return Dialog(
       backgroundColor: backgroundColor,
@@ -91,11 +128,15 @@ class _OSAMDialogState extends State<OSAMDialog> {
                     constraints: const BoxConstraints(),
                     icon: Icon(
                       Icons.close,
-                      color: widget.isDarkMode ? Colors.white : Colors.black,
+                      color: closeIconColor,
                       size: 24,
                     ),
-                    onPressed: () => Navigator.of(context)
-                        .pop(VersionControlResponse.CANCELLED),
+                    onPressed: () => Navigator.of(context).pop(
+                      VersionControlResult(
+                        response: VersionControlResponse.CANCELLED,
+                        isCheckBoxChecked: _dontShowAgain,
+                      ),
+                    ),
                   ),
                 ),
               if (widget.appIcon != null)
@@ -109,14 +150,17 @@ class _OSAMDialogState extends State<OSAMDialog> {
                 ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  widget.version.title.localize(widget.language),
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: textColor,
+                child: Semantics(
+                  header: true,
+                  child: Text(
+                    widget.version.title.localize(widget.language),
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
               Padding(
@@ -144,12 +188,8 @@ class _OSAMDialogState extends State<OSAMDialog> {
                         ),
                         child: Checkbox(
                           value: _dontShowAgain,
-                          activeColor: widget.isDarkMode
-                              ? Colors.white
-                              : UIHelper.veryDarkGrey,
-                          checkColor: widget.isDarkMode
-                              ? UIHelper.veryDarkGrey
-                              : Colors.white,
+                          activeColor: checkboxActiveColor,
+                          checkColor: checkboxCheckColor,
                           onChanged: (value) {
                             setState(() {
                               _dontShowAgain = value ?? false;
@@ -172,22 +212,42 @@ class _OSAMDialogState extends State<OSAMDialog> {
                 child: SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context)
-                        .pop(VersionControlResponse.ACCEPTED),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryButtonColor,
-                      foregroundColor: primaryButtonTextColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      widget.version.ok.localize(widget.language),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  child: widget.applyComModStyles
+                      ? ElevatedButton(
+                          onPressed: () => Navigator.of(context).pop(
+                            VersionControlResult(
+                              response: VersionControlResponse.ACCEPTED,
+                              isCheckBoxChecked: _dontShowAgain,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryButtonColor,
+                            foregroundColor: primaryButtonTextColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            widget.version.ok.localize(widget.language),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        )
+                      : TextButton(
+                          onPressed: () => Navigator.of(context).pop(
+                            VersionControlResult(
+                              response: VersionControlResponse.ACCEPTED,
+                              isCheckBoxChecked: _dontShowAgain,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            foregroundColor: primaryButtonTextColor,
+                          ),
+                          child: Text(
+                            widget.version.ok.localize(widget.language),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
                 ),
               ),
               if (widget.showNegative)
@@ -196,25 +256,41 @@ class _OSAMDialogState extends State<OSAMDialog> {
                   child: SizedBox(
                     width: double.infinity,
                     height: 48,
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.of(context)
-                          .pop(VersionControlResponse.CANCELLED),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          color: widget.isDarkMode
-                              ? Colors.white
-                              : UIHelper.mediumLightGrey,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28),
-                        ),
-                        foregroundColor: textColor,
-                      ),
-                      child: Text(
-                        widget.version.cancel.localize(widget.language),
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    child: widget.applyComModStyles
+                        ? OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(
+                              VersionControlResult(
+                                response: VersionControlResponse.CANCELLED,
+                                isCheckBoxChecked: _dontShowAgain,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: secondaryButtonBorder,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(28),
+                              ),
+                              foregroundColor: secondaryButtonTextColor,
+                            ),
+                            child: Text(
+                              widget.version.cancel.localize(widget.language),
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          )
+                        : TextButton(
+                            onPressed: () => Navigator.of(context).pop(
+                              VersionControlResult(
+                                response: VersionControlResponse.CANCELLED,
+                                isCheckBoxChecked: _dontShowAgain,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              foregroundColor: secondaryButtonTextColor,
+                            ),
+                            child: Text(
+                              widget.version.cancel.localize(widget.language),
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
                   ),
                 ),
             ],

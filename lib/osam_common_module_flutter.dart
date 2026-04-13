@@ -10,5 +10,7 @@ export 'src/model/subscription_response.dart';
 export 'src/model/token_response.dart';
 export 'src/model/version.dart';
 export 'src/model/version_control_response.dart';
+export 'src/model/version_control_result.dart';
 export 'src/osam.dart';
+export 'src/ui/alert_wrapper.dart';
 export 'src/ui/ui_helper.dart';

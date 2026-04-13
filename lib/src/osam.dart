@@ -143,7 +143,7 @@ class OSAM {
       {
         'language': language.toLanguageCode(),
         'isDarkMode': isDarkMode,
-        'applyComModStyles': applyComModStyles
+        'applyComModStyles': applyComModStyles,
       },
     );
     return VersionControlResponseExtensions.fromString(response ?? '');
