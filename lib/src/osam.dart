@@ -136,12 +136,14 @@ class OSAM {
   Future<VersionControlResponse> versionControl({
     required Language language,
     bool isDarkMode = false,
+    bool applyComModStyles = false,
   }) async {
     final String? response = await _methodChannel.invokeMethod(
       'versionControl',
       {
         'language': language.toLanguageCode(),
         'isDarkMode': isDarkMode,
+        'applyComModStyles': applyComModStyles
       },
     );
     return VersionControlResponseExtensions.fromString(response ?? '');
