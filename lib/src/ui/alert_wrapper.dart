@@ -59,15 +59,67 @@ class AlertWrapper {
     );
   }
 
+  /// Triggers the native version control popup flow
+  Future<VersionControlResponse> showVersionControlNative({
+    required OSAM osam,
+    required Language language,
+    bool isDarkMode = false,
+    bool applyComModStyles = false,
+  }) async {
+    // Show a transparent barrier to prevent background interaction
+    // while the native version control popup is being requested/shown.
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.transparent,
+      useRootNavigator: true,
+      builder: (context) => const PopScope(
+        canPop: false,
+        child: SizedBox.expand(),
+      ),
+    );
+
+    try {
+      final response = await osam.versionControl(
+        language: language,
+        isDarkMode: isDarkMode,
+        applyComModStyles: applyComModStyles,
+      );
+      return response;
+    } finally {
+      // Close the barrier
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
   /// Triggers the rating popup flow
   Future<RatingControlResponse> showRating({
     required OSAM osam,
     required Language language,
     bool isDarkMode = false,
-  }) {
-    return osam.rating(
-      language: language,
-      isDarkMode: isDarkMode,
+  }) async {
+    // Show a transparent barrier to prevent background interaction
+    // while the native rating popup is being requested/shown.
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.transparent,
+      useRootNavigator: true,
+      builder: (context) => const PopScope(
+        canPop: false,
+        child: SizedBox.expand(),
+      ),
     );
+
+    try {
+      final response = await osam.rating(
+        language: language,
+        isDarkMode: isDarkMode,
+      );
+      return response;
+    } finally {
+      // Close the barrier
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 }

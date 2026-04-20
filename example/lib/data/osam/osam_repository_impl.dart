@@ -15,11 +15,13 @@ class OsamRepositoryImpl extends OsamRepository {
 
   @override
   Future<VersionControlResponse> checkForUpdates() async {
-    return osamSdk.versionControl(
+    final response = await osamSdk.versionControl(
       language: _getLanguage(settings.getLanguage()),
       isDarkMode:
           PlatformDispatcher.instance.platformBrightness == Brightness.dark,
     );
+    print("checkForUpdates response: $response");
+    return response;
   }
 
   @override
@@ -44,7 +46,7 @@ class OsamRepositoryImpl extends OsamRepository {
         language = Language.EN;
         break;
       default:
-        language = Language.CA;
+        language = Language.EN;
         break;
     }
     return language;

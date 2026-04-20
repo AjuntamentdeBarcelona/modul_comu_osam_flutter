@@ -34,7 +34,10 @@ class _HomeScreenState extends State<HomeScreen> with OsamVersionChecker {
     try {
       final bool needToShowControlVersionPopUp =
           DI.settings.getShowVersionControlPopup();
+      print(
+          "HomeScreen: needToShowControlVersionPopUp = $needToShowControlVersionPopUp");
       if (needToShowControlVersionPopUp) {
+        print("HomeScreen: Triggering checkForUpdates");
         await DI.osamRepository.checkForUpdates();
       }
       await DI.osamRepository.changeLanguageEvent();

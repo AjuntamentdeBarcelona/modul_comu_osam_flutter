@@ -16,10 +16,15 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
   void initState() {
     super.initState();
     subscription = FGBGEvents.instance.stream.listen((event) async {
+      print("OsamVersionChecker: Received event: $event");
       if (event == FGBGType.foreground) {
         // Only check for updates if the setting is enabled
         if (DI.settings.getShowVersionControlPopup()) {
+          print("OsamVersionChecker: Triggering checkForUpdates in foreground");
           await DI.osamRepository.checkForUpdates();
+        } else {
+          print(
+              "OsamVersionChecker: Version control popup is disabled in settings");
         }
       }
     });

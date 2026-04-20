@@ -32,7 +32,7 @@ class AppPreferences extends Settings {
   @override
   AppLanguage getLanguage() {
     return AppLanguageExtensions.fromLanguageCode(
-        _prefs.getString(_language) ?? AppLanguage.CA.toLanguageCode());
+        _prefs.getString(_language) ?? AppLanguage.EN.toLanguageCode());
   }
 
   @override

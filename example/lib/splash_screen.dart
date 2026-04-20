@@ -63,11 +63,15 @@ class _SplashScreenState extends State<SplashScreen>
       bool shouldNavigate = true;
 
       if (needToShowControlVersionPopUp) {
+        print("SplashScreen: Checking for version control...");
         final VersionControlResponse response =
             await DI.osamRepository.checkForUpdates();
+        print("SplashScreen: Version control response: $response");
         if (popupMode == "FORCE" &&
             (response == VersionControlResponse.ACCEPTED ||
-                response == VersionControlResponse.CANCELLED)) {
+                response == VersionControlResponse.CANCELLED ||
+                response == VersionControlResponse.DISMISSED)) {
+          print("SplashScreen: Blocking navigation due to FORCE mode.");
           shouldNavigate = false;
         }
       }

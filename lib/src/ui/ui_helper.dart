@@ -22,16 +22,31 @@ class UIHelper {
     return showDialog<VersionControlResult>(
       context: context,
       barrierDismissible: showClose,
+      useRootNavigator: true,
       builder: (BuildContext context) {
-        return OSAMDialog(
-          version: version,
-          language: language,
-          showNegative: showNegative,
-          showClose: showClose,
-          showCheckBox: showCheckBox,
-          isDarkMode: isDarkMode,
-          applyComModStyles: applyComModStyles,
-          appIcon: appIcon,
+        return PopScope(
+          canPop: showClose,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+            if (!showClose) return;
+            // When user tries to dismiss via back button / barrier tap, return DISMISSED
+            Navigator.of(context).pop(
+              VersionControlResult(
+                response: VersionControlResponse.DISMISSED,
+                isCheckBoxChecked: false,
+              ),
+            );
+          },
+          child: OSAMDialog(
+            version: version,
+            language: language,
+            showNegative: showNegative,
+            showClose: showClose,
+            showCheckBox: showCheckBox,
+            isDarkMode: isDarkMode,
+            applyComModStyles: applyComModStyles,
+            appIcon: appIcon,
+          ),
         );
       },
     );
@@ -145,7 +160,7 @@ class _OSAMDialogState extends State<OSAMDialog> {
                         ),
                         onPressed: () => Navigator.of(context).pop(
                           VersionControlResult(
-                            response: VersionControlResponse.CANCELLED,
+                            response: VersionControlResponse.DISMISSED,
                             isCheckBoxChecked: _dontShowAgain,
                           ),
                         ),
