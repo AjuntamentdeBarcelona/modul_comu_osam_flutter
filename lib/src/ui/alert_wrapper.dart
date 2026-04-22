@@ -66,16 +66,29 @@ class AlertWrapper {
     bool isDarkMode = false,
     bool applyComModStyles = false,
   }) async {
-    // Show a transparent barrier to prevent background interaction
-    // while the native version control popup is being requested/shown.
-    showDialog(
+    // The actual background locking is handled by the native iOS/Android code.
+    // We show a transparent dialog with a ModalBarrier here just to keep Flutter's navigator state in sync
+    // and provide an extra layer of touch protection.
+    showGeneralDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.transparent,
+      barrierLabel: "Native VC Barrier",
       useRootNavigator: true,
-      builder: (context) => const PopScope(
-        canPop: false,
-        child: SizedBox.expand(),
+      pageBuilder: (context, animation, secondaryAnimation) => BlockSemantics(
+        child: PopScope(
+          canPop: false,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ModalBarrier(
+                  color: Colors.transparent,
+                  dismissible: false,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
 
@@ -98,16 +111,29 @@ class AlertWrapper {
     required Language language,
     bool isDarkMode = false,
   }) async {
-    // Show a transparent barrier to prevent background interaction
-    // while the native rating popup is being requested/shown.
-    showDialog(
+    // The actual background locking is handled by the native iOS/Android code.
+    // We show a transparent dialog with a ModalBarrier here just to keep Flutter's navigator state in sync
+    // and provide an extra layer of touch protection.
+    showGeneralDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.transparent,
+      barrierLabel: "Native Rating Barrier",
       useRootNavigator: true,
-      builder: (context) => const PopScope(
-        canPop: false,
-        child: SizedBox.expand(),
+      pageBuilder: (context, animation, secondaryAnimation) => BlockSemantics(
+        child: PopScope(
+          canPop: false,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ModalBarrier(
+                  color: Colors.transparent,
+                  dismissible: false,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
 

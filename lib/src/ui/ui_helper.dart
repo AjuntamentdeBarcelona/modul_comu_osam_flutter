@@ -19,37 +19,64 @@ class UIHelper {
     bool applyComModStyles = false,
     Widget? appIcon,
   }) {
-    return showDialog<VersionControlResult>(
+    return showGeneralDialog<VersionControlResult>(
       context: context,
-      barrierDismissible: showClose,
+      barrierDismissible: false,
+      barrierColor: Colors.transparent,
+      barrierLabel: "OSAM Version Control",
       useRootNavigator: true,
-      builder: (BuildContext context) {
-        return PopScope(
-          canPop: showClose,
-          onPopInvokedWithResult: (didPop, result) {
-            if (didPop) return;
-            if (!showClose) return;
-            // When user tries to dismiss via back button / barrier tap, return DISMISSED
-            Navigator.of(context).pop(
-              VersionControlResult(
-                response: VersionControlResponse.DISMISSED,
-                isCheckBoxChecked: false,
-              ),
-            );
-          },
-          child: OSAMDialog(
-            version: version,
-            language: language,
-            showNegative: showNegative,
-            showClose: showClose,
-            showCheckBox: showCheckBox,
-            isDarkMode: isDarkMode,
-            applyComModStyles: applyComModStyles,
-            appIcon: appIcon,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return BlockSemantics(
+          child: PopScope(
+            canPop: showClose,
+            onPopInvokedWithResult: (didPop, result) {
+              if (didPop) return;
+              if (!showClose) return;
+              Navigator.of(context).pop(
+                VersionControlResult(
+                  response: VersionControlResponse.DISMISSED,
+                  isCheckBoxChecked: false,
+                ),
+              );
+            },
+            child: Stack(
+              children: [
+                // ModalBarrier captures and handles touches on the background
+                Positioned.fill(
+                  child: ModalBarrier(
+                    color: Colors.transparent,
+                    dismissible: showClose,
+                    onDismiss: () => Navigator.of(context).pop(
+                      VersionControlResult(
+                        response: VersionControlResponse.DISMISSED,
+                        isCheckBoxChecked: false,
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: OSAMDialog(
+                    version: version,
+                    language: language,
+                    showNegative: showNegative,
+                    showClose: showClose,
+                    showCheckBox: showCheckBox,
+                    isDarkMode: isDarkMode,
+                    applyComModStyles: applyComModStyles,
+                    appIcon: appIcon,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
-    );
+    ).then((result) =>
+        result ??
+        VersionControlResult(
+          response: VersionControlResponse.DISMISSED,
+          isCheckBoxChecked: false,
+        ));
   }
 }
 

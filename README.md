@@ -41,7 +41,7 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
     osam_common_module_flutter:
       git:
         url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-        ref: '8.1.9-dev'
+        ref: '8.1.10-dev'
     ```
 
     En cas que les dependències de Firebase Analytics, Firebase Performance, Firebase Messaging i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:

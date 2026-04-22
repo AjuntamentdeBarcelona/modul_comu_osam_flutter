@@ -1,3 +1,4 @@
+import 'package:common_module_flutter_example/data/osam/osam_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 
@@ -76,6 +77,10 @@ class ActionsScreenState extends State<ActionsScreen> {
   }
 
   void _onVersionControl() async {
+    if (DI.osamRepository is OsamRepositoryImpl) {
+      (DI.osamRepository as OsamRepositoryImpl)
+          .setAlertWrapper(AlertWrapper(context));
+    }
     final result = await DI.osamRepository.checkForUpdates();
 
     if (mounted) {
@@ -97,6 +102,10 @@ class ActionsScreenState extends State<ActionsScreen> {
   }
 
   void _onRating() async {
+    if (DI.osamRepository is OsamRepositoryImpl) {
+      (DI.osamRepository as OsamRepositoryImpl)
+          .setAlertWrapper(AlertWrapper(context));
+    }
     final result = await DI.osamRepository.checkRating();
 
     if (mounted) {

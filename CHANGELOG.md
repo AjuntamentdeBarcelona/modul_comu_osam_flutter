@@ -1,7 +1,7 @@
-## 8.1.9-dev
+## 8.1.10-dev
 
 * UPDATED NATIVE LIBRARIES
-    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.1.6-dev.
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.1.13-dev.
 * IMPROVED POPUP INTERACTION
     * Added transparent barriers and PopScope in `AlertWrapper` and `UIHelper` to prevent background interaction while native or custom popups are being shown.
     * Changed default language fallback to English (`en`).
@@ -19,7 +19,7 @@
     * Added UIHelper and OSAMDialog widget in the Flutter part.
     * Updated example app with "Custom Flutter Popup" button to test the new UI.
 
-## 8.1.1-dev
+## 8.1.2-dev
 
 * BREAKING CHANGES
     * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.0.1-dev accessible popup.
