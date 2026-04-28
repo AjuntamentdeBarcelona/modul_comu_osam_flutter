@@ -1,7 +1,7 @@
-## 8.2.0
+## 8.2.1
 
 * UPDATED NATIVE LIBRARIES
-    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.2.0-dev.
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.2.0.
 * IMPROVED POPUP INTERACTION
     * Added transparent barriers and PopScope in `AlertWrapper` and `UIHelper` to prevent background interaction while native or custom popups are being shown.
     * Changed default language fallback to English (`en`).
