@@ -80,7 +80,8 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 val osamCommons = this.osamCommons
                 if (osamCommons != null) {
                     val language = getLanguageFromString(call.argument("language") ?: "")
-                    osamCommons.versionControl(language) {
+                    val isDarkMode = call.argument<Boolean>("isDarkMode") ?: false
+                    osamCommons.versionControl(language, isDarkMode) {
                         result.success(it.toStringResponse())
                     }
                 } else {
@@ -91,7 +92,8 @@ class CommonModuleFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAwar
                 val osamCommons = this.osamCommons
                 if (osamCommons != null) {
                     val language = getLanguageFromString(call.argument("language") ?: "")
-                    osamCommons.rating(language) {
+                    val isDarkMode = call.argument<Boolean>("isDarkMode") ?: false
+                    osamCommons.rating(language, isDarkMode) {
                         result.success(it.toStringResponse())
                     }
                 } else {

@@ -20,7 +20,7 @@ fun getLanguageFromString(languageCode: String): Language = when (languageCode) 
     catalanLanguageCode -> Language.CA
     spanishLanguageCode -> Language.ES
     englishLanguageCode -> Language.EN
-    else -> Language.CA
+    else -> Language.EN
 }
 
 fun VersionControlResponse.toStringResponse(): String = when (this) {

@@ -15,7 +15,7 @@ extension Language {
         case .en:
             return englishLanguageCode
         default:
-            return catalanLanguageCode
+            return englishLanguageCode
         }
     }
 }
@@ -28,7 +28,7 @@ func getLanguageFromString(langugageCode: String) -> Language {
     } else if langugageCode == englishLanguageCode {
         return Language.en
     } else {
-        return Language.ca
+        return Language.en
     }
 }
 

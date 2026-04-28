@@ -14,7 +14,7 @@ extension AppLanguageExtensions on AppLanguage {
       case AppLanguage.EN:
         return "en";
       default:
-        return "ca";
+        return "en";
     }
   }
 
@@ -27,7 +27,7 @@ extension AppLanguageExtensions on AppLanguage {
       case "en":
         return AppLanguage.EN;
       default:
-        return AppLanguage.CA;
+        return AppLanguage.EN;
     }
   }
 
@@ -40,7 +40,7 @@ extension AppLanguageExtensions on AppLanguage {
       case AppLanguage.EN:
         return const Locale("en", "US");
       default:
-        return const Locale("ca", "ES");
+        return const Locale("en", "US");
     }
   }
 }

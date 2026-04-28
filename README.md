@@ -5,8 +5,9 @@
 
 ---
 
-## Migrate from 6.0.0 to 8.1.0
+## Migrate from 6.0.0 to 8.2.0
 
+- Default language fallback changed from Catalan (`ca`) to English (`en`).
 - Need to use minimal Dart SDK version ^3.5.0
 - Need to use minimal Flutter version 3.24.3
 
@@ -40,7 +41,7 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
     osam_common_module_flutter:
       git:
         url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-        ref: '8.1.0'
+        ref: '8.2.0'
     ```
 
     En cas que les dependències de Firebase Analytics, Firebase Performance, Firebase Messaging i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
@@ -110,7 +111,7 @@ En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del 
 Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
 
 ```plist
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.2.3'
+pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '3.2.0-dev'
 ```
 
 El Podfile quedaria de [la següent manera](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/ios/Podfile)
@@ -231,12 +232,12 @@ void _onChangeLanguageEvent(BuildContext context) async {
   if (context.mounted) {
     switch (result) {
       case AppLanguageResponse.SUCCESS:
-        _showToast(context, AppLanguageResponse.SENT.name);
+        _showToast(context, AppLanguageResponse.SUCCESS.name);
         break;
-      case LanguageInformationResponse.UNCHANGED:
-        _showToast(context, AppLanguageResponse.NOT_SENT.name);
+      case AppLanguageResponse.UNCHANGED:
+        _showToast(context, AppLanguageResponse.UNCHANGED.name);
         break;
-      case LanguageInformationResponse.ERROR:
+      case AppLanguageResponse.ERROR:
         _showToast(context, AppLanguageResponse.ERROR.name);
         break;
     }
@@ -261,10 +262,10 @@ void _onFirstTimeOrUpdateEvent(BuildContext context) async {
       case AppLanguageResponse.SUCCESS:
         _showToast(context, AppLanguageResponse.SUCCESS.name);
         break;
-      case LanguageInformationResponse.UNCHANGED:
+      case AppLanguageResponse.UNCHANGED:
         _showToast(context, AppLanguageResponse.UNCHANGED.name);
         break;
-      case LanguageInformationResponse.ERROR:
+      case AppLanguageResponse.ERROR:
         _showToast(context, AppLanguageResponse.ERROR.name);
         break;
     }
@@ -287,11 +288,11 @@ void _onSubscribeToCustomTopic(BuildContext context, String topic) async {
   final result = await DI.osamRepository.subscribeToCustomTopic(topic: topic);
   if (context.mounted) {
     switch (result) {
-      case AppLanguageResponse.ACCEPTED:
-        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+      case SubscriptionResponse.accepted:
+        _showToast(context, SubscriptionResponse.accepted.name);
         break;
-      case LanguageInformationResponse.ERROR:
-        _showToast(context, AppLanguageResponse.ERROR.name);
+      case SubscriptionResponse.error:
+        _showToast(context, SubscriptionResponse.error.name);
         break;
     }
   }
@@ -313,11 +314,11 @@ void _onUnsubscribeToCustomTopic(BuildContext context, String topic) async {
   final result = await DI.osamRepository.unsubscribeToCustomTopic(topic: topic);
   if (context.mounted) {
     switch (result) {
-      case AppLanguageResponse.ACCEPTED:
-        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+      case SubscriptionResponse.accepted:
+        _showToast(context, SubscriptionResponse.accepted.name);
         break;
-      case LanguageInformationResponse.ERROR:
-        _showToast(context, AppLanguageResponse.ERROR.name);
+      case SubscriptionResponse.error:
+        _showToast(context, SubscriptionResponse.error.name);
         break;
     }
   }
@@ -368,7 +369,10 @@ static _onMessagingEvent(String topic, String action) async {
 static Future<void> cacheTokenForNative() async {
   String? token = await FirebaseMessaging.instance.getToken();
   if (token != null) {
- await _prefs.setString('fcm_token', token);
+    // Save token where native side can access it, e.g. SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fcm_token', token);
+  }
 }
 ```
 ## Flutter app demo

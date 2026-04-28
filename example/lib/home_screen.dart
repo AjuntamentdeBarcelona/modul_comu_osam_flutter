@@ -1,8 +1,10 @@
 import 'package:common_module_flutter_example/actions_screen.dart';
+import 'package:common_module_flutter_example/data/osam/osam_repository_impl.dart';
 import 'package:common_module_flutter_example/di/di.dart';
 import 'package:common_module_flutter_example/info_screen.dart';
 import 'package:common_module_flutter_example/options_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';
 
 import 'mixin/osam_version_checker.dart';
 
@@ -25,6 +27,10 @@ class _HomeScreenState extends State<HomeScreen> with OsamVersionChecker {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (DI.osamRepository is OsamRepositoryImpl) {
+        (DI.osamRepository as OsamRepositoryImpl)
+            .setAlertWrapper(AlertWrapper(context));
+      }
       _checkVersionControl();
       DI.osamRepository.firstTimeOrUpdateEvent();
     });
@@ -34,7 +40,10 @@ class _HomeScreenState extends State<HomeScreen> with OsamVersionChecker {
     try {
       final bool needToShowControlVersionPopUp =
           DI.settings.getShowVersionControlPopup();
+      print(
+          "HomeScreen: needToShowControlVersionPopUp = $needToShowControlVersionPopUp");
       if (needToShowControlVersionPopUp) {
+        print("HomeScreen: Triggering checkForUpdates");
         await DI.osamRepository.checkForUpdates();
       }
       await DI.osamRepository.changeLanguageEvent();

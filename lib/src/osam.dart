@@ -135,10 +135,16 @@ class OSAM {
   /// for it to be displayed are met.
   Future<VersionControlResponse> versionControl({
     required Language language,
+    bool isDarkMode = false,
+    bool applyComModStyles = false,
   }) async {
     final String? response = await _methodChannel.invokeMethod(
       'versionControl',
-      {'language': language.toLanguageCode()},
+      {
+        'language': language.toLanguageCode(),
+        'isDarkMode': isDarkMode,
+        'applyComModStyles': applyComModStyles,
+      },
     );
     return VersionControlResponseExtensions.fromString(response ?? '');
   }
@@ -151,9 +157,12 @@ class OSAM {
   /// for it to be displayed are met.
   Future<RatingControlResponse> rating({
     required Language language,
+    bool isDarkMode = false,
   }) async {
-    final String? response = await _methodChannel
-        .invokeMethod('rating', {'language': language.toLanguageCode()});
+    final String? response = await _methodChannel.invokeMethod('rating', {
+      'language': language.toLanguageCode(),
+      'isDarkMode': isDarkMode,
+    });
     return RatingControlResponseExtensions.fromString(response ?? '');
   }
 
