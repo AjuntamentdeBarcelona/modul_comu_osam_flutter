@@ -3,22 +3,32 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
----
+## Historial de versions (Flutter)
 
-## Migrate from 6.0.0 to 8.2.0
+### 8.2.1
+- **Control de versions avançat**: S'han afegit camps per filtrar per versió del sistema operatiu (`osVersion`) i per model de dispositiu (`models`).
+- **Noves funcionalitats**: S'ha afegit el mètode `isOnline` per comprovar la connectivitat amb el backend de manera asíncrona.
+- **Personalització de UI**: Els mètodes `versionControl` i `rating` ara accepten els paràmetres `isDarkMode` i `applyComModStyles` per a una millor integració visual.
+- **Millores en analítica**: S'ha implementat el nou event `language_change` i s'ha millorat el registre d'events inicials.
+- **Gestió del context**: S'ha afegit el mètode `setActivity` per a Android per gestionar millor els canvis de context i cicle de vida.
+- **Timeout**: Implementació de missatges d'error per timeout quan el backend no respon.
 
-- Default language fallback changed from Catalan (`ca`) to English (`en`).
-- Need to use minimal Dart SDK version ^3.5.0
-- Need to use minimal Flutter version 3.24.3
+### 8.1.0 - 8.1.8
+- **FCM Token**: S'ha afegit el suport per obtenir el token de Firebase Cloud Messaging (FCM) mitjançant el mètode `getFCMToken`.
 
-## Migrate from 5.0.x to 6.0.0
+### 8.0.0
+- **Gestió de Topics**: S'han implementat els mètodes `firstTimeOrUpdateEvent`, `subscribeToCustomTopic` i `unsubscribeToCustomTopic` per a una gestió completa de les notificacions push.
+- **Event de canvi d'idioma**: S'ha afegit `changeLanguageEvent` per orquestrar el canvi d'idioma, analítica i topics.
+- **Migració a KMP**: Refactorització important per utilitzar Kotlin Multiplatform de manera més eficient i unificar la lògica de negoci.
 
-- Rename package from `common_module_flutter` to `osam_common_module_flutter`
-  - On pubspec.yaml, change `common_module_flutter` to `osam_common_module_flutter`
-  - On imports, change `import 'package:common_module_flutter/common_module_flutter.dart';` to `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';`
-- To import, use only `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';` and not src/ or other subdirectories.
-- Need to use minimal Dart SDK version 3.0.0
-- Need to use minimal Flutter version 3.10.0
+### 6.0.0
+- Cal utilitzar la versió de **Dart SDK ^3.5.0** i **Flutter 3.24.3**.
+- El fallback d'idioma ha canviat de Català (`ca`) a Anglès (`en`).
+
+### De 5.0.x a 6.0.0
+- El paquet s'ha reanomenat de `common_module_flutter` a `osam_common_module_flutter`.
+- Cal actualitzar el `pubspec.yaml` i els imports.
+- Per importar, utilitzeu només: `import 'package:osam_common_module_flutter/osam_common_module_flutter.dart';`.
 
 ## Introdució
 
