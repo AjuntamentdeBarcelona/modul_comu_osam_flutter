@@ -15,11 +15,15 @@
 
 ### 8.1.0 - 8.1.8
 - **FCM Token**: S'ha afegit el suport per obtenir el token de Firebase Cloud Messaging (FCM) mitjançant el mètode `getFCMToken`.
+- **FirstTimeOrUpdate**: Aquest mètode s'encarrega de subscriure's automàticament al tòpic de la versió en l'idioma de l'aplicació si és la primera vegada que s'obre, o d'actualitzar-lo si la versió ha canviat.
+- **Subscribe and unsubscribe from topic**: 2 mètodes que ajuden amb les subscripcions i cancel·lacions de subscripcions a topics d'idioma i versió.
+- **Millores d'UI i accessibilitat al popup de control de versions**: S'ha millorat l'accessibilitat al popup del control de versions, incrementat el contrast dels seus elements i assegurat diferents tipus de navegació accessible.
 
 ### 8.0.0
 - **Gestió de Topics**: S'han implementat els mètodes `firstTimeOrUpdateEvent`, `subscribeToCustomTopic` i `unsubscribeToCustomTopic` per a una gestió completa de les notificacions push.
 - **Event de canvi d'idioma**: S'ha afegit `changeLanguageEvent` per orquestrar el canvi d'idioma, analítica i topics.
 - **Migració a KMP**: Refactorització important per utilitzar Kotlin Multiplatform de manera més eficient i unificar la lògica de negoci.
+- **Temps d'acceptar en control de versions**: Quan al popup del control de versions es prem a acceptar en info o lazy mode el popup no tornarà a aparèixer en una quantitat de temps que sigui definida.
 
 ### 6.0.0
 - Cal utilitzar la versió de **Dart SDK ^3.5.0** i **Flutter 3.24.3**.
@@ -159,7 +163,7 @@ Si és necessari executar el control de versions cada vegada que l'app torna a p
 demo hem implementat aquesta funcionalitat en un mixin anomenat OsamVersionChecker:
 
 ```dart
-class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
+class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {}
 ```
 
 Hem utilitzat el package [flutter_fgbg](https://pub.dev/packages/flutter_fgbg):
