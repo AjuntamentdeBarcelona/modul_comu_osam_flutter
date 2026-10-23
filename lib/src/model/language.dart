@@ -21,8 +21,6 @@ extension LanguageExtensions on Language {
         return 'es';
       case Language.EN:
         return 'en';
-      default:
-        return 'ca';
     }
   }
 
@@ -35,7 +33,7 @@ extension LanguageExtensions on Language {
       case 'en':
         return Language.EN;
       default:
-        return Language.CA;
+        return Language.EN;
     }
   }
 }

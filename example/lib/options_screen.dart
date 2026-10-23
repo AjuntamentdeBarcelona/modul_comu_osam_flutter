@@ -2,7 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:common_module_flutter_example/di/di.dart';
 import 'package:common_module_flutter_example/model/language.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:group_radio_button/group_radio_button.dart';
 
 import 'data/remote/client_builder.dart';

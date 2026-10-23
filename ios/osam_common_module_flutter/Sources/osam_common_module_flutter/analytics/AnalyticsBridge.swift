@@ -1,3 +1,4 @@
+import Flutter
 import OSAMCommon
 
 class AnalyticsBridge: NSObject, FlutterStreamHandler, AnalyticsWrapper {

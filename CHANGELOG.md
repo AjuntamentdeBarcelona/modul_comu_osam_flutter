@@ -1,3 +1,41 @@
+## 8.2.2-dev
+
+* FLUTTER SDK UPGRADE
+    * Upgraded project Flutter SDK to 3.44.6.
+    * Migrated Android build scripts to Flutter's declarative Gradle plugins.
+    * Migrated iOS Runner to UIScene lifecycle.
+* SWIFT PACKAGE MANAGER MIGRATION
+    * Migrated iOS dependency management from CocoaPods to Swift Package Manager (SPM).
+    * Dropped CocoaPods podspec and CocoaPods wrapper files.
+    * Updated native `OSAMCommon` dependency to `3.2.1-dev` via SPM.
+    * Replaced `flutter_fgbg` with native Flutter `AppLifecycleListener` in example app.
+
+## 8.2.1
+
+* UPDATED NATIVE LIBRARIES
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.2.0.
+* IMPROVED POPUP INTERACTION
+    * Added transparent barriers and PopScope in `AlertWrapper` and `UIHelper` to prevent background interaction while native or custom popups are being shown.
+    * Changed default language fallback to English (`en`).
+    * Refined `VersionControlResponse` handling, ensuring `DISMISSED` is returned consistently.
+
+## 8.1.8-dev
+
+* IMPLEMENTED STYLES FLEXIBILITY FOR CUSTOM POPUPS
+    * Added a parameter when building the version control popup for adding foreign styles or keeping their own.
+
+## 8.1.2-dev
+
+* IMPLEMENTED CUSTOM POPUPS
+    * Added custom Flutter popups implementation to support dark/light mode colors (#1C1C1C and #B0B0B0) as requested.
+    * Added UIHelper and OSAMDialog widget in the Flutter part.
+    * Updated example app with "Custom Flutter Popup" button to test the new UI.
+
+## 8.1.2-dev
+
+* BREAKING CHANGES
+    * Updated [modul_comu_osam library](https://github.com/AjuntamentdeBarcelona/modul_comu_osam) to version 3.0.1-dev accessible popup.
+
 ## 8.1.0
 
 * BREAKING CHANGES

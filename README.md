@@ -5,8 +5,15 @@
 
 ---
 
-## Migrate from 6.0.0 to 8.1.0
+## Migrate from 8.2.0 to 8.2.2
 
+- Migració a Swift Package Manager (SPM) a iOS: s'elimina el suport per a CocoaPods (`Podfile`).
+- Requereix Flutter amb suport SPM (recomanat Flutter 3.44.6).
+- A l'exemple s'ha substituït la llibreria `flutter_fgbg` per l'API nativa de Flutter `AppLifecycleListener`.
+
+## Migrate from 6.0.0 to 8.2.0
+
+- Default language fallback changed from Catalan (`ca`) to English (`en`).
 - Need to use minimal Dart SDK version ^3.5.0
 - Need to use minimal Flutter version 3.24.3
 
@@ -40,7 +47,7 @@ A partir de la versió 3.0.0 la llibreria es un wrapper de la [desenvolupada en 
     osam_common_module_flutter:
       git:
         url: https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter.git
-        ref: '8.1.0'
+        ref: '8.2.0'
     ```
 
     En cas que les dependències de Firebase Analytics, Firebase Performance, Firebase Messaging i Firebase Crashlytics fallin, cal afegir aquestes aquesta configuració al pubspec:
@@ -104,16 +111,31 @@ Si volem que els pop-ups es vegin amb l'estil correcte, haurem d'utilitzar un es
 
 ### iOS
 
-#### Podfile
+#### Swift Package Manager (SPM)
 
-En el Podfile del projecte d'iOS creat por Flutter haurem d'incloure el pod del mòdul comú de
-Kotlin Multiplatform Mobile. Això es fa incloent la següent linea:
+La gestió de dependències a iOS ha migrat de CocoaPods a **Swift Package Manager (SPM)**. 
 
-```plist
-pod 'OSAMCommon', :git => 'https://github.com/AjuntamentdeBarcelona/modul_comu_osam.git', :tag => '2.2.3'
-```
+El plugin `osam_common_module_flutter` ara inclou el seu propi manifest `Package.swift` i resol la dependència nativa de `OSAMCommon` automàticament a través de SPM.
 
-El Podfile quedaria de [la següent manera](https://github.com/AjuntamentdeBarcelona/modul_comu_osam_flutter/blob/main/example/ios/Podfile)
+**Requisits i configuració a l'aplicació client:**
+
+1. **Habilitar Swift Package Manager a Flutter** (si no està activat per defecte a la teva versió de Flutter):
+   ```bash
+   flutter config --enable-swift-package-manager
+   ```
+
+2. **Eliminar CocoaPods (si l'app client en feia ús):**
+   ```bash
+   cd ios
+   pod deintegrate
+   rm -f Podfile Podfile.lock
+   ```
+
+3. **Firebase Crashlytics a Xcode (opcional / si s'utilitza):**
+   Si l'aplicació client utilitza Firebase Crashlytics i té un script de construcció a Xcode (*Build Phases* -> *Run Script*), actualitza la ruta per utilitzar el binari proveït per SPM:
+   ```bash
+   "${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run"
+   ```
 
 ## Implementació control de versions
 
@@ -151,20 +173,26 @@ demo hem implementat aquesta funcionalitat en un mixin anomenat OsamVersionCheck
 class _MyHomePageState extends State<MyHomePage> with OsamVersionChecker {
 ```
 
-Hem utilitzat el package [flutter_fgbg](https://pub.dev/packages/flutter_fgbg):
+Hem utilitzat l'API nativa de Flutter `AppLifecycleListener`:
 
 ```dart
 mixin OsamVersionChecker<T extends StatefulWidget> on State<T> implements RouteAware {
-  StreamSubscription<FGBGType> subscription;
+  late final AppLifecycleListener _lifecycleListener;
 
   @override
   void initState() {
     super.initState();
-    subscription = FGBGEvents.stream.listen((event) async {
-      if (event.toString() == "FGBGType.foreground") {
-        await DI.osamRepository.checkForUpdates(context);
-      }
-    });
+    _lifecycleListener = AppLifecycleListener(
+      onResume: () async {
+        await DI.osamRepository.checkForUpdates();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifecycleListener.dispose();
+    super.dispose();
   }
 }
 ```
@@ -231,12 +259,12 @@ void _onChangeLanguageEvent(BuildContext context) async {
   if (context.mounted) {
     switch (result) {
       case AppLanguageResponse.SUCCESS:
-        _showToast(context, AppLanguageResponse.SENT.name);
+        _showToast(context, AppLanguageResponse.SUCCESS.name);
         break;
-      case LanguageInformationResponse.UNCHANGED:
-        _showToast(context, AppLanguageResponse.NOT_SENT.name);
+      case AppLanguageResponse.UNCHANGED:
+        _showToast(context, AppLanguageResponse.UNCHANGED.name);
         break;
-      case LanguageInformationResponse.ERROR:
+      case AppLanguageResponse.ERROR:
         _showToast(context, AppLanguageResponse.ERROR.name);
         break;
     }
@@ -261,10 +289,10 @@ void _onFirstTimeOrUpdateEvent(BuildContext context) async {
       case AppLanguageResponse.SUCCESS:
         _showToast(context, AppLanguageResponse.SUCCESS.name);
         break;
-      case LanguageInformationResponse.UNCHANGED:
+      case AppLanguageResponse.UNCHANGED:
         _showToast(context, AppLanguageResponse.UNCHANGED.name);
         break;
-      case LanguageInformationResponse.ERROR:
+      case AppLanguageResponse.ERROR:
         _showToast(context, AppLanguageResponse.ERROR.name);
         break;
     }
@@ -287,11 +315,11 @@ void _onSubscribeToCustomTopic(BuildContext context, String topic) async {
   final result = await DI.osamRepository.subscribeToCustomTopic(topic: topic);
   if (context.mounted) {
     switch (result) {
-      case AppLanguageResponse.ACCEPTED:
-        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+      case SubscriptionResponse.accepted:
+        _showToast(context, SubscriptionResponse.accepted.name);
         break;
-      case LanguageInformationResponse.ERROR:
-        _showToast(context, AppLanguageResponse.ERROR.name);
+      case SubscriptionResponse.error:
+        _showToast(context, SubscriptionResponse.error.name);
         break;
     }
   }
@@ -313,11 +341,11 @@ void _onUnsubscribeToCustomTopic(BuildContext context, String topic) async {
   final result = await DI.osamRepository.unsubscribeToCustomTopic(topic: topic);
   if (context.mounted) {
     switch (result) {
-      case AppLanguageResponse.ACCEPTED:
-        _showToast(context, AppLanguageResponse.ACCEPTED.name);
+      case SubscriptionResponse.accepted:
+        _showToast(context, SubscriptionResponse.accepted.name);
         break;
-      case LanguageInformationResponse.ERROR:
-        _showToast(context, AppLanguageResponse.ERROR.name);
+      case SubscriptionResponse.error:
+        _showToast(context, SubscriptionResponse.error.name);
         break;
     }
   }
@@ -368,7 +396,10 @@ static _onMessagingEvent(String topic, String action) async {
 static Future<void> cacheTokenForNative() async {
   String? token = await FirebaseMessaging.instance.getToken();
   if (token != null) {
- await _prefs.setString('fcm_token', token);
+    // Save token where native side can access it, e.g. SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fcm_token', token);
+  }
 }
 ```
 ## Flutter app demo

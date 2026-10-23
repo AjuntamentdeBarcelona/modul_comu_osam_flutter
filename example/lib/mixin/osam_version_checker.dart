@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/widgets.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 
 import '../di/di.dart';
 
@@ -10,19 +7,24 @@ final routeObserver = RouteObserver<PageRoute>();
 
 mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
     implements RouteAware {
-  late StreamSubscription<FGBGType> subscription;
+  late final AppLifecycleListener _lifecycleListener;
 
   @override
   void initState() {
     super.initState();
-    subscription = FGBGEvents.instance.stream.listen((event) async {
-      if (event == FGBGType.foreground) {
+    _lifecycleListener = AppLifecycleListener(
+      onResume: () async {
+        print("OsamVersionChecker: Received event: foreground");
         // Only check for updates if the setting is enabled
         if (DI.settings.getShowVersionControlPopup()) {
+          print("OsamVersionChecker: Triggering checkForUpdates in foreground");
           await DI.osamRepository.checkForUpdates();
+        } else {
+          print(
+              "OsamVersionChecker: Version control popup is disabled in settings");
         }
-      }
-    });
+      },
+    );
   }
 
   @override
@@ -33,8 +35,8 @@ mixin OsamVersionChecker<T extends StatefulWidget> on State<T>
 
   @override
   void dispose() {
+    _lifecycleListener.dispose();
     routeObserver.unsubscribe(this);
-    subscription.cancel(); // Cancel subscription to prevent memory leaks
     super.dispose();
   }
 

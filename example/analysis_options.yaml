@@ -8,6 +8,8 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
+  exclude:
+    - build/**
   errors:
     constant_identifier_names: ignore
     library_private_types_in_public_api: ignore

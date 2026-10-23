@@ -44,6 +44,16 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+!.fvm/fvm_config.json
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Google Services credentials
+**/GoogleService-Info.plist
+**/google-services.json
+
 # FVM Version Cache
 .fvm/*
 !.fvm/fvm_config.json
